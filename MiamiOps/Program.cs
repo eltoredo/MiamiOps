@@ -8,6 +8,7 @@ namespace MiamiOps
         {
             Console.WriteLine("(\")>");
             Console.ReadKey();
+            lOL;
         }
     }
 }
