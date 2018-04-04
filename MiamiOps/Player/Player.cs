@@ -20,7 +20,7 @@ namespace MiamiOps
 
         public Player(int width, int height, float speed)
         {
-            _playerTexture = new Texture("../../../resources/playersprite.png");
+            _playerTexture = new Texture("../../../resources/sprite_panda_lv0.png");
             _playerSprite = new Sprite(_playerTexture);
             _playerSprite.Position = new Vector2f(640, 580);
 
@@ -77,7 +77,7 @@ namespace MiamiOps
         public void Draw(GameTime gameTime, RenderWindow window)
         {
             // It creates a rectangle around the player based on his left boundaries (whichm movement he's actually doing, the direction he's looking based on his height, his width and height before drawing him
-            if (_animFrames == 4) _animFrames = 0;
+            if (_animFrames == 3) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _width, _height);
             ++_animFrames;
 

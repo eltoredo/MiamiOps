@@ -36,7 +36,7 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _player = new Player(64, 96, 500);
+            _player = new Player(31, 32, 500);
         }
 
         public override void LoadContent()
