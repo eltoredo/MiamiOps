@@ -17,7 +17,7 @@ namespace MiamiOps
 
         public Player()
         {
-            _playerTexture = new Texture("../../Content/playersprite.png");
+            _playerTexture = new Texture("../../../resources/playersprite.png");
             _playerSprite = new Sprite(_playerTexture);
             _playerSprite.Position = new Vector2f(640, 580);
 

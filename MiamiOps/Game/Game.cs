@@ -15,7 +15,7 @@ namespace MiamiOps
 
         public const string WINDOW_TITLE = "MiamiOps";
 
-        static Texture _backgroundTexture = new Texture("../../Content/Bbackground.jpg");
+        static Texture _backgroundTexture = new Texture("../../../resources/Bbackground.jpg");
         static Sprite _backgroundSprite;
 
         Player _player;
