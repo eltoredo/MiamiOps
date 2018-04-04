@@ -19,11 +19,12 @@ namespace MiamiOps
 
         float _speed;
 
-        public Player(int width, int height, float speed)
+        public Player(int nbSprite, int width, int height, float speed)
         {
             _playerTexture = new Texture("../../../resources/playersprite.png");
             _playerSprite = new Sprite(_playerTexture);
             _playerSprite.Position = new Vector2f(640, 580);
+            _nbSprite = nbSprite;
 
             _width = width;
             _height = height;
@@ -63,7 +64,7 @@ namespace MiamiOps
                 _animStop = _width;
                 _playerSprite.Position += new Vector2f(_speed * deltaTime, 0f);
             }
-            
+
             else _animStop = 0;
 
             /*if (_playerSprite.Position.X >= 960) _backgroundSprite.TextureRect = new IntRect(new Vector2i((int)_playerSprite.Position.X % (int)_backgroundSprite.Texture.Size.X, 0), new Vector2i(1280, 720));
