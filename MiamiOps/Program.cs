@@ -4,11 +4,10 @@ namespace MiamiOps
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("(\")>");
-            Console.ReadKey();
-            lOL;
+            Game game = new Game(AppContext.BaseDirectory);
+            game.Run();
         }
     }
 }
