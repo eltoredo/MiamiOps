@@ -21,7 +21,7 @@ namespace MiamiOps
 
         public Player(int nbSprite, int width, int height, float speed)
         {
-            _playerTexture = new Texture("../../../resources/playersprite.png");
+            _playerTexture = new Texture("../../../resources/sprite_panda_lv0.png");
             _playerSprite = new Sprite(_playerTexture);
             _playerSprite.Position = new Vector2f(640, 580);
             _nbSprite = nbSprite;
