@@ -32,7 +32,6 @@ namespace MiamiOps
         {
             _backgroundSprite.Draw(Window, RenderStates.Default);
             _player.Draw(GameTime, Window);
-
         }
 
         public override void Initialize()
