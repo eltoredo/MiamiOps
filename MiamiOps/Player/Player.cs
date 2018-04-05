@@ -58,11 +58,18 @@ namespace MiamiOps
             else if (_playerSprite.Position.X > 1220) _playerSprite.Position = new Vector2f(1220, _playerSprite.Position.Y);
         }
 
-        public void DoTheMovements(int direction, float deltaTime)
+        public void DoTheMovements(direction direction, float deltaTime)
         {
-            _direction = _height * direction;
+            _direction = _height * (int) direction;
             _animStop = _width;
-            _playerSprite.Position += new Vector2f(_speed * deltaTime, 0f);
+            if(direction == direction.left)
+                _playerSprite.Position -= new Vector2f(_speed * deltaTime, 0f);
+            if (direction == direction.right)
+                _playerSprite.Position += new Vector2f(_speed * deltaTime, 0f);
+            if (direction == direction.up)
+                _playerSprite.Position -= new Vector2f(0f, _speed * deltaTime);
+            if (direction == direction.down)
+                _playerSprite.Position += new Vector2f(0f, _speed * deltaTime);
         }
 
         public void Draw(GameTime gameTime, RenderWindow window)

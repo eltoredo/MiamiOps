@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MiamiOps
 {
-    public static class direction
+    public enum direction
     {
-        public const int down = 0; 
-        public const int up = 3; 
-        public const int left = 1; 
-        public const int right = 2; 
+        down = 0, 
+        up = 3, 
+        left = 1,
+        right = 2,
     }
 }
