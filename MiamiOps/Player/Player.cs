@@ -15,7 +15,7 @@ namespace MiamiOps
         int _direction; // Direction in which the player is looking
         int _animFrames; // Number of animation frames (0 to 3 so a total of 4)
         int _animStop; // The width of the player multiplied by the number of frames to get the actual animated movement
-        int _nbSprite; // The number of column in a sprite
+        int _nbSprite; // The number of movements in a sprite
 
         float _speed;
 
@@ -36,16 +36,35 @@ namespace MiamiOps
         }
 
         public void Move(float deltaTime)
-        {   
-
+        {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
-                DoTheMovements(direction.up, deltaTime);
+            {
+                _direction = _height * 3;
+                _animStop = _width;
+                _playerSprite.Position -= new Vector2f(0f, _speed * deltaTime);
+            }
+
             else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
-                DoTheMovements(direction.down, deltaTime);
+            {
+                _direction = _height * 0;
+                _animStop = _width;
+                _playerSprite.Position += new Vector2f(0f, _speed * deltaTime);
+            }
+
             else if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
-                DoTheMovements(direction.left, deltaTime);
+            {
+                _direction = _height * 1;
+                _animStop = _width;
+                _playerSprite.Position -= new Vector2f(_speed * deltaTime, 0f);
+            }
+
             else if (Keyboard.IsKeyPressed(Keyboard.Key.D))
-                DoTheMovements(direction.right, deltaTime);
+            {
+                _direction = _height * 2;
+                _animStop = _width;
+                _playerSprite.Position += new Vector2f(_speed * deltaTime, 0f);
+            }
+
             else _animStop = 0;
 
             /*if (_playerSprite.Position.X >= 960) _backgroundSprite.TextureRect = new IntRect(new Vector2i((int)_playerSprite.Position.X % (int)_backgroundSprite.Texture.Size.X, 0), new Vector2i(1280, 720));
@@ -56,13 +75,6 @@ namespace MiamiOps
             else if (_playerSprite.Position.Y > 580) _playerSprite.Position = new Vector2f(_playerSprite.Position.X, 580);
             else if (_playerSprite.Position.X < 0) _playerSprite.Position = new Vector2f(0, _playerSprite.Position.Y);
             else if (_playerSprite.Position.X > 1220) _playerSprite.Position = new Vector2f(1220, _playerSprite.Position.Y);
-        }
-
-        public void DoTheMovements(int direction, float deltaTime)
-        {
-            _direction = _height * direction;
-            _animStop = _width;
-            _playerSprite.Position += new Vector2f(_speed * deltaTime, 0f);
         }
 
         public void Draw(GameTime gameTime, RenderWindow window)
