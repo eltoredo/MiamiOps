@@ -18,14 +18,24 @@ namespace MiamiOps
         static Texture _backgroundTexture = new Texture("../../../resources/Bbackground.jpg");
         static Sprite _backgroundSprite;
 
+        readonly Enemies[] _enemies;    // Array which contain all enemies
+
         Player _player;
 
-        public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
+        public Game(string rootPath, int nbEnemies = 10) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
             _rootPath = rootPath;
 
             _backgroundTexture.Repeated = true;
             _backgroundSprite = new Sprite(_backgroundTexture);
+
+            this._enemies = new Enemies[nbEnemies];    // Create empty array of Enemies
+            // Create much enemis as place in the attay this._enemies
+            for (int idx = 0; idx < nbEnemies; idx += 1)
+            {
+                this._enemies[idx] = new Enemies(this, idx, new Vector2f(0, 0));
+            }
+
         }
 
         public override void Draw(GameTime gameTime)
@@ -46,6 +56,11 @@ namespace MiamiOps
         public override void Update(GameTime gameTime)
         {
             _player.Move(gameTime.DeltaTimeUnscaled);
+        }
+
+        public Enemies[] Enemies
+        {
+            get { return this._enemies;}
         }
     }
 }
