@@ -36,7 +36,11 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _player = new Player(2, 3, 31, 32, 100, 500);
+<<<<<<< HEAD
+            _player = new Player(4, 64, 96, 500);
+=======
+            _player = new Player(31, 32, 500);
+>>>>>>> origin/new_sprite
         }
 
         public override void LoadContent()
