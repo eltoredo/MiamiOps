@@ -44,15 +44,16 @@ namespace MiamiOps
 
         public void Move(float deltaTime)
         {   
+            _animStop = 0;
+
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
                 DoTheMovements(direction.up, deltaTime);
-            else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.S))
                 DoTheMovements(direction.down, deltaTime);
-            else if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
                 DoTheMovements(direction.left, deltaTime);
-            else if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D))
                 DoTheMovements(direction.right, deltaTime);
-            else _animStop = 0;
 
             /*if (_playerSprite.Position.X >= 960) _backgroundSprite.TextureRect = new IntRect(new Vector2i((int)_playerSprite.Position.X % (int)_backgroundSprite.Texture.Size.X, 0), new Vector2i(1280, 720));
             else if (_playerSprite.Position.X < 320) _backgroundSprite.TextureRect = new IntRect(new Vector2i((int)_playerSprite.Position.X % (int)_backgroundSprite.Texture.Size.X, 0), new Vector2i(1280, 720));*/
