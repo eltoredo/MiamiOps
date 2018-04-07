@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="sfmlnet-system-2">
+      <HintPath>..\MiamiOps\bin\Debug\net461\sfmlnet-system-2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
