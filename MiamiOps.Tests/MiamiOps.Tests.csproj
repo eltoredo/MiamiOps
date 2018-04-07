@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiamiOps.Class\MiamiOps.Class.csproj" />
-    <ProjectReference Include="..\MiamiOps\MiamiOps.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SFML.System;
 
-namespace MiamiOps
+namespace MiamiOps.Class
 {
     public class Enemies
     {
-        Game _context;
+        Round _context;
         readonly int _name;
-        Vector2f _place;
-        double _life;
+        Vector _place;
+        float _life;
         float _speed;
-        double _attack;
+        float _attack;
         bool _isDead;
-        public Enemies(Game context, int name, Vector2f place, double life = 100, float speed = 100, double attack = 100)
+
+        public Enemies(Round context, int name, Vector place, float life = .1f, float speed = .05f, float attack = .75f)
         {
             this._context = context;
             this._name = name;
@@ -34,7 +30,7 @@ namespace MiamiOps
         }
 
         // When a enemi is touched by the player he loose life point
-        public void Hit(double pv)
+        public void Hit(float pv)
         {
              this._life -= pv;
              if (this._life <= 0)
@@ -44,22 +40,24 @@ namespace MiamiOps
         }
 
         // The move of enemy
-        internal void Move(Vector2f target)
+        public void Move(Vector target)
         {
             // Buld a vector in the direction of the player
-            Vector2f direction = this._place - target;
+            Vector direction = target.Sub(this._place);
             //Buld a unit vector int the direction of the player
-            float unit_vectorX = direction.X * (1/direction.X);
-            float unit_vectorY = direction.Y * (1/direction.Y);
-            Vector2f unit_vector = new Vector2f(unit_vectorX, unit_vectorY);
+            Vector unit_vector = direction.Mul(1.0 / direction.Magnitude);
+            // The vector of the move
+            Vector move = unit_vector.Mul(this._speed);
             // Change the position of the enemy
-            this._place.X += unit_vector.X * this._speed;
-            this._place.Y += unit_vector.Y * this._speed;
+            this._place = this._place.Add(move);
         }
 
-        public double Life
+        public void Attack(float attack, float distance)
         {
-            get {return this._life;}
+            throw new NotImplementedException();
         }
+
+        public double Life => this._life;
+        public Vector Place => this._place;
     }
 }
