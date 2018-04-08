@@ -19,12 +19,14 @@ namespace MiamiOps.Tests
         [Test]
         public void Create_round_with_enemies_spawn_out_of_the_map()
         {
-            Vector[] vectors = new Vector[8]{new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2)};
+            Vector[] vectors = new Vector[4]{new Vector(0, 2), new Vector(0, -2), new Vector(2, 0), new Vector(-2, 0)};
             foreach (Vector spawnLocation in vectors) Assert.Throws<ArgumentException>( () => new Round(10, spawnLocation, new Vector(0, 0)));
         }
+
+        [Test]
         public void Create_round_with_player_place_out_of_map()
         {
-            Vector[] vectors = new Vector[8]{new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2), new Vector(0, 2)};
+            Vector[] vectors = new Vector[4]{new Vector(0, 2), new Vector(0, -2), new Vector(2, 0), new Vector(-2, 0)};
             foreach (Vector spawnLocation in vectors) Assert.Throws<ArgumentException>( () => new Round(10, new Vector(0, 0), spawnLocation));
         }
 
@@ -184,11 +186,21 @@ namespace MiamiOps.Tests
             Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(1.0, 2)));
         }
 
-        [Test]
-        public void little_test()
+
+        // (to do) make test for the diagonale
+
+
+        [TestCase(0, 1, 0, 1)]    // In the top
+        [TestCase(0, -1, 0, -1)]    // In the bottom
+        [TestCase(-1, 0, -1, 0)]    // In the left
+        [TestCase(1, 0, 1, 0)]    // In the rigth
+        public void The_player_can_not_go_out_of_the_map(float xBegin, float yBegin, float xDirection, float yDirection)
         {
-            Vector v = new Vector(1, 1);
-            Assert.That(v.Magnitude, Is.EqualTo(1));
+            Round play = new Round(0, new Vector(0, 0), new Vector(xBegin, yBegin));
+            play.Update(new Vector(xDirection, yDirection));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(xBegin, 2)));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(yBegin, 2)));
+
         }
     }
 }
