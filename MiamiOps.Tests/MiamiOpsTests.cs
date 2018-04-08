@@ -47,5 +47,65 @@ namespace MiamiOps.Tests
             }
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(0.0, 2)));
         }
+
+        [Test]
+        public void Look_if_enemies_go_to_the_player__go_up()
+        {
+            Round play = new Round(1, new Vector(0, -1), new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-1.0, 2)));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-.95, 2)));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-.90f, 2)));
+            play.Update(new Vector(0, 0));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-.80f, 2)));
+            for (int idx = 0; idx < 8; idx += 1)
+            {
+                play.Update(new Vector(0, 0));
+                play.Update(new Vector(0, 0));
+            }
+            Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-0.0, 2)));
+        }
+
+        [Test]
+        public void Look_if_enemies_go_to_the_player__go_left()
+        {
+            Round play = new Round(1, new Vector(1, 0), new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(1.0, 2)));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(.95, 2)));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(.90f, 2)));
+            play.Update(new Vector(0, 0));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(.80f, 2)));
+            for (int idx = 0; idx < 8; idx += 1)
+            {
+                play.Update(new Vector(0, 0));
+                play.Update(new Vector(0, 0));
+            }
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(0.0, 2)));
+        }
+
+        [Test]
+        public void Look_if_enemies_go_to_the_player__go_rigth()
+        {
+            Round play = new Round(1, new Vector(-1, 0), new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-1.0, 2)));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-.95, 2)));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-.90f, 2)));
+            play.Update(new Vector(0, 0));
+            play.Update(new Vector(0, 0));
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-.80f, 2)));
+            for (int idx = 0; idx < 8; idx += 1)
+            {
+                play.Update(new Vector(0, 0));
+                play.Update(new Vector(0, 0));
+            }
+            Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-0.0, 2)));
+        }
     }
 }
