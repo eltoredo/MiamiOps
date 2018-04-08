@@ -107,5 +107,88 @@ namespace MiamiOps.Tests
             }
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-0.0, 2)));
         }
+
+        [Test]
+        public void Look_if_the_player_go_to_the_up()
+        {
+            Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(0.0, 2)));
+            play.Update(new Vector(0, 1));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(.1f, 2)));
+            play.Update(new Vector(0, 1));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(.2f, 2)));
+            play.Update(new Vector(0, 1));
+            play.Update(new Vector(0, 1));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(.4f, 2)));
+            for (int idx = 0; idx < 6; idx += 1)
+            {
+                play.Update(new Vector(0, 1));
+            }
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(1.0, 2)));
+        }
+
+        [Test]
+        public void Look_if_the_player_go_to_the_down()
+        {
+            Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-0.0, 2)));
+            play.Update(new Vector(0, -1));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-.1f, 2)));
+            play.Update(new Vector(0, -1));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-.2f, 2)));
+            play.Update(new Vector(0, -1));
+            play.Update(new Vector(0, -1));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-.4f, 2)));
+            for (int idx = 0; idx < 6; idx += 1)
+            {
+                play.Update(new Vector(0, -1));
+            }
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-1.0, 2)));
+        }
+
+        [Test]
+        public void Look_if_the_player_go_to_the_left()
+        {
+            Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-0.0, 2)));
+            play.Update(new Vector(-1, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-.1f, 2)));
+            play.Update(new Vector(-1, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-.2f, 2)));
+            play.Update(new Vector(-1, 0));
+            play.Update(new Vector(-1, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-.4f, 2)));
+            for (int idx = 0; idx < 6; idx += 1)
+            {
+                play.Update(new Vector(-1, 0));
+            }
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-1.0, 2)));
+        }
+
+        [Test]
+        public void Look_if_the_player_go_to_the_right()
+        {
+            Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(0.0, 2)));
+            play.Update(new Vector(1, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(.1f, 2)));
+            play.Update(new Vector(1, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(.2f, 2)));
+            play.Update(new Vector(1, 0));
+            play.Update(new Vector(1, 0));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(.4f, 2)));
+            for (int idx = 0; idx < 6; idx += 1)
+            {
+                play.Update(new Vector(1, 0));
+            }
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(1.0, 2)));
+        }
+
+        [Test]
+        public void little_test()
+        {
+            Vector v = new Vector(1, 1);
+            Assert.That(v.Magnitude, Is.EqualTo(1));
+        }
     }
 }

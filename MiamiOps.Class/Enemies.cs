@@ -44,7 +44,7 @@ namespace MiamiOps.Class
         {
             // Buld a vector in the direction of the player
             Vector direction = target.Sub(this._place);
-            //Buld a unit vector int the direction of the player
+            //Buld a unit vector in the direction of the player
             Vector unit_vector = direction.Mul(1.0 / direction.Magnitude);
             // The vector of the move
             Vector move = unit_vector.Mul(this._speed);

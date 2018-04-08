@@ -2,7 +2,7 @@
 
 namespace MiamiOps.Class
 {
-    class Player
+    public class Player
     {
         Round _context;
         Vector _place;
@@ -26,7 +26,17 @@ namespace MiamiOps.Class
         // To move the player; direction is the direction of player
         public void Move(Vector direction)
         {
-            this._place.Add(direction);
+            double diviseur;
+        //this._place.Add(direction);
+            //Buld a unit vector in the direction whr to go
+            // In case if the player is in (0, 0) the magnitude is 0 and we can't devided by 0
+            diviseur = direction.Magnitude;
+            if (direction.Magnitude == 0) diviseur = 1;
+            Vector unit_vector = direction.Mul(1.0 / diviseur);
+            // The vector of the move
+            Vector move = unit_vector.Mul(this._speed);
+            // Change the position of the enemy
+            this._place = this._place.Add(move);
         }
 
         // When the player attack the enemies
