@@ -23,8 +23,8 @@ namespace MiamiOps
                 else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
                 {
                     menu.Move(Keyboard.Key.S);
-
                 }
+
                 else if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
                 {
                     if (menu.SelectedItemIndex == 0)
@@ -43,7 +43,7 @@ namespace MiamiOps
 
                 menu.Draw(window);
                 window.Display();
-                Thread.Sleep(60);
+                Thread.Sleep(85);
             }
 
         }

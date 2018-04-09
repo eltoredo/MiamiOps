@@ -9,7 +9,6 @@ using SFML.Window;
 using SFML.System;
 
 
-
 namespace MiamiOps
 {
     class Menu
@@ -49,7 +48,7 @@ namespace MiamiOps
                 Position = new Vector2f(width / 2, height / (3 + 1) * 3)
             };
             menuList[2] = menu3;
-            _backgroundSprite = new Sprite(_backgroundTexture);
+           _backgroundSprite = new Sprite(_backgroundTexture);
 
         }
 
