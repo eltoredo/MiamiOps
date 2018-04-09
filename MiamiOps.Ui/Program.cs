@@ -23,8 +23,8 @@ namespace MiamiOps
                 else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
                 {
                     menu.Move(Keyboard.Key.S);
-
                 }
+
                 else if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
                 {
                     if (menu.SelectedItemIndex == 0)
