@@ -9,7 +9,6 @@ using SFML.Window;
 using SFML.System;
 
 
-
 namespace MiamiOps
 {
     class Menu
@@ -17,7 +16,7 @@ namespace MiamiOps
         private int selectedItemIndex;
         private Text[] menuList = new Text[3];
         private Font font = new Font("../../../Menu/arial.ttf");
-        static Texture _backgroundTexture = new Texture("..\\..\\Images\\cat.jpg");
+        static Texture _backgroundTexture = new Texture("../../../../Images/background.png");
         static Sprite _backgroundSprite;
         Music music = new Music("../../../Menu/TheLastOfUs.ogg");
 
@@ -49,7 +48,7 @@ namespace MiamiOps
                 Position = new Vector2f(width / 2, height / (3 + 1) * 3)
             };
             menuList[2] = menu3;
-            _backgroundSprite = new Sprite(_backgroundTexture);
+           _backgroundSprite = new Sprite(_backgroundTexture);
 
         }
 

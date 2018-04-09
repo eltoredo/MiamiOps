@@ -43,7 +43,7 @@ namespace MiamiOps
 
                 menu.Draw(window);
                 window.Display();
-                Thread.Sleep(60);
+                Thread.Sleep(85);
             }
 
         }
