@@ -31,12 +31,14 @@ namespace MiamiOps
         public override void Draw(GameTime gameTime)
         {
             _backgroundSprite.Draw(Window, RenderStates.Default);
-            _player.Draw(GameTime, Window);
+            //TODO: uncomment next line
+            //_player.Draw(GameTime, Window);
         }
 
         public override void Initialize()
         {
-            _player = new Player(2, 3, 31, 32, 100, 500);
+            //TODO: uncomment next line
+            //_player = new Player(2, 3, 31, 32, 100, 500);
         }
 
         public override void LoadContent()
@@ -45,7 +47,8 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
-            _player.Move(gameTime.DeltaTimeUnscaled);
+            //TODO: uncomment next line
+            //_player.Move(gameTime.DeltaTimeUnscaled);
         }
     }
 }
