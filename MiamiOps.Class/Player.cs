@@ -42,7 +42,7 @@ namespace MiamiOps.Class
             if (this._place.Y < -1) this._place.Y = -1;
         }
 
-        // When the player attack the enemies
+        // When the player attacks the enemies
         public void Damage(float attack, float distance)
         {
             throw new NotImplementedException();
