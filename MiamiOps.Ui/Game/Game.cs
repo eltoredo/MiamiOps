@@ -46,6 +46,11 @@ namespace MiamiOps
         public override void Update(GameTime gameTime)
         {
             _player.Move(gameTime.DeltaTimeUnscaled);
+
+
+            //if (jappuie sur z) partie.Update(new Vector(0, 1));
+
+            // PlayerUI.Updateposition
         }
     }
 }
