@@ -15,10 +15,10 @@ namespace MiamiOps
 
         public const string WINDOW_TITLE = "MiamiOps";
 
-        static Texture _backgroundTexture = new Texture("../../../resources/Bbackground.jpg");
+        static Texture _backgroundTexture = new Texture("../../../../Images/background.png");
         static Sprite _backgroundSprite;
 
-        Player _player;
+        PlayerUI _player;
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -31,14 +31,12 @@ namespace MiamiOps
         public override void Draw(GameTime gameTime)
         {
             _backgroundSprite.Draw(Window, RenderStates.Default);
-            //TODO: uncomment next line
-            //_player.Draw(GameTime, Window);
+            _player.Draw(GameTime, Window);
         }
 
         public override void Initialize()
         {
-            //TODO: uncomment next line
-            //_player = new Player(2, 3, 31, 32, 100, 500);
+            _player = new PlayerUI(2, 3, 31, 32, 100, 500);
         }
 
         public override void LoadContent()
@@ -47,8 +45,7 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
-            //TODO: uncomment next line
-            //_player.Move(gameTime.DeltaTimeUnscaled);
+            _player.Move(gameTime.DeltaTimeUnscaled);
         }
     }
 }

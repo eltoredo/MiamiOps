@@ -26,7 +26,7 @@ namespace MiamiOps
         // To move the player; direction is the direction of player
         public void Move(Vector direction)
         {
-            //Buld a unit vector in the direction where to go
+            //Build a unit vector in the direction where to go
             double diviseur = direction.Magnitude;
             if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0) the magnitude is 0 and we can't devided by 0
             Vector unit_vector = direction.Mul(1.0 / diviseur);

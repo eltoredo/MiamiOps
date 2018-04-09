@@ -17,7 +17,7 @@ namespace MiamiOps
         private int selectedItemIndex;
         private Text[] menuList = new Text[3];
         private Font font = new Font("../../../Menu/arial.ttf");
-        static Texture _backgroundTexture = new Texture("..\\..\\Images\\cat.jpg");
+        static Texture _backgroundTexture = new Texture("../../../../Images/cat.png");
         static Sprite _backgroundSprite;
         Music music = new Music("../../../Menu/TheLastOfUs.ogg");
 

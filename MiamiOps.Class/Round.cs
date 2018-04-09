@@ -32,7 +32,7 @@ namespace MiamiOps
             }
         }
 
-        // Mehod to update the player and all the enemies
+        // Method to update the player and all the enemies
         public void Update(Vector player_direction)
         {
             this._player.Move(player_direction);
