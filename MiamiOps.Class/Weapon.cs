@@ -1,7 +1,6 @@
 ﻿using System;
 
-namespace MiamiOps.Class
-{
+namespace MiamiOps
     public class Weapon
     {
     }
