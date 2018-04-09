@@ -2,7 +2,6 @@
 
 using NUnit.Framework;
 
-using MiamiOps.Class;
 
 namespace MiamiOps.Tests
 {
