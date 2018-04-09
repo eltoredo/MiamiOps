@@ -40,5 +40,6 @@ namespace MiamiOps.Class
         }
 
         public Enemies[] Enemies => this._enemies;
+        public Player Player => this._player;
     }
 }

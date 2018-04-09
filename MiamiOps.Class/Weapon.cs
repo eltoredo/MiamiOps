@@ -2,7 +2,7 @@
 
 namespace MiamiOps.Class
 {
-    class Weapon
+    public class Weapon
     {
     }
 }

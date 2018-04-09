@@ -13,8 +13,16 @@ public struct Vector
             this._ord = ord;
         }
 
-        public double X => this._abs;
-        public double Y => this._ord;
+        public double X
+        {
+            get {return this._abs;}
+            set {this._abs = value;}
+        }
+        public double Y
+        {
+            get {return this._ord;}
+            set {this._ord = value;}
+        }
 
         public Vector Sub(Vector v)
         {
