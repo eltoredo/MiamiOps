@@ -33,19 +33,20 @@ namespace MiamiOps
             _direction = spriteHeight * 2;    // Basically, the player looks to the right
         }
 
-        public void UpdatePlace(Vector playerPlace, uint mapWidth, uint mapHeight)
+        private Vector2f UpdatePlace(Vector playerPlace, uint mapWidth, uint mapHeight)
         {
-            this._playerSprite.Position = new Vector2f((float)playerPlace.X * (mapWidth / 2), (float)playerPlace.Y * (mapHeight / 2));
+            return new Vector2f((float)playerPlace.X * (mapWidth / 2), (float)playerPlace.Y * (mapHeight / 2));
         }
 
-        //public void Draw(GameTime gameTime, RenderWindow window)
-        //{
-            //// It creates a rectangle around the player based on his left boundaries (whichm movement he's actually doing, the direction he's looking based on his height, his width and height before drawing him
+        public void Draw(RenderWindow window, Vector playerPlace, uint mapWidth, uint mapHeight)
+        {
+            this._playerSprite.Position = UpdatePlace(playerPlace, mapWidth, mapHeight);
+            _playerSprite.Draw(window, RenderStates.Default);
+
             //if (_animFrames == _nbSprite) _animFrames = 0;
             //_playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             //++_animFrames;
-            //_playerSprite.Draw(window, RenderStates.Default);
-        //}
+        }
 
         public Vector2f PlayerPosition
         {
