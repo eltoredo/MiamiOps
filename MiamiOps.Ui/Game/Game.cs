@@ -15,15 +15,17 @@ namespace MiamiOps
 
         public const string WINDOW_TITLE = "MiamiOps";
 
+        Round _round;
+        RoundUI _roundUI;
+        InputHandler _playerInput;
+
         static Texture _backgroundTexture = new Texture("../../../../Images/background.png");
         static Sprite _backgroundSprite;
-
-        PlayerUI _player;
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
             _rootPath = rootPath;
-
+            
             _backgroundTexture.Repeated = true;
             _backgroundSprite = new Sprite(_backgroundTexture);
         }
@@ -31,12 +33,15 @@ namespace MiamiOps
         public override void Draw(GameTime gameTime)
         {
             _backgroundSprite.Draw(Window, RenderStates.Default);
-            _player.Draw(GameTime, Window);
+            _roundUI.Draw(Window, _roundUI.MapWidth, _roundUI.MapHeight);
         }
 
         public override void Initialize()
         {
-            _player = new PlayerUI(2, 3, 31, 32, 100, 500);
+            //Round UI avec paramètres du player UI
+            _round = new Round(100, new Vector(0, 0), new Vector(0, 0));
+            _roundUI = new RoundUI(_round, 1280, 720);
+            _playerInput = new InputHandler(_roundUI);
         }
 
         public override void LoadContent()
@@ -45,12 +50,8 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
-            _player.Move(gameTime.DeltaTimeUnscaled);
-
-
-            //if (jappuie sur z) partie.Update(new Vector(0, 1));
-
-            // PlayerUI.Updateposition
+            _playerInput.Handle();
+            _round.Update();
         }
     }
 }

@@ -5,12 +5,13 @@ namespace MiamiOps
     public class Player
     {
         Round _context;
+
         Vector _place;
         float _life;
         float _speed;
         Weapon _weapon;
         Weapon default_weapon = new Weapon();
-        public Player(Round context, Vector place, float life = 1, float speed = .1f)
+        public Player(Round context, Vector place, float life = 1, float speed = .05f)
         {
             this._context = context;
             this._place = place;
