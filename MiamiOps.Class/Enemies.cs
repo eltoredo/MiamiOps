@@ -23,13 +23,13 @@ namespace MiamiOps
             this._isDead = false;
         }
 
-        // Function called when an enemy have less tran 1 life point
+        // Method called when an enemy has less than 1 life point
         internal void Dead()
         {
             this._isDead = true;
         }
 
-        // When a enemi is touched by the player he loose life point
+        // When a enemy is touched by the player, he loses some life point
         public void Hit(float pv)
         {
              this._life -= pv;
@@ -39,16 +39,16 @@ namespace MiamiOps
              }
         }
 
-        // The move of enemy
+        // The movements of the enemy
         public void Move(Vector target)
         {
-            // Buld a vector in the direction of the player
+            // Builds a vector in the direction of the player
             Vector direction = target.Sub(this._place);
-            //Buld a unit vector in the direction of the player
+            // Builds a unit vector in the direction of the player
             Vector unit_vector = direction.Mul(1.0 / direction.Magnitude);
-            // The vector of the move
+            // The vector of the movements
             Vector move = unit_vector.Mul(this._speed);
-            // Change the position of the enemy
+            // Changes the position of the enemy
             this._place = this._place.Add(move);
         }
 
