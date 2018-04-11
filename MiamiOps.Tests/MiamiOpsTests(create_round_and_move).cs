@@ -34,17 +34,17 @@ namespace MiamiOps.Tests
         {
             Round play = new Round(1, new Vector(0, 1), new Vector(0, 0));
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(1.0, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(.95, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(.90f, 2)));
-            play.Update(new Vector(0, 0));
-            play.Update(new Vector(0, 0));
+            play.Update();
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(.80f, 2)));
             for (int idx = 0; idx < 8; idx += 1)
             {
-                play.Update(new Vector(0, 0));
-                play.Update(new Vector(0, 0));
+                play.Update();
+                play.Update();
             }
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(0.0, 2)));
         }
@@ -54,17 +54,17 @@ namespace MiamiOps.Tests
         {
             Round play = new Round(1, new Vector(0, -1), new Vector(0, 0));
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-1.0, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-.95, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-.90f, 2)));
-            play.Update(new Vector(0, 0));
-            play.Update(new Vector(0, 0));
+            play.Update();
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-.80f, 2)));
             for (int idx = 0; idx < 8; idx += 1)
             {
-                play.Update(new Vector(0, 0));
-                play.Update(new Vector(0, 0));
+                play.Update();
+                play.Update();
             }
             Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(-0.0, 2)));
         }
@@ -74,17 +74,17 @@ namespace MiamiOps.Tests
         {
             Round play = new Round(1, new Vector(1, 0), new Vector(0, 0));
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(1.0, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(.95, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(.90f, 2)));
-            play.Update(new Vector(0, 0));
-            play.Update(new Vector(0, 0));
+            play.Update();
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(.80f, 2)));
             for (int idx = 0; idx < 8; idx += 1)
             {
-                play.Update(new Vector(0, 0));
-                play.Update(new Vector(0, 0));
+                play.Update();
+                play.Update();
             }
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(0.0, 2)));
         }
@@ -94,100 +94,60 @@ namespace MiamiOps.Tests
         {
             Round play = new Round(1, new Vector(-1, 0), new Vector(0, 0));
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-1.0, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-.95, 2)));
-            play.Update(new Vector(0, 0));
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-.90f, 2)));
-            play.Update(new Vector(0, 0));
-            play.Update(new Vector(0, 0));
+            play.Update();
+            play.Update();
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-.80f, 2)));
             for (int idx = 0; idx < 8; idx += 1)
             {
-                play.Update(new Vector(0, 0));
-                play.Update(new Vector(0, 0));
+                play.Update();
+                play.Update();
             }
             Assert.That(Math.Round(play.Enemies[0].Place.X, 2), Is.EqualTo(Math.Round(-0.0, 2)));
         }
 
-        [Test]
-        public void Look_if_the_player_go_to_the_up()
+        [TestCase(0, 1, 0.0, .1f, .2f, .4f, 1.0)]
+        [TestCase(0, -1, 0.0, -.1f, -.2f, -.4f, -1)]
+        public void Look_if_the_player_move_verticaly(float xDirection, float yDirection, double t0, double t1, double t2, double t3, double t4)
         {
             Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(0.0, 2)));
-            play.Update(new Vector(0, 1));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(.1f, 2)));
-            play.Update(new Vector(0, 1));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(.2f, 2)));
-            play.Update(new Vector(0, 1));
-            play.Update(new Vector(0, 1));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(.4f, 2)));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(t0, 2)));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(t1, 2)));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(t2, 2)));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(t3, 2)));
             for (int idx = 0; idx < 6; idx += 1)
             {
-                play.Update(new Vector(0, 1));
+                play.Player.Move(new Vector(xDirection, yDirection));
             }
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(1.0, 2)));
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(t4, 2)));
         }
 
-        [Test]
-        public void Look_if_the_player_go_to_the_down()
+        [TestCase(-1, 0, -0.0, -.1f, -.2f, -.4f, -1)]
+        [TestCase(1, 0, 0.0, .1f, .2f, .4f, 1)]
+        public void Look_if_the_player_move_horizontaly(float xDirection, float yDirection, double t0, double t1, double t2, double t3, double t4)
         {
             Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-0.0, 2)));
-            play.Update(new Vector(0, -1));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-.1f, 2)));
-            play.Update(new Vector(0, -1));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-.2f, 2)));
-            play.Update(new Vector(0, -1));
-            play.Update(new Vector(0, -1));
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-.4f, 2)));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(t0, 2)));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(t1, 2)));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(t2, 2)));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(t3, 2)));
             for (int idx = 0; idx < 6; idx += 1)
             {
-                play.Update(new Vector(0, -1));
+                play.Player.Move(new Vector(xDirection, yDirection));
             }
-            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(-1.0, 2)));
+            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(t4, 2)));
         }
-
-        [Test]
-        public void Look_if_the_player_go_to_the_left()
-        {
-            Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-0.0, 2)));
-            play.Update(new Vector(-1, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-.1f, 2)));
-            play.Update(new Vector(-1, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-.2f, 2)));
-            play.Update(new Vector(-1, 0));
-            play.Update(new Vector(-1, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-.4f, 2)));
-            for (int idx = 0; idx < 6; idx += 1)
-            {
-                play.Update(new Vector(-1, 0));
-            }
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(-1.0, 2)));
-        }
-
-        [Test]
-        public void Look_if_the_player_go_to_the_right()
-        {
-            Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(0.0, 2)));
-            play.Update(new Vector(1, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(.1f, 2)));
-            play.Update(new Vector(1, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(.2f, 2)));
-            play.Update(new Vector(1, 0));
-            play.Update(new Vector(1, 0));
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(.4f, 2)));
-            for (int idx = 0; idx < 6; idx += 1)
-            {
-                play.Update(new Vector(1, 0));
-            }
-            Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(1.0, 2)));
-        }
-
-
-        // (to do) make test for the diagonale
-
 
         [TestCase(0, 1, 0, 1)]    // In the top
         [TestCase(0, -1, 0, -1)]    // In the bottom
@@ -196,7 +156,8 @@ namespace MiamiOps.Tests
         public void The_player_can_not_go_out_of_the_map(float xBegin, float yBegin, float xDirection, float yDirection)
         {
             Round play = new Round(0, new Vector(0, 0), new Vector(xBegin, yBegin));
-            play.Update(new Vector(xDirection, yDirection));
+            play.Player.Move(new Vector(xDirection, yDirection));
+            play.Update();
             Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(xBegin, 2)));
             Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(yBegin, 2)));
 

@@ -43,13 +43,13 @@ namespace MiamiOps
         public void Move(Vector target)
         {
             // Builds a vector in the direction of the player
-            Vector direction = target.Sub(this._place);
+            Vector direction = target - this._place;
             // Builds a unit vector in the direction of the player
-            Vector unit_vector = direction.Mul(1.0 / direction.Magnitude);
+            Vector unit_vector = direction * (1.0 / direction.Magnitude);
             // The vector of the movements
-            Vector move = unit_vector.Mul(this._speed);
+            Vector move = unit_vector * this._speed;
             // Changes the position of the enemy
-            this._place = this._place.Add(move);
+            this._place += move;
         }
 
         public void Attack(float attack, float distance)

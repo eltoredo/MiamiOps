@@ -13,24 +13,15 @@ public struct Vector
             this._ord = ord;
         }
 
-        public double X
-        {
-            get {return this._abs;}
-            set {this._abs = value;}
-        }
-        public double Y
-        {
-            get {return this._ord;}
-            set {this._ord = value;}
-        }
+        public double X => this._abs;
+        public double Y => this._ord;
 
-        public Vector Sub(Vector v)
-        {
-            return new Vector(this._abs - v._abs, this._ord - v._ord);
-        }
         public double Magnitude => Math.Sqrt(this._abs * this._abs + this._ord * this._ord);
-        public Vector Mul(double n) => new Vector(this._abs * n, this._ord * n);
-        public Vector Add(Vector v) => new Vector(this._abs + v._abs, this._ord + v._ord);
 
+        public static Vector operator+(Vector v1, Vector v2) {return new Vector(v1._abs + v2._abs, v1._ord + v2._ord);}
+        public static Vector operator-(Vector v1, Vector v2) {return new Vector(v1._abs - v2._abs, v1._ord - v2._ord);}
+        public static Vector operator*(Vector v1, double nb) {return new Vector(v1._abs * nb, v1._ord * nb);}
+        public static Vector operator*(double nb, Vector v1) {return v1 * nb;}
+        public static Vector operator/(Vector v1, double nb) {return new Vector(v1._abs / nb, v1._ord / nb);}
     }
 }
