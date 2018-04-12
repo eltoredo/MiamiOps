@@ -10,6 +10,7 @@ namespace MiamiOps
     public class RoundUI
     {
         PlayerUI _playerUI;
+        EnemiesUI _enemiesUI;
 
         uint _mapWidth;
         uint _mapHeight;
@@ -35,6 +36,7 @@ namespace MiamiOps
         public RoundUI(Round roundCtx, uint mapWidth, uint mapHeight)
         {
             _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight);
+            _enemiesUI = new EnemiesUI(this, 4, 54, 48, new Vector(0, 0), mapWidth, mapHeight);
             _roundCtx = roundCtx;
 
             _mapWidth = mapWidth;
@@ -45,6 +47,7 @@ namespace MiamiOps
         {
             //_enemiesUI.Draw();
             _playerUI.Draw(window, mapWidth, mapHeight);
+            _enemiesUI.Draw(window, mapWidth, mapHeight);
         }
     }
 }
