@@ -169,7 +169,10 @@ namespace MiamiOps.Tests
         public void When_create_Round_with_no_enemiesSpawn_the_enemies_are_not_at_the_same_place()
         {
             Round play = new Round(2);
-            Assert.That((Math.Round(play.Enemies[0].Place.X, 2), Is.Not.EqualTo(Math.Round(play.Enemies[1].Place.X, 2))) || (Math.Round(play.Enemies[0].Place.Y, 2), Is.Not.EqualTo(Math.Round(play.Enemies[1].Place.Y, 2))));
+            bool sameX = Math.Round(play.Enemies[0].Place.X, 2) == Math.Round(play.Enemies[1].Place.X, 2);
+            bool sameY = Math.Round(play.Enemies[0].Place.Y, 2) == Math.Round(play.Enemies[1].Place.Y, 2);
+            bool samePlace = sameX && sameY;
+            Assert.That(samePlace, Is.Not.EqualTo(true));
         }
     }
 }
