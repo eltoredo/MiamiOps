@@ -19,7 +19,14 @@ namespace MiamiOps.Tests
             using (StreamReader sr = new StreamReader(fs, true))
             {
                 XElement xml = XElement.Load(sr);
-                Console.WriteLine(xml.Descendants("data").Single().Value);
+                string level = xml.Descendants("data").Single().Value;
+                int[] level_array = level.Split(',');
+                int i = 0;
+                foreach (var item in level_array)
+                {
+                    Console.WriteLine(i+":" + item.ToString());
+                    i++;
+                }
             }
         }
 
