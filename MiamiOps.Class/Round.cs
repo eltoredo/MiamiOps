@@ -6,6 +6,7 @@ namespace MiamiOps
     {
         private Player _player;
         private Enemies[] _enemies;
+        private Random random = new Random();
 
         public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null)
         {
@@ -24,7 +25,7 @@ namespace MiamiOps
             this._enemies = new Enemies[nb_enemies];
             // Put enemies in the array
             // If the enemies spawn is null (not renseigned) each enemies have a random location
-            if (playerSpawn == null) 
+            if (enemieSpawn == null) 
             {
                 for (int idx = 0; idx < nb_enemies; idx += 1)
                 {
@@ -45,9 +46,9 @@ namespace MiamiOps
             }
         }
 
-        internal float GetNextRandomFloat()
+        private float GetNextRandomFloat()
         {
-            return ((float)new Random().NextDouble() * 2) -1;
+            return ((float)this.random.NextDouble() * 2) -1;
 
         }
 

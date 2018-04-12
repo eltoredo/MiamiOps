@@ -116,7 +116,7 @@ namespace MiamiOps.Tests
         [TestCase(0, -1, 0.0, -.1f, -.2f, -.4f, -1)]
         public void Look_if_the_player_move_verticaly(float xDirection, float yDirection, double t0, double t1, double t2, double t3, double t4)
         {
-            Round play = new Round(0, new Vector(0, 0), new Vector(0, 0));
+            Round play = new Round(0, new Vector(0, 0));
             Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(t0, 2)));
             play.Player.Move(new Vector(xDirection, yDirection));
             Assert.That(Math.Round(play.Player.Place.Y, 2), Is.EqualTo(Math.Round(t1, 2)));
