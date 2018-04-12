@@ -45,9 +45,6 @@ namespace MiamiOps
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
             for (int i = 0; i < _roundUIContext.RoundContext.Enemies.Length; i++) this._enemySprite.Position = UpdatePlace(_roundUIContext.RoundContext.Enemies[i].Place, mapWidth, mapHeight);
-            Console.WriteLine(_enemySprite.Position.X);
-            Console.WriteLine(_roundUIContext.RoundContext.Enemies[0].Place.X);
-
 
             if (_animFrames == _nbSprite) _animFrames = 0;
             _enemySprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
