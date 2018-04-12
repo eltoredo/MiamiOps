@@ -6,25 +6,50 @@ namespace MiamiOps
     {
         private Player _player;
         private Enemies[] _enemies;
-        public Round(int nb_enemies, Vector enemiesSpawn, Vector playerPlace)
+        private Random random = new Random();
+
+        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null)
         {
+            Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
-            Vector[] vectors = new Vector[2]{enemiesSpawn, playerPlace};
-            foreach (Vector vector in vectors)
-            {
-                if (
-                    vector.X < -1 ||
-                    vector.X > 1 ||
-                    vector.Y < -1 ||
-                    vector.Y > 1
-                ) throw new ArgumentException("The spawn loaction of enemies or the place of the player can't be out of the map (map (x ; y) coordonate: [-1 ~ 1; -1 ~ 1])");
-            }
+            if (
+                player.X < -1 ||
+                player.X > 1 ||
+                player.Y < -1 ||
+                player.Y > 1
+            ) throw new ArgumentException("The spawn loaction of enemies or the place of the player can't be out of the map (map (x ; y) coordonate: [-1 ~ 1; -1 ~ 1])");
 
             // Create the player and the array of enemies
-            this._player = new Player(this, playerPlace);
+            this._player = new Player(this, player);
             this._enemies = new Enemies[nb_enemies];
             // Put enemies in the array
-            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, enemiesSpawn);}
+            // If the enemies spawn is null (not renseigned) each enemies have a random location
+            if (enemieSpawn == null) 
+            {
+                for (int idx = 0; idx < nb_enemies; idx += 1)
+                {
+                    this._enemies[idx] = new Enemies(this, idx, new Vector(GetNextRandomFloat(), GetNextRandomFloat()));
+                }
+            }
+            else
+            {
+                if (
+                    enemieSpawn.Value.X < -1 ||
+                    enemieSpawn.Value.X > 1 ||
+                    enemieSpawn.Value.Y < -1 ||
+                    enemieSpawn.Value.Y > 1
+                ) throw new ArgumentException("The spawn loaction of enemies or the place of the player can't be out of the map (map (x ; y) coordonate: [-1 ~ 1; -1 ~ 1])");
+                // If the enemies spawn is not null each enemies have the location renseigned
+                Vector spawn = new Vector(enemieSpawn.Value.X, enemieSpawn.Value.Y);
+                for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, spawn);}
+            }
+        }
+
+        private float GetNextRandomFloat()
+        {
+            return ((float)this.random.NextDouble() * 2) -1;
+
         }
 
         // Method to update the player and all the enemies
