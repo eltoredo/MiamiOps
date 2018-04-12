@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="NUnit" Version="2.6.4" />
     <PackageReference Include="NUnit.Runners.Net4" Version="2.6.4" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>

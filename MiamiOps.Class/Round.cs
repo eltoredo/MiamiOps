@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MiamiOps
 {
@@ -6,10 +7,15 @@ namespace MiamiOps
     {
         private Player _player;
         private Enemies[] _enemies;
-        public Round(int nb_enemies, Vector enemiesSpawn, Vector playerPlace)
+
+        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null)
         {
+            Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+            Vector enemie = enemieSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
-            Vector[] vectors = new Vector[2]{enemiesSpawn, playerPlace};
+
+            Vector[] vectors = new Vector[2]{enemie, player};
             foreach (Vector vector in vectors)
             {
                 if (
@@ -21,10 +27,16 @@ namespace MiamiOps
             }
 
             // Create the player and the array of enemies
-            this._player = new Player(this, playerPlace);
+            this._player = new Player(this, player);
             this._enemies = new Enemies[nb_enemies];
             // Put enemies in the array
-            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, enemiesSpawn);}
+            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, enemie);}
+        }
+
+        internal float GetNextRandomFloat()
+        {
+            return ((float)new Random().NextDouble() * 2) -1;
+
         }
 
         // Method to update the player and all the enemies
