@@ -45,7 +45,9 @@ namespace MiamiOps
             // Buld a vector in the direction of the player
             Vector direction = target - this._place;
             //Buld a unit vector in the direction of the player
-            Vector unit_vector = direction * (1.0 / direction.Magnitude);
+            double diviseur = direction.Magnitude;
+            if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0) the magnitude is 0 and we can't devided by 0
+            Vector unit_vector = direction * (1.0 / diviseur);
             // The vector of the move
             Vector move = unit_vector * this._speed;
             // Change the position of the enemy
