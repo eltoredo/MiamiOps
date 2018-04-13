@@ -42,9 +42,9 @@ namespace MiamiOps
             return new Vector2f(((float)enemyPlace.X + 1) * (mapWidth / 2), ((float)enemyPlace.Y + 1) * (mapHeight / 2));
         }
 
-        public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
+        public void Draw(RenderWindow window, uint mapWidth, uint mapHeight, Vector position)
         {
-            for (int i = 0; i < _roundUIContext.RoundContext.Enemies.Length; i++) this._enemySprite.Position = UpdatePlace(_roundUIContext.RoundContext.Enemies[i].Place, mapWidth, mapHeight);
+            this._enemySprite.Position = UpdatePlace(position, mapWidth, mapHeight);
 
             if (_animFrames == _nbSprite) _animFrames = 0;
             _enemySprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
