@@ -8,7 +8,7 @@ namespace MiamiOps
         private Enemies[] _enemies;
         private Random random = new Random();
 
-        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null, float? playerSpeed=null)
+        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null, float playerSpeed=.1f)
         {
             Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
 
