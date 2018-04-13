@@ -9,12 +9,12 @@ namespace MiamiOps
         Vector _place;
         float _life;
         float _speed;
-        public Player(Round context, Vector place, float life = 1, float speed = .1f)
+        public Player(Round context, Vector place, float life = 1, float? speed = .1f)
         {
             this._context = context;
             this._place = place;
             this._life = life;
-            this._speed = speed;
+            this._speed = speed ?? .1f;
         }
 
         public Player(Weapon weapon, Round context, Vector place, float life = 1, float speed = .1f) : this(context, place, life, speed)

@@ -8,7 +8,7 @@ namespace MiamiOps
         private Enemies[] _enemies;
         private Random random = new Random();
 
-        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null)
+        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null, float? playerSpeed=null)
         {
             Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
 
@@ -21,7 +21,7 @@ namespace MiamiOps
             ) throw new ArgumentException("The spawn loaction of enemies or the place of the player can't be out of the map (map (x ; y) coordonate: [-1 ~ 1; -1 ~ 1])");
 
             // Create the player and the array of enemies
-            this._player = new Player(this, player);
+            this._player = new Player(this, player, speed: playerSpeed);
             this._enemies = new Enemies[nb_enemies];
             // Put enemies in the array
             // If the enemies spawn is null (not renseigned) each enemies have a random location
