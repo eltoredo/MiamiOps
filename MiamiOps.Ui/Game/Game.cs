@@ -3,6 +3,7 @@ using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
+using System.Threading;
 
 namespace MiamiOps
 {
@@ -26,7 +27,7 @@ namespace MiamiOps
         {
             _rootPath = rootPath;
             
-            _backgroundTexture.Repeated = true;
+            //_backgroundTexture.Repeated = true;
             _backgroundSprite = new Sprite(_backgroundTexture);
         }
 
@@ -38,8 +39,7 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            //Round UI avec paramètres du player UI
-            _round = new Round(100, new Vector(0, 0), new Vector(0, 0));
+            _round = new Round(20);
             _roundUI = new RoundUI(_round, 1280, 720);
             _playerInput = new InputHandler(_roundUI);
         }
@@ -50,6 +50,7 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
+            Thread.Sleep(100);
             _playerInput.Handle();
             _round.Update();
         }
