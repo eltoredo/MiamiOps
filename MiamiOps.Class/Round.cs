@@ -53,7 +53,10 @@ namespace MiamiOps
         }
 
         // Method to update the player and all the enemies
-        public void Update() {foreach (Enemies enemy in this._enemies) enemy.Move(this._player.Place);}
+        public void Update()
+        {
+            foreach (Enemies enemy in this._enemies) enemy.Move(this._player.Place);
+        }
 
         public Enemies[] Enemies => this._enemies;
         public Player Player => this._player;

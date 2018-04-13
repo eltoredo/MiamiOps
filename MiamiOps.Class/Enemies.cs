@@ -58,7 +58,13 @@ namespace MiamiOps
             throw new NotImplementedException();
         }
 
+        public void Update()
+        {
+            Hit(.01f);
+        }
+
         public double Life => this._life;
+        public bool IsDead => this._isDead;
         public Vector Place => this._place;
     }
 }
