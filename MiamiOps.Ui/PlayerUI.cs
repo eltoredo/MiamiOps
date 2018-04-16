@@ -7,7 +7,6 @@ namespace MiamiOps
 {
     public class PlayerUI
     {
-        Round _round;
         RoundUI _roundUIContext;
 
         Texture _playerTexture;

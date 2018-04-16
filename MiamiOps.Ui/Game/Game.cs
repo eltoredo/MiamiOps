@@ -39,7 +39,7 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _round = new Round(20);
+            _round = new Round(20, enemiesSpeed: 0.0005f);
             _roundUI = new RoundUI(_round, 1280, 720);
             _playerInput = new InputHandler(_roundUI);
         }
@@ -50,9 +50,8 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
             _playerInput.Handle();
-            for (int i = 0; i < _round.Enemies.Length; i++) _round.Enemies[i].Update();
             _round.Update();
         }
     }
