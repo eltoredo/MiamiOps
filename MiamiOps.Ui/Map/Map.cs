@@ -12,13 +12,14 @@ using System.Xml.Linq;
 
 namespace MiamiOps
 {
-    class Map
+    public class Map : Drawable
     {
         private Texture tileset;
         private VertexArray vertexArray;
 
         private int width;
         private int height;
+        private Vector2u tileSize;
         private int tilewidth;
         private int tileheight;
         private string[] level_array;
@@ -32,14 +33,13 @@ namespace MiamiOps
             {
                 XElement xml = XElement.Load(sr);
                 string level = xml.Descendants("data").Single().Value;
-                string[] level_array = level.Split(',');
+                level_array = level.Split(',');
+                width = 100;
+                height = 100;
+                tileSize = new Vector2u(64, 64);
+                tileset = new Texture(@"..\..\..\tileset1.png");
+                ConstructMap();
             }
-
-            width = 100;
-            height = 100;
-            tilewidth = 64;
-            tileheight = 64;
-            tileset = new Texture("maptest.tsx");
            
         }
 
@@ -47,31 +47,39 @@ namespace MiamiOps
         {
 
             vertexArray = new VertexArray(PrimitiveType.Quads, (uint)(width * height * 4));
-
             int a = 0;
 
-            for (int x = 0; x < width; x++)
+
+            for (uint y = 0; y < width; y++)
             {
-                for (int y = 0; y < height; y++)
+                for (uint x = 0; x < height; x++)
                 {
-                    int tileID = Int32.Parse(level_array[a]);
-                    a++;
+                  
+                    int tileID = Int32.Parse(LevelArray[a]);
+
+                    if (tileID != 0)
+                    {
+
+                        long tu = tileID % (tileset.Size.X / tileSize.X) - 1;
+                        long tv = tileID / (tileset.Size.X / tileSize.X);
+                        uint index = (uint)(x + y * width) * 4;
+
+
+                        vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), new Vector2f(tu * tileSize.X, tv * tileSize.Y));
+                        vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
+                        vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
+                        vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
+                    }
+                        a++;
+                    
                 }
             }
         }
 
-        private void AddBlackTile(Tile tile, Vector2f position)
+        public string [] LevelArray
         {
-            vertexArray.Append(new Vertex((new Vector2f(0.0f, 0.0f) + position) * tileDimension,
-                new Vector2f(tileDimension * tile.X, tileDimension * tile.Y)));
-            vertexArray.Append(new Vertex((new Vector2f(1.0f, 0.0f) + position) * tileDimension,
-                new Vector2f(tileDimension * tile.X + tileDimension, tileDimension * tile.Y)));
-            vertexArray.Append(new Vertex((new Vector2f(1.0f, 1.0f) + position) * tileDimension,
-                new Vector2f(tileDimension * tile.X + tileDimension, tileDimension * tile.Y + tileDimension)));
-            vertexArray.Append(new Vertex((new Vector2f(0.0f, 1.0f) + position) * tileDimension,
-                new Vector2f(tileDimension * tile.X, tileDimension * tile.Y + tileDimension)));
+            get { return level_array; }
         }
-
         public void Draw(RenderTarget target, RenderStates states)
         {
             states.Texture = tileset;

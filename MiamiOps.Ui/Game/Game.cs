@@ -19,6 +19,7 @@ namespace MiamiOps
         static Sprite _backgroundSprite;
 
         PlayerUI _player;
+        Map _map;
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -30,13 +31,14 @@ namespace MiamiOps
 
         public override void Draw(GameTime gameTime)
         {
-            _backgroundSprite.Draw(Window, RenderStates.Default);
+             Window.Draw(_map);
             _player.Draw(GameTime, Window);
         }
 
         public override void Initialize()
         {
             _player = new PlayerUI(2, 3, 31, 32, 100, 500);
+            _map = new Map(@"..\..\..\test3.tmx");
         }
 
         public override void LoadContent()

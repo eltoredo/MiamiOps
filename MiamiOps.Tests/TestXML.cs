@@ -20,13 +20,9 @@ namespace MiamiOps.Tests
             {
                 XElement xml = XElement.Load(sr);
                 string level = xml.Descendants("data").Single().Value;
-                int[] level_array = level.Split(',');
-                int i = 0;
-                foreach (var item in level_array)
-                {
-                    Console.WriteLine(i+":" + item.ToString());
-                    i++;
-                }
+             //   Console.WriteLine(level);
+                string[] level_array = level.Split(',');
+                Console.WriteLine(Int32.Parse(level_array[0]));
             }
         }
 
