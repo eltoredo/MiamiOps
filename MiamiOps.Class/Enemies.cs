@@ -12,7 +12,7 @@ namespace MiamiOps
         float _attack;
         bool _isDead;
 
-        public Enemies(Round context, int name, Vector place, float life = .1f, float speed = .05f, float attack = .75f)
+        public Enemies(Round context, int name, Vector place, float life, float speed, float attack)
         {
             this._context = context;
             this._name = name;
