@@ -8,13 +8,22 @@ namespace MiamiOps.Tests
     [TestFixture]
     public class MiamiOpsTests
     {
-        [TestCase(-4)]
-        [TestCase(-25)]
-        public void Create_round_check_how_may_enemies_is_in_the_round(int nb_of_enemies)
+        [TestCase(-4, 0, 0, 0, 0, 0)]
+        [TestCase(0, -4, 0, 0, 0, 0)]
+        [TestCase(0, 0, -4, 0, 0, 0)]
+        [TestCase(0, 0, 0, -4, 0, 0)]
+        [TestCase(0, 0, 0, 0, -4, 0)]
+        [TestCase(0, 0, 0, 0, 0, -4)]
+        [TestCase(0, 4, 0, 0, 0, 0)]
+        [TestCase(0, 0, 4, 0, 0, 0)]
+        [TestCase(0, 0, 0, 4, 0, 0)]
+        [TestCase(0, 0, 0, 0, 4, 0)]
+        [TestCase(0, 0, 0, 0, 0, 4)]
+        public void Create_round_check_how_may_enemies_is_in_the_round(int nb_of_enemies, float enemies_life, float enemies_speed, float enemies_attack, float player_life, float player_speed)
         {
-            Assert.Throws<ArgumentException>( () => new Round(nb_of_enemies, new Vector(0f, 0f), new Vector(0f, 0f)));
-            Assert.Throws<ArgumentException>( () => new Round(nb_of_enemies, new Vector(0f, 0f)));
-            Assert.Throws<ArgumentException>( () => new Round(nb_of_enemies));
+            Assert.Throws<ArgumentException>( () => new Round(nb_of_enemies, new Vector(0f, 0f), new Vector(0f, 0f), enemies_life, enemies_speed, enemies_attack, player_life, player_speed));
+            Assert.Throws<ArgumentException>( () => new Round(nb_of_enemies, new Vector(0f, 0f), enemiesLife: enemies_life, enemiesSpeed: enemies_speed, enemiesAttack: enemies_attack, playerLife: player_life, playerSpeed: player_speed));
+            Assert.Throws<ArgumentException>( () => new Round(nb_of_enemies, enemiesLife: enemies_life, enemiesSpeed: enemies_speed, enemiesAttack: enemies_attack, playerLife: player_life, playerSpeed: player_speed));
         }
 
         [Test]
