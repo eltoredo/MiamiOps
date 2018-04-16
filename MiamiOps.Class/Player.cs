@@ -9,7 +9,7 @@ namespace MiamiOps
         Vector _place;
         float _life;
         float _speed;
-        public Player(Round context, Vector place, float life=1, float speed=.1f)
+        public Player(Round context, Vector place, float life, float speed)
         {
             this._context = context;
             this._place = place;

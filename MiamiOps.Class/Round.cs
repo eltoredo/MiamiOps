@@ -5,15 +5,13 @@ namespace MiamiOps
     public class Round
     {
         private Player _player;
-
         private Enemies[] _enemies;
         private float _enemiesLife;
         private float _enemiesSpeed;
         private float _enemiesAttack;
-
         private Random random = new Random();
 
-        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null, float enemiesLife=.1f, float enemiesSpeed=.05f, float enemiesAttack=.75f)
+        public Round(int nb_enemies, Vector? playerSpawn=null, Vector? enemieSpawn=null, float enemiesLife=.1f, float enemiesSpeed=.05f, float enemiesAttack=.75f, float playerLife=1, float playerSpeed=.1f)
         {
             Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
 
@@ -42,7 +40,7 @@ namespace MiamiOps
             this._enemiesSpeed = enemiesSpeed;
             this._enemiesAttack = enemiesAttack;
             // Create the player and the array of enemies
-            this._player = new Player(this, player);
+            this._player = new Player(this, player, playerLife, playerSpeed);
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
