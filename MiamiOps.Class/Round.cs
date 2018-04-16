@@ -46,7 +46,7 @@ namespace MiamiOps
             }
         }
 
-        private float GetNextRandomFloat()
+        internal float GetNextRandomFloat()
         {
             return ((float)this.random.NextDouble() * 2) -1;
 
@@ -55,7 +55,7 @@ namespace MiamiOps
         // Method to update the player and all the enemies
         public void Update()
         {
-            foreach (Enemies enemy in this._enemies) enemy.Move(this._player.Place);
+            foreach (Enemies enemy in this._enemies) enemy.Update(this._player.Place);
         }
 
         public Enemies[] Enemies => this._enemies;

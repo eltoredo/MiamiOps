@@ -52,7 +52,6 @@ namespace MiamiOps
         {
             Thread.Sleep(100);
             _playerInput.Handle();
-            for (int i = 0; i < _round.Enemies.Length; i++) _round.Enemies[i].Update();
             _round.Update();
         }
     }
