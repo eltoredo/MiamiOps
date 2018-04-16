@@ -30,7 +30,7 @@ namespace MiamiOps
             if (enemiesAttack <= 0 || enemiesAttack >= 1) throw new ArgumentException("The enemies attack have to be between 0 and 1");
 
             // Create the player and the array of enemies
-            this._player = new Player(this, player, speed: playerSpeed);
+            this._player = new Player(this, player);
             this._enemies = new Enemies[nb_enemies];
             // Put enemies in the array
             // If the enemies spawn is null (not renseigned) each enemies have a random location
