@@ -28,7 +28,7 @@ namespace MiamiOps
         {
             this._isDead = true;
             // We put a new enemy in place of the old one
-            this._context.Enemies[this._name] = new Enemies(this._context, this._name, new Vector(this._context.GetNextRandomFloat(), this._context.GetNextRandomFloat()));
+            this._context.Enemies[this._name] = new Enemies(this._context, this._name, new Vector(this._context.GetNextRandomFloat(), this._context.GetNextRandomFloat()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
         }
 
         // When a enemy is touched by the player, he loses some life point
@@ -58,12 +58,6 @@ namespace MiamiOps
         public void Attack(float attack, float distance)
         {
             throw new NotImplementedException();
-        }
-
-        public void Update(Vector target)
-        {
-            this.Move(target);
-            this.Hit(0.5f);
         }
 
         public double Life => this._life;
