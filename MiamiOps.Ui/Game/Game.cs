@@ -23,6 +23,7 @@ namespace MiamiOps
         static Texture _backgroundTexture = new Texture("../../../../Images/background.png");
         static Sprite _backgroundSprite;
 
+        Map _map;
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
             _rootPath = rootPath;
@@ -35,6 +36,7 @@ namespace MiamiOps
         {
             _backgroundSprite.Draw(Window, RenderStates.Default);
             _roundUI.Draw(Window, _roundUI.MapWidth, _roundUI.MapHeight);
+             Window.Draw(_map);
         }
 
         public override void Initialize()
@@ -42,6 +44,7 @@ namespace MiamiOps
             _round = new Round(20, enemiesSpeed: 0.0005f);
             _roundUI = new RoundUI(_round, 1280, 720);
             _playerInput = new InputHandler(_roundUI);
+            _map = new Map(@"..\..\..\test3layers.tmx");
         }
 
         public override void LoadContent()
