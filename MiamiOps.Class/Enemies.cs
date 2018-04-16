@@ -27,6 +27,8 @@ namespace MiamiOps
         internal void Dead()
         {
             this._isDead = true;
+            // We put a new enemy in place of the old one
+            this._context.Enemies[this._name] = new Enemies(this._context, this._name, new Vector(this._context.GetNextRandomFloat(), this._context.GetNextRandomFloat()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
         }
 
         // When a enemy is touched by the player, he loses some life point
@@ -59,6 +61,7 @@ namespace MiamiOps
         }
 
         public double Life => this._life;
+        public bool IsDead => this._isDead;
         public Vector Place => this._place;
     }
 }

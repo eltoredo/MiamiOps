@@ -52,7 +52,7 @@ namespace MiamiOps
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
             _playerUI.Draw(window, mapWidth, mapHeight);
-            for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+            for (int i = 0; i < _roundCtx.Enemies.Length; i++) if (!_roundCtx.Enemies[i].IsDead) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
         }
     }
 }
