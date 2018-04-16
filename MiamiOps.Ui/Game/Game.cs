@@ -38,7 +38,7 @@ namespace MiamiOps
         public override void Initialize()
         {
             _player = new PlayerUI(2, 3, 31, 32, 100, 500);
-            _map = new Map(@"..\..\..\test3.tmx");
+            _map = new Map(@"..\..\..\test3layers.tmx");
         }
 
         public override void LoadContent()
