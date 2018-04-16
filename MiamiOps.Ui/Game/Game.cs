@@ -34,9 +34,9 @@ namespace MiamiOps
 
         public override void Draw(GameTime gameTime)
         {
-            _backgroundSprite.Draw(Window, RenderStates.Default);
+            Window.Draw(_map);
             _roundUI.Draw(Window, _roundUI.MapWidth, _roundUI.MapHeight);
-             Window.Draw(_map);
+             
         }
 
         public override void Initialize()
