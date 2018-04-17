@@ -8,6 +8,7 @@ namespace MiamiOps
     public class PlayerUI
     {
         RoundUI _roundUIContext;
+        Player _player;
 
         Texture _playerTexture;
         Sprite _playerSprite;
@@ -22,6 +23,7 @@ namespace MiamiOps
         public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight)
         {
             _roundUIContext = roundUIContext;
+            _player = _roundUIContext.RoundContext.Player;
 
             this._playerTexture = new Texture("../../../../Images/sprite_panda_lv" + levelTexture.ToString() + ".png");
             this._playerSprite = new Sprite(_playerTexture);
@@ -37,14 +39,14 @@ namespace MiamiOps
             _direction = spriteHeight * 2;    // Basically, the player looks to the right
         }
 
-        private Vector2f UpdatePlace(Vector playerPlace, uint mapWidth, uint mapHeight)
+        private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
         {
-            return new Vector2f(((float)playerPlace.X + 1) * (mapWidth / 2), ((float)playerPlace.Y + 1) * (mapHeight / 2));
+            return new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), ((float)_player.Place.Y + 1) * (mapHeight / 2));
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            this._playerSprite.Position = UpdatePlace(_roundUIContext.RoundContext.Player.Place, mapWidth, mapHeight);
+            this._playerSprite.Position = UpdatePlace(mapWidth, mapHeight);
 
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
