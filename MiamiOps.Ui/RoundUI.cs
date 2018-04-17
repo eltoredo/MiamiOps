@@ -38,9 +38,9 @@ namespace MiamiOps
         {
             Random _random = new Random();
 
-            _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight);
-
             _roundCtx = roundCtx;
+
+            _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight);
 
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
             for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i] = new EnemiesUI(this, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight);
