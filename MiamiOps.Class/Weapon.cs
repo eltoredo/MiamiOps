@@ -5,5 +5,11 @@ namespace MiamiOps
     public class Weapon
     {
 
+        public Weapon()
+        {
+
+        }
+
+
     }
 }

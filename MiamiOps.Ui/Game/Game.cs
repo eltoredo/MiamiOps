@@ -3,6 +3,7 @@ using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
+using System.Threading;
 
 namespace MiamiOps
 {
@@ -22,26 +23,30 @@ namespace MiamiOps
         static Texture _backgroundTexture = new Texture("../../../../Images/background.png");
         static Sprite _backgroundSprite;
 
+        Map _map;
+        Vector _direction;
+
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
             _rootPath = rootPath;
             
-            _backgroundTexture.Repeated = true;
+            //_backgroundTexture.Repeated = true;
             _backgroundSprite = new Sprite(_backgroundTexture);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            _backgroundSprite.Draw(Window, RenderStates.Default);
+            Window.Draw(_map);
             _roundUI.Draw(Window, _roundUI.MapWidth, _roundUI.MapHeight);
+             
         }
 
         public override void Initialize()
         {
-            //Round UI avec paramètres du player UI
-            _round = new Round(100, new Vector(0, 0), new Vector(0, 0));
+            _round = new Round(200, enemiesSpeed: 0.05f);
             _roundUI = new RoundUI(_round, 1280, 720);
             _playerInput = new InputHandler(_roundUI);
+            _map = new Map(@"..\..\..\test3layers.tmx");
         }
 
         public override void LoadContent()
@@ -50,7 +55,9 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
+            //Thread.Sleep(100);
             _playerInput.Handle();
+            //_direction = _playerInput.Handle();
             _round.Update();
         }
     }

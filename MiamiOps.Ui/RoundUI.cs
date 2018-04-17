@@ -10,6 +10,8 @@ namespace MiamiOps
     public class RoundUI
     {
         PlayerUI _playerUI;
+        EnemiesUI[] _enemies;
+        WeaponUI _weaponUI;
 
         uint _mapWidth;
         uint _mapHeight;
@@ -34,8 +36,16 @@ namespace MiamiOps
 
         public RoundUI(Round roundCtx, uint mapWidth, uint mapHeight)
         {
+            Random _random = new Random();
+
             _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight);
+
             _roundCtx = roundCtx;
+
+            _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
+            for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i] = new EnemiesUI(this, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight);
+
+            _weaponUI = new WeaponUI(this, new Vector(100, 100), mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
@@ -43,8 +53,9 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            //_enemiesUI.Draw();
             _playerUI.Draw(window, mapWidth, mapHeight);
+            _weaponUI.Draw(window, mapWidth, mapHeight, new Vector(100, 100));
+            for (int i = 0; i < _roundCtx.Enemies.Length; i++) if (!_roundCtx.Enemies[i].IsDead) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
         }
     }
 }

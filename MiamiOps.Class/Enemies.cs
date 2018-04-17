@@ -12,7 +12,7 @@ namespace MiamiOps
         float _attack;
         bool _isDead;
 
-        public Enemies(Round context, int name, Vector place, float life = .1f, float speed = .05f, float attack = .75f)
+        public Enemies(Round context, int name, Vector place, float life, float speed, float attack)
         {
             this._context = context;
             this._name = name;
@@ -23,13 +23,15 @@ namespace MiamiOps
             this._isDead = false;
         }
 
-        // Function called when an enemy have less tran 1 life point
+        // Method called when an enemy has less than 1 life point
         internal void Dead()
         {
             this._isDead = true;
+            // We put a new enemy in place of the old one
+            this._context.Enemies[this._name] = new Enemies(this._context, this._name, new Vector(this._context.GetNextRandomFloat(), this._context.GetNextRandomFloat()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
         }
 
-        // When a enemi is touched by the player he loose life point
+        // When a enemy is touched by the player, he loses some life point
         public void Hit(float pv)
         {
              this._life -= pv;
@@ -39,17 +41,18 @@ namespace MiamiOps
              }
         }
 
-        // The move of enemy
+        // The movements of the enemy
         public void Move(Vector target)
         {
-            // Buld a vector in the direction of the player
-            Vector direction = target.Sub(this._place);
-            //Buld a unit vector in the direction of the player
-            Vector unit_vector = direction.Mul(1.0 / direction.Magnitude);
-            // The vector of the move
-            Vector move = unit_vector.Mul(this._speed);
-            // Change the position of the enemy
-            this._place = this._place.Add(move);
+            // Builds a vector in the direction of the player
+            Vector direction = target - this._place;
+            // Builds a unit vector in the direction of the player
+            double diviseur = direction.Magnitude;
+            if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0) the magnitude is 0 and we can't devided by 0
+            Vector unit_vector = direction * (1.0 / diviseur);
+            Vector move = unit_vector * this._speed;
+            // Changes the position of the enemy
+            this._place += move;
         }
 
         public void Attack(float attack, float distance)
@@ -58,6 +61,7 @@ namespace MiamiOps
         }
 
         public double Life => this._life;
+        public bool IsDead => this._isDead;
         public Vector Place => this._place;
     }
 }
