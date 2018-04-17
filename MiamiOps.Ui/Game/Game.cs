@@ -24,6 +24,8 @@ namespace MiamiOps
         static Sprite _backgroundSprite;
 
         Map _map;
+        Vector _direction;
+
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
             _rootPath = rootPath;
@@ -41,7 +43,7 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _round = new Round(20, enemiesSpeed: 0.0005f);
+            _round = new Round(200, enemiesSpeed: 0.05f);
             _roundUI = new RoundUI(_round, 1280, 720);
             _playerInput = new InputHandler(_roundUI);
             _map = new Map(@"..\..\..\test3layers.tmx");
@@ -55,6 +57,7 @@ namespace MiamiOps
         {
             //Thread.Sleep(100);
             _playerInput.Handle();
+            //_direction = _playerInput.Handle();
             _round.Update();
         }
     }

@@ -9,6 +9,8 @@ namespace MiamiOps
         Vector _place;
         float _life;
         float _speed;
+        Vector _direction;
+
         public Player(Round context, Vector place, float life, float speed)
         {
             this._context = context;
@@ -39,6 +41,8 @@ namespace MiamiOps
             if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
             if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
             if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
+
+            this._direction = direction;
         }
 
         // When the player attacks the enemies
@@ -48,5 +52,6 @@ namespace MiamiOps
         }
 
         public Vector Place => this._place;
+        public Vector Direction => this._direction;
     }
 }
