@@ -18,6 +18,7 @@ namespace MiamiOps
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
         int _direction;    // Direction in which the player is looking
         int _animStop;    // The width of the player multiplied by the number of frames to get the actual animated movement
+        FloatRect _hitBox;
 
         public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight)
         {
@@ -35,6 +36,7 @@ namespace MiamiOps
 
             _animFrames = 0;    // Basically, the player is not moving
             _direction = spriteHeight * 2;    // Basically, the player looks to the right
+            _hitBox = new FloatRect(_playerSprite.Position, new Vector2f(64, 64));
         }
 
         private Vector2f UpdatePlace(Vector playerPlace, uint mapWidth, uint mapHeight)

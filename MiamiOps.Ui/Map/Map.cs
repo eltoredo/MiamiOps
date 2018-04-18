@@ -24,6 +24,7 @@ namespace MiamiOps
         private int tileheight;
         private string[] level_array1;
         private string[] level_array2;
+        private string[] level_array3;
         private int level_layers_length;
         private Dictionary<int,string[]> total_array = new Dictionary<int, string[]>();
         private Dictionary<int, VertexArray> total_array_vertex = new Dictionary<int, VertexArray>();
@@ -39,12 +40,17 @@ namespace MiamiOps
                                   .Single(l => l.Attribute("name").Value == "terrain")
                                   .Element("data").Value;
                 string level_layer2 = xml.Descendants("layer")
-                                  .Single(l => l.Attribute("name").Value == "Calque 2")
+                                  .Single(l => l.Attribute("name").Value == "terrain 2")
                                   .Element("data").Value;
+                //string level_layer3 = xml.Descendants("layer")
+                //                  .Single(l => l.Attribute("name").Value == "collision")
+                //                  .Element("data").Value;
                 level_array1 = level.Split(',');
                 level_array2 = level_layer2.Split(',');
+              //  level_array3 = level_layer2.Split(',');
                 total_array.Add(0, level_array1);
                 total_array.Add(1,level_array2);
+               // total_array.Add(2, level_array3);
                 level_layers_length = total_array.Count;
 
                 width = 100;
@@ -93,6 +99,9 @@ namespace MiamiOps
                 level_layers_length--;
                 i++;
             }
+            Console.WriteLine(total_array_vertex[0][4]);
+            Console.WriteLine(total_array_vertex[0][5]);
+            Console.WriteLine(total_array_vertex[1][3]);
         }
 
         public Dictionary<int,VertexArray> TotalArrayVertex
