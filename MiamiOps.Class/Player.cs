@@ -24,7 +24,7 @@ namespace MiamiOps
         public Player(List<Weapon> weapons, Round context, Vector place, float life = 1, float speed = .1f) : this(context, place, life, speed)
         {
             this._weapons = weapons;
-            this._currentWeapon = this._weapons[0];
+            //this._currentWeapon = this._weapons[0];
         }
 
         // Method to handle the player's movements
@@ -59,12 +59,15 @@ namespace MiamiOps
 
         public void ChangeWeapon(int shift)
         {
-            // Utiliser le helper
-            //int idxWeapon = ((this._weapons.IndexOf(this._currentWeapon) + shift) + this._weapons.Count) % this._weapons.Count;
-            //this._currentWeapon = this._weapons[idxWeapon];
+            if (this._weapons.Count != 0)
+            {
+                if (this._currentWeapon == null) {this._currentWeapon = this._weapons.OtherElem(this._weapons[0], shift);}
+                this._currentWeapon = this._weapons.OtherElem(this._currentWeapon, shift);
+            }
         }
 
         public Vector Place => this._place;
         public List<Weapon> Weapons => this._weapons;
+        public Weapon CurrentWeapon => this._currentWeapon;
     }
 }

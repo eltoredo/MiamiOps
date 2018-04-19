@@ -37,39 +37,39 @@ namespace MiamiOps
 
     public class WeaponFactory
     {
-        public Weapon CreateAssaultRifle()
+        public Weapon CreateAssaultRifle(Player owner)
         {
-            throw new NotImplementedException();
+            return new Weapon(owner, 0, 0, 0, 0);
         }
 
-        public Weapon CreateShotgun()
+        public Weapon CreateShotgun(Player owner)
         {
-            throw new NotImplementedException();
+            return new Weapon(owner, 0, 0, 0, 0);
         }
 
-        public Weapon CreatePistol()
+        public Weapon CreatePistol(Player owner)
         {
-            throw new NotImplementedException();
+            return new Weapon(owner, 0, 0, 0, 0);
         }
 
-        public Weapon CreateBaseballBat()
+        public Weapon CreateBaseballBat(Player owner)
         {
-            throw new NotImplementedException();
+            return new Weapon(owner, 0, 0, 0, 0);
         }
 
-        public Weapon CreateSoulcalibur()
+        public Weapon CreateSoulcalibur(Player owner)
         {
-            throw new NotImplementedException();
+            return new Weapon(owner, 0, 0, 0, 0);
         }
 
-        public Weapon CreateChaosBlade()
+        public Weapon CreateChaosBlade(Player owner)
         {
-            throw new NotImplementedException();
+            return new Weapon(owner, 0, 0, 0, 0);
         }
 
-        public Weapon CreateGodBlade()
+        public Weapon CreateGodBlade(Player owner)
         {
-            throw new NotImplementedException();
+            return new Weapon(owner, 0, 0, 0, 0);
         }
 
         public Weapon CreateCompanion()
