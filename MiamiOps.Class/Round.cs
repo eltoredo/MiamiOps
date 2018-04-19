@@ -31,9 +31,8 @@ namespace MiamiOps
                 )
             ) throw new ArgumentException("The spawn loaction of enemies or the place of the player can't be out of the map (map (x ; y) coordonate: [-1 ~ 1; -1 ~ 1])");
 
-            if (enemiesLife <= 0 || enemiesLife >= 1) throw new ArgumentException("The enemies life have to be between 0 and 1");
-            if (enemiesSpeed <= 0 || enemiesSpeed >= 1) throw new ArgumentException("The enemies speed have to be between 0 and 1");
-            if (enemiesAttack <= 0 || enemiesAttack >= 1) throw new ArgumentException("The enemies attack have to be between 0 and 1");
+            float[] values = new float[5]{enemiesLife, enemiesSpeed, enemiesAttack, playerLife, playerSpeed};
+            foreach (float elem in values) {if (elem < 0 || elem > 1) throw new ArgumentException("Somethings is wrong, you can't have value bigger than 1 and lower than 0.");}
             
             // Save the enemies parametres
             this._enemiesLife = enemiesLife;
