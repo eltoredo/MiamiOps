@@ -22,5 +22,22 @@ namespace MiamiOps.Tests
             string letter = letters.OtherElem(current, shift);
             Assert.That(letter, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void The_player_change_his_weapon()
+        {
+            Player player = new Player(new List<Weapon>(), null, new Vector(0, 0), 1, 1);
+            WeaponFactory factory = new WeaponFactory();
+            player.GetNewWeapon(factory.CreateAssaultRifle(player));
+            player.GetNewWeapon(factory.CreateBaseballBat(player));
+            player.GetNewWeapon(factory.CreateSoulcalibur(player));
+
+            player.ChangeWeapon(0);
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[0]));
+            player.ChangeWeapon(-1);
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
+            player.ChangeWeapon(3);
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[1]));
+        }
     }
 }
