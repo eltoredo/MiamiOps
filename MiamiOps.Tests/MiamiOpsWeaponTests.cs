@@ -26,11 +26,8 @@ namespace MiamiOps.Tests
         [Test]
         public void The_player_change_his_weapon()
         {
-            Player player = new Player(new List<Weapon>(), null, new Vector(0, 0), 1, 1);
             WeaponFactory factory = new WeaponFactory();
-            player.GetNewWeapon(factory.CreateAssaultRifle(player));
-            player.GetNewWeapon(factory.CreateBaseballBat(player));
-            player.GetNewWeapon(factory.CreateSoulcalibur(player));
+            Player player = CreatePlayer(factory);
 
             player.ChangeWeapon(0);
             Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[0]));
@@ -38,6 +35,37 @@ namespace MiamiOps.Tests
             Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
             player.ChangeWeapon(3);
             Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[1]));
+        }
+
+        [Test]
+        public void If_the_player_has_already_a_weapon_and_he_get_a_new_one_his_new_weapon_is_in_his_hand()
+        {
+            WeaponFactory factory = new WeaponFactory();
+            Player player = CreatePlayer(factory);
+
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
+            player.GetNewWeapon(factory.CreateShotgun(player));
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[3]));
+        }
+
+        [Test]
+        public void If_the_player_have_any_weapon_nothing_append()
+        {
+            Player player = new Player(null, new Vector(0, 0), 1, 1);
+            player.ChangeWeapon(9);
+            Assert.That(player.CurrentWeapon, Is.EqualTo(null));
+
+        }
+
+
+        private Player CreatePlayer(WeaponFactory factory)
+        {
+            Player player = new Player(new List<Weapon>(), null, new Vector(0, 0), 1, 1);
+            player.GetNewWeapon(factory.CreateAssaultRifle(player));
+            player.GetNewWeapon(factory.CreateBaseballBat(player));
+            player.GetNewWeapon(factory.CreateSoulcalibur(player));
+
+            return player;
         }
     }
 }

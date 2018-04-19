@@ -55,12 +55,14 @@ namespace MiamiOps
         public void GetNewWeapon(Weapon weapon)
         {
             this._weapons.Add(weapon);
+            this._currentWeapon = this._weapons[this.Weapons.Count - 1];
         }
 
         public void ChangeWeapon(int shift)
         {
             if (this._weapons.Count != 0)
             {
+                // Dans le cas ou le player n'as pas encore d'arme
                 if (this._currentWeapon == null) {this._currentWeapon = this._weapons.OtherElem(this._weapons[0], shift);}
                 this._currentWeapon = this._weapons.OtherElem(this._currentWeapon, shift);
             }

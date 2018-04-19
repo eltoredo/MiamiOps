@@ -9,8 +9,9 @@ namespace MiamiOps
         float _radius;    // rayon d'action
         float _range;    // la portée
         uint _ammo;    // le nombre de fois où tu peux attaquer
+        uint _maxAmmo;    // le nombre maximum de munition
 
-        public Weapon(Player owner, float attack, float radius, float range, uint ammo)
+        public Weapon(Player owner, float attack, float radius, float range, uint ammo, uint maxAmmo)
         {
             float[] stats = new float[3]{attack, radius, range};
             foreach (float nb in stats) {if (nb < 0 || nb > 1) {throw new ArgumentException("The parameters can't be lower than 0 or upper than 1.");}}
@@ -21,6 +22,7 @@ namespace MiamiOps
             this._radius = radius;
             this._range = range;
             this._ammo = ammo;
+            this._maxAmmo = maxAmmo;
         }
 
         public void Attack()
@@ -39,37 +41,37 @@ namespace MiamiOps
     {
         public Weapon CreateAssaultRifle(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 0);
+            return new Weapon(owner, 0, 0, 0, 0, 0);
         }
 
         public Weapon CreateShotgun(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 0);
+            return new Weapon(owner, 0, 0, 0, 0, 0);
         }
 
         public Weapon CreatePistol(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 0);
+            return new Weapon(owner, 0, 0, 0, 0, 0);
         }
 
         public Weapon CreateBaseballBat(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 0);
+            return new Weapon(owner, 0, 0, 0, 0, 0);
         }
 
         public Weapon CreateSoulcalibur(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 0);
+            return new Weapon(owner, 0, 0, 0, 0, 0);
         }
 
         public Weapon CreateChaosBlade(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 0);
+            return new Weapon(owner, 0, 0, 0, 0, 0);
         }
 
         public Weapon CreateGodBlade(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 0);
+            return new Weapon(owner, 0, 0, 0, 0, 0);
         }
 
         public Weapon CreateCompanion()
