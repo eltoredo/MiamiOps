@@ -36,6 +36,8 @@ namespace MiamiOps
 
         public RoundUI(Round roundCtx, uint mapWidth, uint mapHeight)
         {
+            Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
+
             Random _random = new Random();
 
             _roundCtx = roundCtx;
@@ -43,7 +45,7 @@ namespace MiamiOps
             _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight);
 
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
-            for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i] = new EnemiesUI(this, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight);
+            for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight);
 
             _weaponUI = new WeaponUI(this, _roundCtx.Player.Place, mapWidth, mapHeight);
 
