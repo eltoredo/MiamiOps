@@ -1,9 +1,5 @@
 ﻿using SFML.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiamiOps
 {
@@ -12,6 +8,7 @@ namespace MiamiOps
         PlayerUI _playerUI;
         EnemiesUI[] _enemies;
         WeaponUI _weaponUI;
+        Game _gameCtx;
 
         uint _mapWidth;
         uint _mapHeight;
@@ -34,13 +31,24 @@ namespace MiamiOps
             get { return _mapHeight; }
         }
 
-        public RoundUI(Round roundCtx, uint mapWidth, uint mapHeight)
+        public PlayerUI PlayerUI
+        {
+            get { return _playerUI; }
+        }
+
+        public Game GameCtx
+        {
+            get { return _gameCtx; }
+        }
+
+        public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight)
         {
             Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
 
             Random _random = new Random();
 
             _roundCtx = roundCtx;
+            _gameCtx = gameCtx;
 
             _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight);
 

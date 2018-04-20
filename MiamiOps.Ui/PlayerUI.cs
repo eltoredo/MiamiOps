@@ -36,7 +36,7 @@ namespace MiamiOps
             this._playerSprite.Position = new Vector2f((float)playerPlace.X * (mapWidth / 2), (float)playerPlace.Y * (mapHeight / 2));
 
             _animFrames = 0;    // Basically, the player is not moving
-            _direction = spriteHeight * 2;    // Basically, the player looks to the right
+            _roundUIContext.GameCtx.Input.Direction = spriteHeight * 2;    // Basically, the player looks to the right
         }
 
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
@@ -49,7 +49,7 @@ namespace MiamiOps
             this._playerSprite.Position = UpdatePlace(mapWidth, mapHeight);
 
             if (_animFrames == _nbSprite) _animFrames = 0;
-            _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
+            _playerSprite.TextureRect = new IntRect(_animFrames * _roundUIContext.GameCtx.Input.AnimStop, _roundUIContext.GameCtx.Input.Direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
 
             _playerSprite.Draw(window, RenderStates.Default);
@@ -59,5 +59,8 @@ namespace MiamiOps
         {
             get { return _playerSprite.Position; }
         }
+
+        public int SpriteWidth => _spriteWidth;
+        public int SpriteHeight => _spriteHeight;
     }
 }
