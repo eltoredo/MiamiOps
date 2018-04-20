@@ -41,10 +41,10 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _round = new Round(20, enemiesSpeed: 0.0005f);
+            _round = new Round(20, enemiesSpeed: 0f,playerSpeed : 0.005f);
             _roundUI = new RoundUI(_round, 1280, 720);
             _playerInput = new InputHandler(_roundUI);
-            _map = new Map(@"..\..\..\test3layers.tmx");
+            _map = new Map(@"..\..\..\tilemap.tmx", @"..\..\..\tileset1.png");
         }
 
         public override void LoadContent()
@@ -56,6 +56,7 @@ namespace MiamiOps
             //Thread.Sleep(100);
             _playerInput.Handle();
             _round.Update();
+        
         }
     }
 }

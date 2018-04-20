@@ -51,6 +51,7 @@ namespace MiamiOps
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
+           // Console.WriteLine(_playerSprite.Position);
 
             _playerSprite.Draw(window, RenderStates.Default);
         }

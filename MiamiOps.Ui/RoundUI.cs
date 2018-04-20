@@ -47,6 +47,7 @@ namespace MiamiOps
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
+            
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
