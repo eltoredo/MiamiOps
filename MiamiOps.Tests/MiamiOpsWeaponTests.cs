@@ -29,12 +29,12 @@ namespace MiamiOps.Tests
             WeaponFactory factory = new WeaponFactory();
             Player player = CreatePlayer(factory);
 
-            player.ChangeWeapon(0);
+            player.ChangeWeapon(-2);
             Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[0]));
             player.ChangeWeapon(-1);
             Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
             player.ChangeWeapon(3);
-            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[1]));
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
         }
 
         [Test]
@@ -49,14 +49,21 @@ namespace MiamiOps.Tests
         }
 
         [Test]
-        public void If_the_player_have_any_weapon_nothing_append()
+        public void If_the_player_have_any_weapon_nothing_append_when_he_try_to_change()
         {
             Player player = new Player(null, new Vector(0, 0), 1, 1);
             player.ChangeWeapon(9);
             Assert.That(player.CurrentWeapon, Is.EqualTo(null));
-
         }
 
+        [Test]
+        public void If_the_player_get_a_weapon__the_first__the_weapon_is_in_his_hand()
+        {
+            WeaponFactory factory = new WeaponFactory();
+            Player player = new Player(null, new Vector(0, 0), 1, 1);
+            player.GetNewWeapon(factory.CreateAssaultRifle(player));
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[0]));
+        }
 
         private Player CreatePlayer(WeaponFactory factory)
         {
