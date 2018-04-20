@@ -11,6 +11,7 @@ namespace MiamiOps
 
         Texture _enemyTexture;
         Sprite _enemySprite;
+
         int _nbSprite;    // The number of columns in a sprite
         int _spriteWidth;
         int _spriteHeight;
@@ -19,12 +20,12 @@ namespace MiamiOps
         int _direction;    // Direction in which the player is looking
         int _animStop;
 
-        public EnemiesUI(RoundUI roundUIContext, int nbSprite, int spriteWidth, int spriteHeight, Vector enemyPlace, uint mapWidth, uint mapHeight)
+        public EnemiesUI(RoundUI roundUIContext, Texture texture, int nbSprite, int spriteWidth, int spriteHeight, Vector enemyPlace, uint mapWidth, uint mapHeight)
         {
             _roundUIContext = roundUIContext;
 
-            this._enemyTexture = new Texture("../../../../Images/monstersprite.png");
-            this._enemySprite = new Sprite(_enemyTexture);
+            this._enemyTexture = texture;
+            this._enemySprite = new Sprite(texture);
 
             this._nbSprite = nbSprite;
 

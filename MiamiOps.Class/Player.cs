@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MiamiOps
 {
     public class Player
     {
-        Weapon _weapon;
+        List<Weapon> _weapons;
         Round _context;
         Vector _place;
         float _life;
         float _speed;
+        Weapon _currentWeapon;
 
         public Player(Round context, Vector place, float life, float speed)
         {
@@ -16,11 +18,13 @@ namespace MiamiOps
             this._place = place;
             this._life = life;
             this._speed = speed;
+            this._weapons = new List<Weapon>();
         }
 
-        public Player(Weapon weapon, Round context, Vector place, float life = 1, float speed = .1f) : this(context, place, life, speed)
+        public Player(List<Weapon> weapons, Round context, Vector place, float life = 1, float speed = .1f) : this(context, place, life, speed)
         {
-            this._weapon = weapon;
+            this._weapons = weapons;
+            //this._currentWeapon = this._weapons[0];
         }
 
         // Method to handle the player's movements
@@ -48,6 +52,24 @@ namespace MiamiOps
             throw new NotImplementedException();
         }
 
+        public void GetNewWeapon(Weapon weapon)
+        {
+            this._weapons.Add(weapon);
+            this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+        }
+
+        public void ChangeWeapon(int shift)
+        {
+            if (this._weapons.Count != 0)
+            {
+                // Dans le cas ou le player n'as pas encore d'arme
+                if (this._currentWeapon == null) {this._currentWeapon = this._weapons.OtherElem(this._weapons[0], shift);}
+                this._currentWeapon = this._weapons.OtherElem(this._currentWeapon, shift);
+            }
+        }
+
         public Vector Place => this._place;
+        public List<Weapon> Weapons => this._weapons;
+        public Weapon CurrentWeapon => this._currentWeapon;
     }
 }
