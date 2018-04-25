@@ -34,6 +34,7 @@ namespace MiamiOps
 
             this._enemySprite.Position = new Vector2f((float)enemyPlace.X * (mapWidth / 2), (float)enemyPlace.Y * (mapHeight / 2));
 
+            _animStop = 0;
             _animFrames = 0;    // Basically, the player is not moving
             _direction = 0;
         }

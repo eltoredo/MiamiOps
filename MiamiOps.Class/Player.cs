@@ -10,18 +10,20 @@ namespace MiamiOps
         Vector _place;
         float _life;
         float _speed;
+        Vector _direction;
         Weapon _currentWeapon;
 
-        public Player(Round context, Vector place, float life, float speed)
+        public Player(Round context, Vector place, float life, float speed, Vector direction)
         {
             this._context = context;
             this._place = place;
             this._life = life;
             this._speed = speed;
+            this._direction = direction;
             this._weapons = new List<Weapon>();
         }
 
-        public Player(List<Weapon> weapons, Round context, Vector place, float life = 1, float speed = .1f) : this(context, place, life, speed)
+        public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction) : this(context, place, life, speed, direction)
         {
             this._weapons = weapons;
             //this._currentWeapon = this._weapons[0];
@@ -44,6 +46,8 @@ namespace MiamiOps
             if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
             if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
             if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
+
+            this._direction = direction;
         }
 
         // When the player attacks the enemies
@@ -69,6 +73,7 @@ namespace MiamiOps
         }
 
         public Vector Place => this._place;
+        public Vector Direction => this._direction;
         public List<Weapon> Weapons => this._weapons;
         public Weapon CurrentWeapon => this._currentWeapon;
     }

@@ -17,8 +17,6 @@ namespace MiamiOps
         int _spriteHeight;
 
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
-        int _direction;    // Direction in which the player is looking
-        int _animStop;    // The width of the player multiplied by the number of frames to get the actual animated movement
 
         public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight)
         {
@@ -36,7 +34,6 @@ namespace MiamiOps
             this._playerSprite.Position = new Vector2f((float)playerPlace.X * (mapWidth / 2), (float)playerPlace.Y * (mapHeight / 2));
 
             _animFrames = 0;    // Basically, the player is not moving
-            _roundUIContext.GameCtx.Input.Direction = spriteHeight * 2;    // Basically, the player looks to the right
         }
 
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
