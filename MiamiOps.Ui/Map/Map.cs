@@ -28,6 +28,7 @@ namespace MiamiOps
         private int level_layers_length;
         private Dictionary<int,string[]> total_array = new Dictionary<int, string[]>();
         private Dictionary<int, VertexArray> total_array_vertex = new Dictionary<int, VertexArray>();
+        List<FloatRect> _collide = new List<FloatRect>();
 
         public Map(String XML,string tilesset)
         {
@@ -45,7 +46,6 @@ namespace MiamiOps
                 string level_layer3 = xml.Descendants("layer")
                                   .Single(l => l.Attribute("name").Value == "collide")
                                   .Element("data").Value;
-
                 level_array1 = level.Split(',');
                 level_array2 = level_layer2.Split(',');
                 level_array3 = level_layer3.Split(',');
@@ -56,7 +56,7 @@ namespace MiamiOps
 
                 width = 100;
                 height = 100;
-                tileSize = new Vector2u(64, 64);
+                tileSize = new Vector2u(32, 32);
                 tileset = new Texture(tilesset);
                 ConstructMap();
             }
@@ -67,6 +67,7 @@ namespace MiamiOps
         {
 
             int i = 0;
+           
             while (level_layers_length != 0)
             {
                 _vertexArray = new VertexArray(PrimitiveType.Quads, (uint)(width * height * 4));
@@ -76,29 +77,40 @@ namespace MiamiOps
                     for (uint x = 0; x < height; x++)
                     {
                         string[] level_array = total_array[i];
-                        
+
                         int tileID = Int32.Parse(level_array[a]);
 
-                        if (tileID != 0 )
+                        if (tileID != 0)
                         {
 
                             long tu = tileID % (tileset.Size.X / tileSize.X) - 1;
                             long tv = tileID / (tileset.Size.X / tileSize.X);
-                            if(tu < 0)
+                            if (tu < 0)
                             {
                                 tu = tileset.Size.X / tileSize.X - 1;
                                 tv--;
-                                
+
                             }
                             uint index = (uint)(x + y * width) * 4;
+                            Color _textureColor = new Color(255, 255, 255, 255);
+                            if (i == 2)
+                            {
+                                _textureColor.A = 0;
+                            }
 
+                            _vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, tv * tileSize.Y));
+                            _vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
+                            _vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
+                            _vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
 
-                            _vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), new Vector2f(tu * tileSize.X, tv * tileSize.Y));
-                            _vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
-                            _vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
-                            _vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
+                            if (i == 2)
+                            {
+                                FloatRect _collideText = new FloatRect(_vertexArray[index + 0].Position.X, _vertexArray[index + 0].Position.Y, 32, 32);
+                                _collide.Add(_collideText);
+                            }
                         }
                         a++;
+
 
                     }
                 }
@@ -106,8 +118,8 @@ namespace MiamiOps
                 level_layers_length--;
                 i++;
             }
-            Console.WriteLine(total_array_vertex[0][4].Position.X);
-            Console.WriteLine(total_array_vertex[0][4].Position.Y);
+
+          
         }
 
         public Dictionary<int,VertexArray> TotalArrayVertex
@@ -125,9 +137,18 @@ namespace MiamiOps
             
         }
 
-        public void Collide()
+        public bool Collide(FloatRect player)
         {
-
+            foreach (var item in _collide)
+            {
+                if (player.Intersects(item))
+                {
+                   // Console.WriteLine("Collide");
+                    return true;
+                }
+            }
+           // Console.WriteLine("Non Collide");
+            return false;
         }
     }
 }

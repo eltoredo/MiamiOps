@@ -7,6 +7,7 @@ namespace MiamiOps
         Weapon _weapon;
         Round _context;
         Vector _place;
+        Vector _oldPlace;
         float _life;
         float _speed;
         public Player(Round context, Vector place, float life, float speed)
@@ -25,6 +26,7 @@ namespace MiamiOps
         // Method to handle the player's movements
         public void Move(Vector direction)
         {
+            this._oldPlace = this._place;
             // Builds a unit vector in the direction where the player will go
             double diviseur = direction.Magnitude;
             if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0), the magnitude is 0 and we can't divide by 0
@@ -47,6 +49,16 @@ namespace MiamiOps
             throw new NotImplementedException();
         }
 
-        public Vector Place => this._place;
+        public Vector Place {
+            get { return this._place; }
+            set { this._place = value; }
+        }
+
+        public Vector OldPlace
+        {
+            get { return this._oldPlace; }
+            set { this._oldPlace = value; }
+        }
+
     }
 }

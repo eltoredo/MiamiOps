@@ -25,6 +25,17 @@ namespace MiamiOps.Tests
                 Console.WriteLine();
             }
         }
+        [Test]
+        public void TestXMLName()
+        {
+            using (FileStream fs = File.OpenRead(@"..\..\..\tilemap.tmx"))
+            using (StreamReader sr = new StreamReader(fs, true))
+            {
+                XElement xml = XElement.Load(sr);
+                
+                Console.WriteLine(xml.Descendants("map"));
+            }
+        }
 
     }
 }
