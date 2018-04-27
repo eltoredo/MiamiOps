@@ -63,11 +63,11 @@ namespace MiamiOps
 
         private int Conversion(Vector vector)
         {
-            if (vector.X >= vector.Y && vector.X > 0) return 2;
-            else if (vector.X >= vector.Y && vector.X < 0) return 1;
-            else if (vector.X <= vector.Y && vector.Y > 0) return 0;
-            else if (vector.X <= vector.Y && vector.Y < 0) return 3;
-            else return 1;
+            if (vector.X > 0) return 2;
+            if (vector.X < 0) return 1;
+            if (vector.Y > 0) return 0;
+            if (vector.Y < 0) return 3;
+            return 1;
         }
 
         public Vector2f PlayerPosition
