@@ -143,11 +143,9 @@ namespace MiamiOps
             {
                 if (player.Intersects(item))
                 {
-                   // Console.WriteLine("Collide");
                     return true;
                 }
             }
-           // Console.WriteLine("Non Collide");
             return false;
         }
     }

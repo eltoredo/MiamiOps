@@ -20,6 +20,7 @@ namespace MiamiOps
         int _direction;    // Direction in which the player is looking
         int _animStop;    // The width of the player multiplied by the number of frames to get the actual animated movement
         FloatRect _hitBoxPlayer;
+        Color colorCharacters = new Color(255, 255, 255, 255);
 
         public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight,Map ctxMap)
         {
@@ -42,15 +43,17 @@ namespace MiamiOps
         }
 
         private Vector2f UpdatePlace(Vector playerPlace, uint mapWidth, uint mapHeight)
-        {
+        { 
            Vector2f newPlayerPlace = new Vector2f(((float)playerPlace.X + 1) * (mapWidth / 2), ((float)playerPlace.Y + 1) * (mapHeight / 2));
             if (_ctxMap.Collide(this._hitBoxPlayer))
             {
-                playerPlace = _roundUIContext.RoundContext.Player.OldPlace;
-                _roundUIContext.RoundContext.Player.Place = _roundUIContext.RoundContext.Player.OldPlace;
-                Vector2f oldPlace = new Vector2f(((float)playerPlace.X + 1) * (mapWidth / 2), ((float)playerPlace.Y + 1) * (mapHeight / 2));
-                return oldPlace;
+                _roundUIContext.RoundContext.Player.Collide = true;
+                _playerSprite.Color = Color.Red;
+                return newPlayerPlace;
             }
+            _roundUIContext.RoundContext.Player.Collide = false;
+            _playerSprite.Color = colorCharacters;
+
             return newPlayerPlace;
         }
 

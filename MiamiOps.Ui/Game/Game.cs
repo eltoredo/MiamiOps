@@ -42,7 +42,7 @@ namespace MiamiOps
         public override void Initialize()
         {
             _map = new Map(@"..\..\..\Map\testcollide2.tmx", @"..\..\..\Map\tileset2.png");
-            _round = new Round(20, enemiesSpeed: 0f,playerSpeed : 0.005f);
+            _round = new Round(20, enemiesSpeed: 0.005f,playerSpeed : 0.05f);
             _roundUI = new RoundUI(_round, 1280, 720,_map);
             _playerInput = new InputHandler(_roundUI);
         }
