@@ -1,26 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MiamiOps
 {
     public class Player
     {
-        Weapon _weapon;
+        List<Weapon> _weapons;
         Round _context;
         Vector _place;
         float _life;
         float _speed;
+        Vector _direction;
+        Weapon _currentWeapon;
 
-        public Player(Round context, Vector place, float life, float speed)
+        public Player(Round context, Vector place, float life, float speed, Vector direction)
         {
             this._context = context;
             this._place = place;
             this._life = life;
             this._speed = speed;
+            this._direction = direction;
+            this._weapons = new List<Weapon>();
         }
 
-        public Player(Weapon weapon, Round context, Vector place, float life = 1, float speed = .1f) : this(context, place, life, speed)
+        public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction) : this(context, place, life, speed, direction)
         {
-            this._weapon = weapon;
+            this._weapons = weapons;
+            //this._currentWeapon = this._weapons[0];
         }
 
         // Method to handle the player's movements
@@ -40,6 +46,8 @@ namespace MiamiOps
             if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
             if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
             if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
+
+            this._direction = direction;
         }
 
         // When the player attacks the enemies
@@ -48,6 +56,25 @@ namespace MiamiOps
             throw new NotImplementedException();
         }
 
+        public void GetNewWeapon(Weapon weapon)
+        {
+            this._weapons.Add(weapon);
+            this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+        }
+
+        public void ChangeWeapon(int shift)
+        {
+            if (this._weapons.Count != 0)
+            {
+                // Dans le cas ou le player n'as pas encore d'arme
+                if (this._currentWeapon == null) {this._currentWeapon = this._weapons.OtherElem(this._weapons[0], shift);}
+                this._currentWeapon = this._weapons.OtherElem(this._currentWeapon, shift);
+            }
+        }
+
         public Vector Place => this._place;
+        public Vector Direction => this._direction;
+        public List<Weapon> Weapons => this._weapons;
+        public Weapon CurrentWeapon => this._currentWeapon;
     }
 }
