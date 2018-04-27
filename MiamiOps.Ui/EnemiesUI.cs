@@ -11,6 +11,7 @@ namespace MiamiOps
 
         Texture _enemyTexture;
         Sprite _enemySprite;
+
         int _nbSprite;    // The number of columns in a sprite
         int _spriteWidth;
         int _spriteHeight;
@@ -22,13 +23,13 @@ namespace MiamiOps
         int _animStop;
         Color colorCharacters = new Color(255, 255, 255, 255);
 
-
-        public EnemiesUI(RoundUI roundUIContext, int nbSprite, int spriteWidth, int spriteHeight, Vector enemyPlace, uint mapWidth, uint mapHeight, Map ctxMap)
+       
+        public EnemiesUI(RoundUI roundUIContext, Texture texture, int nbSprite, int spriteWidth, int spriteHeight, Vector enemyPlace, uint mapWidth, uint mapHeight, Map ctxMap)
         {
             _roundUIContext = roundUIContext;
 
-            this._enemyTexture = new Texture("../../../../Images/monstersprite.png");
-            this._enemySprite = new Sprite(_enemyTexture);
+            this._enemyTexture = texture;
+            this._enemySprite = new Sprite(texture);
 
             this._nbSprite = nbSprite;
             
@@ -38,6 +39,7 @@ namespace MiamiOps
 
             this._enemySprite.Position = new Vector2f((float)enemyPlace.X * (mapWidth / 2), (float)enemyPlace.Y * (mapHeight / 2));
 
+            _animStop = 0;
             _animFrames = 0;    // Basically, the player is not moving
             _direction = 0;
             _ctxMap = ctxMap;
