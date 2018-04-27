@@ -33,7 +33,7 @@ namespace MiamiOps.Tests
             {
                 XElement xml = XElement.Load(sr);
                 
-                Console.WriteLine(xml.Descendants("map"));
+               // Console.WriteLine(xml.Descendants("map"));
             }
         }
 
