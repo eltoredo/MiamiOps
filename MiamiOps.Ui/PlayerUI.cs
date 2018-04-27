@@ -14,12 +14,15 @@ namespace MiamiOps
         int _nbSprite;    // The number of column in a sprite
         int _spriteWidth;
         int _spriteHeight;
+        Map _ctxMap;
 
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
         int _direction;    // Direction in which the player is looking
         int _animStop;    // The width of the player multiplied by the number of frames to get the actual animated movement
+        FloatRect _hitBoxPlayer;
+        Color colorCharacters = new Color(255, 255, 255, 255);
 
-        public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight)
+        public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight,Map ctxMap)
         {
             _roundUIContext = roundUIContext;
 
@@ -35,21 +38,35 @@ namespace MiamiOps
 
             _animFrames = 0;    // Basically, the player is not moving
             _direction = spriteHeight * 2;    // Basically, the player looks to the right
+            _hitBoxPlayer = _playerSprite.GetGlobalBounds();
+            _ctxMap = ctxMap;
         }
 
         private Vector2f UpdatePlace(Vector playerPlace, uint mapWidth, uint mapHeight)
-        {
-            return new Vector2f(((float)playerPlace.X + 1) * (mapWidth / 2), ((float)playerPlace.Y + 1) * (mapHeight / 2));
+        { 
+           Vector2f newPlayerPlace = new Vector2f(((float)playerPlace.X + 1) * (mapWidth / 2), ((float)playerPlace.Y + 1) * (mapHeight / 2));
+            if (_ctxMap.Collide(this._hitBoxPlayer))
+            {
+                _roundUIContext.RoundContext.Player.Collide = true;
+                _playerSprite.Color = Color.Red;
+                return newPlayerPlace;
+            }
+            _roundUIContext.RoundContext.Player.Collide = false;
+            _playerSprite.Color = colorCharacters;
+
+            return newPlayerPlace;
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
             this._playerSprite.Position = UpdatePlace(_roundUIContext.RoundContext.Player.Place, mapWidth, mapHeight);
+            _hitBoxPlayer = _playerSprite.GetGlobalBounds();
 
+           // Console.WriteLine(_playerSprite.Position);
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-
+         
             _playerSprite.Draw(window, RenderStates.Default);
         }
 
@@ -57,5 +74,6 @@ namespace MiamiOps
         {
             get { return _playerSprite.Position; }
         }
+
     }
 }

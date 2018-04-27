@@ -19,10 +19,21 @@ namespace MiamiOps.Tests
             using (StreamReader sr = new StreamReader(fs, true))
             {
                 XElement xml = XElement.Load(sr);
-                string level = xml.Descendants("data").Single().Value;
-             //   Console.WriteLine(level);
-                string[] level_array = level.Split(',');
-                Console.WriteLine(Int32.Parse(level_array[0]));
+                string level = xml.Descendants("layer")
+                                   .Single(l => l.Attribute("name").Value == "collide")
+                                   .Element("data").Value;
+                Console.WriteLine();
+            }
+        }
+        [Test]
+        public void TestXMLName()
+        {
+            using (FileStream fs = File.OpenRead(@"..\..\..\tilemap.tmx"))
+            using (StreamReader sr = new StreamReader(fs, true))
+            {
+                XElement xml = XElement.Load(sr);
+                
+                Console.WriteLine(xml.Descendants("map"));
             }
         }
 
