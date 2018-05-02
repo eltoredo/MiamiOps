@@ -11,9 +11,9 @@ namespace MiamiOps
         private float _enemiesSpeed;
         private float _enemiesAttack;
         private Random random = new Random();
-        private HashSet<float[]> _collison;
-        private bool _tileIDCollide;
-        private uint firstX;
+        //private HashSet<float[]> _collison;
+        //private bool _tileIDCollide;
+       // private uint firstX;
 
         public Round(int nb_enemies, Vector? playerSpawn = null, Vector? enemieSpawn = null, float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f, float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null)
         {
@@ -52,7 +52,7 @@ namespace MiamiOps
             else createPosition = () => enemieSpawn.Value;
             // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack);}
-            _collison = new HashSet<float[]>();
+            
         }
 
         internal float GetNextRandomFloat()
@@ -70,34 +70,12 @@ namespace MiamiOps
         {
             foreach (Enemies enemy in this._enemies) enemy.Move(this._player.Place);
         }
-
-        public void VerifCollide(int tileID, uint x, uint y)
-        {
-                if (_tileIDCollide == false && tileID !=0)
-                {
-                     firstX = x;
-                    _tileIDCollide = true;
-                }
-
-            int oldID = tileID;
-            if (tileID == 0 && _tileIDCollide == true) //||oldID != tileID && oldID !=0)
-            {
-                _tileIDCollide = false;
-                uint lastX = x - 1;
-                uint collideLength = lastX - firstX;
-                float[] _collideCord = new float[2];
-                _collideCord[0] = FirstX * (float)0.01;
-                _collideCord[1] = y * (float)0.01;
-                _collison.Add(_collideCord);
-            }
-        }
         
         public Enemies[] Enemies => this._enemies;
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;
         public float EnemiesAttack => _enemiesAttack;
-        public uint FirstX => firstX;
-        public HashSet<float[]> Collision => _collison;
+       
 
         public Player Player => this._player;
     }

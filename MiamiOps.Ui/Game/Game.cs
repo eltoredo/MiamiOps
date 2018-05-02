@@ -19,8 +19,8 @@ namespace MiamiOps
         Round _round;
         RoundUI _roundUI;
         InputHandler _playerInput;
-
         Map _map;
+        Convert _collide = new Convert();
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -35,8 +35,9 @@ namespace MiamiOps
 
         public override void Initialize()
         {
+            _collide.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _round = new Round(100, enemiesSpeed: 0.005f, playerSpeed: 0.05f);
-            _map = new Map(@"..\..\..\Map\tilemap.tmx", @"..\..\..\Map\tileset2.png",_round);
+            _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png", _round);
             _roundUI = new RoundUI(_round, this, 1280, 720, _map);
             _playerInput = new InputHandler(_roundUI);
         }
@@ -50,7 +51,6 @@ namespace MiamiOps
             _playerInput.Handle();
             _round.Update();
             
-        
         }
 
         public InputHandler Input => _playerInput;

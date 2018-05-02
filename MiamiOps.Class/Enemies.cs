@@ -10,9 +10,11 @@ namespace MiamiOps
         float _life;
         float _speed;
         float _attack;
+        float _width;
+        float _height;
         bool _isDead;
 
-        public Enemies(Round context, int name, Vector place, float life, float speed, float attack)
+        public Enemies(Round context, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
         {
             this._context = context;
             this._name = name;
@@ -21,6 +23,8 @@ namespace MiamiOps
             this._speed = speed;
             this._attack = attack;
             this._isDead = false;
+            this._height = height;
+            this._width = width;
         }
 
         // Method called when an enemy has less than 1 life point

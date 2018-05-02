@@ -14,11 +14,13 @@ namespace MiamiOps
         Vector _oldPlace;
         float _life;
         float _speed;
+        float _width;
+        float _height;
         Vector _direction;
         Weapon _currentWeapon;
 
 
-        public Player(Round context, Vector place, float life, float speed, Vector direction)
+        public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._context = context;
             this._place = place;
@@ -26,6 +28,8 @@ namespace MiamiOps
             this._speed = speed;
             this._direction = direction;
             this._weapons = new List<Weapon>();
+            this._height = height;
+            this._width = width;
         }
 
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction) : this(context, place, life, speed, direction)
