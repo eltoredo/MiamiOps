@@ -27,10 +27,11 @@ namespace MiamiOps
         private string[] level_array3;
         private int level_layers_length;
         private Dictionary<int,string[]> total_array = new Dictionary<int, string[]>();
-        private Dictionary<int, VertexArray> total_array_vertex = new Dictionary<int, VertexArray>();
-        List<FloatRect> _collide = new List<FloatRect>();
+        private Dictionary<int,VertexArray> total_array_vertex = new Dictionary<int,VertexArray>();
+        Round _ctxround;
+        private uint firstX;
 
-        public Map(String XML,string tilesset)
+        public Map(String XML, string tilesset, Round ctxRound)
         {
 
             using (FileStream fs = File.OpenRead(XML))
@@ -58,6 +59,7 @@ namespace MiamiOps
                 height = 100;
                 tileSize = new Vector2u(32, 32);
                 tileset = new Texture(tilesset);
+                _ctxround = ctxRound;
                 ConstructMap();
             }
            
@@ -93,22 +95,20 @@ namespace MiamiOps
                             }
                             uint index = (uint)(x + y * width) * 4;
                             Color _textureColor = new Color(255, 255, 255, 255);
-                            if (i == 2)
+                            if (i != 2)
                             {
-                                _textureColor.A = 0;
+                                _vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, tv * tileSize.Y));
+                                _vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
+                                _vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
+                                _vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
                             }
 
-                            _vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, tv * tileSize.Y));
-                            _vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
-                            _vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
-                            _vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
-
-                            if (i == 2)
-                            {
-                                FloatRect _collideText = new FloatRect(_vertexArray[index + 0].Position.X, _vertexArray[index + 0].Position.Y, 32, 32);
-                                _collide.Add(_collideText);
-                            }
                         }
+                        if (i == 2)
+                        {
+                            _ctxround.VerifCollide(tileID, x, y);
+                        }
+                            
                         a++;
 
 
@@ -137,16 +137,16 @@ namespace MiamiOps
             
         }
 
-        public bool Collide(FloatRect player)
-        {
-            foreach (var item in _collide)
-            {
-                if (player.Intersects(item))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        //public bool Collide(FloatRect player)
+        //{
+        //    foreach (var item in _collide)
+        //    {
+        //        if (player.Intersects(item))
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
     }
 }

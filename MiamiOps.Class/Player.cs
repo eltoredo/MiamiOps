@@ -17,6 +17,7 @@ namespace MiamiOps
         Vector _direction;
         Weapon _currentWeapon;
 
+
         public Player(Round context, Vector place, float life, float speed, Vector direction)
         {
             this._context = context;

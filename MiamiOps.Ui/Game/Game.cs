@@ -35,8 +35,8 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _map = new Map(@"..\..\..\Map\tilemap.tmx", @"..\..\..\Map\tileset2.png");
             _round = new Round(100, enemiesSpeed: 0.005f, playerSpeed: 0.05f);
+            _map = new Map(@"..\..\..\Map\tilemap.tmx", @"..\..\..\Map\tileset2.png",_round);
             _roundUI = new RoundUI(_round, this, 1280, 720, _map);
             _playerInput = new InputHandler(_roundUI);
         }
