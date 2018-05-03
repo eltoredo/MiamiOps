@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 
 
@@ -41,19 +40,8 @@ namespace MiamiOps
         // Method to handle the player's movements
         public void Move(Vector direction)
         {
-            if (CanMove(direction))
-            {
-                // Builds a unit vector in the direction where the player will go
-                double diviseur = direction.Magnitude;
-                if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0), the magnitude is 0 and we can't divide by 0
-                Vector unit_vector = direction * (1.0 / diviseur);
-                // The vector of the movements
-                Vector move = unit_vector * this._speed;
-                // Changes the position of the player     
-                this._place += move;
-
-                this._direction = direction;
-            }
+            (bool, Vector) CanMoveInformation = CanMove(direction);
+            if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
         }
 
         // When the player attacks the enemies
@@ -78,7 +66,7 @@ namespace MiamiOps
             }
         }
 
-        private bool CanMove(Vector direction)
+        private (bool, Vector) CanMove(Vector direction)
         {
             bool canMove = true;
 
@@ -103,7 +91,7 @@ namespace MiamiOps
             }
 
         
-            return canMove;
+            return (canMove, nextPlace);
         }
 
         private Vector SimulationMove(Vector direction)
