@@ -41,29 +41,19 @@ namespace MiamiOps
         // Method to handle the player's movements
         public void Move(Vector direction)
         {
-           
-            // Builds a unit vector in the direction where the player will go
-            double diviseur = direction.Magnitude;
-            if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0), the magnitude is 0 and we can't divide by 0
-            Vector unit_vector = direction * (1.0 / diviseur);
-            // The vector of the movements
-            Vector move = unit_vector * this._speed;
-            // Changes the position of the player     
-            this._place += move;
+            if (CanMove(direction))
+            {
+                // Builds a unit vector in the direction where the player will go
+                double diviseur = direction.Magnitude;
+                if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0), the magnitude is 0 and we can't divide by 0
+                Vector unit_vector = direction * (1.0 / diviseur);
+                // The vector of the movements
+                Vector move = unit_vector * this._speed;
+                // Changes the position of the player     
+                this._place += move;
 
-            
-            //Thread.Sleep(85);
-            //Console.WriteLine("x_place : " + this._place.X + "  y_place : " + this._place.Y);
-            //Console.WriteLine("x_oldPlace : " + this._oldPlace.X + "  y_oldPlace : " + this._oldPlace.Y);
-
-
-            // Checks if the player doesn't go out of the map
-            if (this._place.X > 1) this._place = new Vector(1, this._place.Y);
-            if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
-            if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
-            if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
-
-            this._direction = direction;
+                this._direction = direction;
+            }
         }
 
         // When the player attacks the enemies
@@ -87,6 +77,45 @@ namespace MiamiOps
                 this._currentWeapon = this._weapons.OtherElem(this._currentWeapon, shift);
             }
         }
+
+        private bool CanMove(Vector direction)
+        {
+            bool canMove = true;
+
+            Vector nextPlace = SimulationMove(direction);
+
+            // Checks if the player doesn't go out of the map
+            if (Math.Round(nextPlace.X + this._width, 2) > 1 || Math.Round(nextPlace.Y, 2) > 1 || Math.Round(nextPlace.X, 2) < -1 || Math.Round(nextPlace.Y - this._height, 2) < -1)
+            {
+                canMove = false;
+            }
+
+            // Checks if the player don't go in a wall
+            foreach (float[] wall in this._context.Obstacles)
+            {
+                if (
+                    Math.Round(nextPlace.Y - this._height, 2) < wall[1] && wall[1] - wall[3] < Math.Round(nextPlace.Y, 2) && 
+                    Math.Round(nextPlace.X, 2) < wall[0] + wall[2] && Math.Round(nextPlace.X + this._width, 2) > wall[0]
+                )
+                {
+                    canMove = false;
+                }
+            }
+
+        
+            return canMove;
+        }
+
+        private Vector SimulationMove(Vector direction)
+        {
+            double diviseur = direction.Magnitude;
+            if (direction.Magnitude == 0) diviseur = 1;
+            Vector unit_vector = direction * (1.0 / diviseur);
+            Vector move = unit_vector * this._speed;
+            Vector playerPlace = this._place + move;
+            return playerPlace;
+        }
+            
 
         public Vector Direction => this._direction;
         public List<Weapon> Weapons => this._weapons;

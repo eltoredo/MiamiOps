@@ -124,17 +124,5 @@ namespace MiamiOps
             }
             
         }
-
-        //public bool Collide(FloatRect player)
-        //{
-        //    foreach (var item in _collide)
-        //    {
-        //        if (player.Intersects(item))
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
     }
 }
