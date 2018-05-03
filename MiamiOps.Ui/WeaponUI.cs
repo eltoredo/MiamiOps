@@ -12,11 +12,11 @@ namespace MiamiOps
         Texture _weaponTexture;
         Sprite _weaponSprite;
 
-        public WeaponUI(RoundUI roundUIContext, Vector weaponPlace, uint mapWidth, uint mapHeight)
+        public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
         {
             _roundUIContext = roundUIContext;
 
-            _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
+            _weaponTexture = weaponTexture;
             _weaponSprite = new Sprite(_weaponTexture);
 
             _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundContext.Player.Place.Y * (mapHeight / 2));

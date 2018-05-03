@@ -10,10 +10,12 @@ namespace MiamiOps
     public class InputHandler
     {
         RoundUI _roundUIContext;
+        Event _event;
 
         public InputHandler(RoundUI roundUIContext)
         {
             _roundUIContext = roundUIContext;
+            _event = new Event();
         }
 
         public void Handle()
@@ -33,6 +35,14 @@ namespace MiamiOps
             if (Keyboard.IsKeyPressed(Keyboard.Key.D))
             {
                 _roundUIContext.RoundContext.Player.Move(new Vector(1, 0));
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+            {
+                Vector _mouseVector = new Vector(_event.MouseMove.X, _event.MouseMove.Y);
+                Vector _playerVector = _roundUIContext.RoundContext.Player.Place;
+
+                _roundUIContext.RoundContext.Player.Attack(_playerVector - _mouseVector);
             }
         }
     }

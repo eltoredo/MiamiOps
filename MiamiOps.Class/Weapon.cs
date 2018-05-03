@@ -25,8 +25,9 @@ namespace MiamiOps
             this._maxAmmo = _maxAmmo;
         }
 
-        public void Attack()
+        public void Shoot()
         {
+            _ammo -= 1;
             if (_ammo <= 0) Reload();
         }
 

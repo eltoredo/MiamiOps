@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 
-
-
 namespace MiamiOps
 {
     public class Player
@@ -62,9 +60,9 @@ namespace MiamiOps
         }
 
         // When the player attacks the enemies
-        public void Damage(float attack, float distance)
+        public void Attack(Vector direction)
         {
-            throw new NotImplementedException();
+            _currentWeapon.Shoot();
         }
 
         public void GetNewWeapon(Weapon weapon)

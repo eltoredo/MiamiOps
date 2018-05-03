@@ -49,8 +49,6 @@ namespace MiamiOps
         {
             _playerInput.Handle();
             _round.Update();
-            
-        
         }
 
         public InputHandler Input => _playerInput;
