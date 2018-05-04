@@ -46,17 +46,17 @@ namespace MiamiOps
             // Changes the position of the player     
             this._place += move;
 
-            
+
             //Thread.Sleep(85);
             //Console.WriteLine("x_place : " + this._place.X + "  y_place : " + this._place.Y);
             //Console.WriteLine("x_oldPlace : " + this._oldPlace.X + "  y_oldPlace : " + this._oldPlace.Y);
 
 
             // Checks if the player doesn't go out of the map
-            if (this._place.X > 1) this._place = new Vector(1, this._place.Y);
-            if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
-            if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
-            if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
+            //if (this._place.X > 1) this._place = new Vector(1, this._place.Y);
+            //if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
+            //if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
+            //if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
 
             this._direction = direction;
         }

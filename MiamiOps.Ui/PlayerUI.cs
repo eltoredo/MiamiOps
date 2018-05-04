@@ -72,6 +72,8 @@ namespace MiamiOps
             ++_animFrames;
          
             _playerSprite.Draw(window, RenderStates.Default);
+            Console.WriteLine("x : " + _player.Place.X);
+            Console.WriteLine("y : " + _player.Place.Y);
         }
 
         private int Conversion(Vector vector)
