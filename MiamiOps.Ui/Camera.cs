@@ -12,34 +12,32 @@ namespace MiamiOps
     public class Camera
     {
 
-       
-
         public View CameraPlayerUpdate(float Xplayer,float Yplayer, uint XSizeMap,uint YSizeMap, View view)
         {
 
-            if (Xplayer > 3160 / (float)1.24)//on the right side
+            if (Xplayer > XSizeMap / (float)1.24)
             {
-                Xplayer = 3160 / (float)1.24;
+                Xplayer = XSizeMap / (float)1.24;
             }
-            if (Xplayer < 3160 / (float)4.9)//on the right side
+            if (Xplayer < XSizeMap / (float)4.9)
             {
-                Xplayer = 3160 / (float)4.9;
-            }
-
-            if (Yplayer > 3160 / (float)1.113)//on the right side
-            {
-                Yplayer = 3160 / (float)1.113;
-            }
-            if (Yplayer < 3160 / (float)8.8)//on the right side
-            {
-                Yplayer = 3160 / (float)8.8;
+                Xplayer = XSizeMap / (float)4.9;
             }
 
-            Console.WriteLine("Size X :" + view.Size.X);
-            Console.WriteLine("Size Y :" + view.Size.Y);
-            Console.WriteLine("xplayer :" + Xplayer);
-            Console.WriteLine("yplayer :" + Yplayer);
-            Console.WriteLine();
+            if (Yplayer > YSizeMap / (float)1.113)
+            {
+                Yplayer = YSizeMap / (float)1.113;
+            }
+            if (Yplayer < YSizeMap / (float)8.8)
+            {
+                Yplayer = YSizeMap / (float)8.8;
+            }
+
+            //Console.WriteLine("Size X :" + view.Size.X);
+            //Console.WriteLine("Size Y :" + view.Size.Y);
+            //Console.WriteLine("xplayer :" + Xplayer);
+            //Console.WriteLine("yplayer :" + Yplayer);
+            //Console.WriteLine();
 
 
             view.Center = new Vector2f(Xplayer, Yplayer);
