@@ -44,7 +44,7 @@ namespace MiamiOps
             _roundUI = new RoundUI(_round, this, 1280, 720, _map);
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
-            _view.Zoom(4.5f); 
+             
         }
 
         public override void LoadContent()
