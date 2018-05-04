@@ -61,7 +61,10 @@ namespace MiamiOps
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
-           
+
+         
+            
+
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
@@ -69,6 +72,7 @@ namespace MiamiOps
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
             for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+           
         }
     }
 }
