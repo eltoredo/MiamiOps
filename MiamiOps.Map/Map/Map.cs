@@ -22,6 +22,7 @@ namespace MiamiOps
         private int tileheight;
         private string[] level_array1;
         private string[] level_array2;
+        private string[] level_array3;
         private int level_layers_length;
         private Dictionary<int,string[]> total_array = new Dictionary<int, string[]>();
         private Dictionary<int,VertexArray> total_array_vertex = new Dictionary<int,VertexArray>();
@@ -36,15 +37,20 @@ namespace MiamiOps
             {
                 XElement xml = XElement.Load(sr);
                 string level = xml.Descendants("layer")
-                                  .Single(l => l.Attribute("name").Value == "terrain")
+                                  .Single(l => l.Attribute("name").Value == "terrain1")
                                   .Element("data").Value;
                 string level_layer2 = xml.Descendants("layer")
                                   .Single(l => l.Attribute("name").Value == "terrain2")
                                   .Element("data").Value;
+                string level_layer3 = xml.Descendants("layer")
+                                  .Single(l => l.Attribute("name").Value == "spawn")
+                                  .Element("data").Value;
                 level_array1 = level.Split(',');
                 level_array2 = level_layer2.Split(',');
+                level_array3 = level_layer3.Split(',');
                 total_array.Add(0,level_array1);
                 total_array.Add(1,level_array2);
+                total_array.Add(2,level_array3);
                 level_layers_length = total_array.Count;
 
                 width = 100;
@@ -87,13 +93,12 @@ namespace MiamiOps
                             }
                             uint index = (uint)(x + y * width) * 4;
                             Color _textureColor = new Color(255, 255, 255, 255);
-                            if (i != 2)
-                            {
+                            
                                 _vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, tv * tileSize.Y));
                                 _vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
                                 _vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
                                 _vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
-                            }
+                            
 
                         }
 

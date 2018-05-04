@@ -11,13 +11,14 @@ namespace MiamiOps
    public class Convert
     {
         public string[] level_array_collide;
+        public string[] level_array_spawn;
         private HashSet<float[]> _collision = new HashSet<float[]>();
+        private HashSet<float[]> _spawn = new HashSet<float[]>();
         private bool _tileIDCollide;
+        private bool _tileIDSpawn;
         private float firstX;
         int tileID;
         
-
-
         public HashSet<float[]> ConvertXMLCollide(String XML)
         {
             using (FileStream fs = File.OpenRead(XML))
@@ -76,6 +77,68 @@ namespace MiamiOps
             //    Console.WriteLine("");
             //}
 
+        }
+
+
+        public HashSet<float[]> ConvertXMLSpawn(String XML)
+        {
+            using (FileStream fs = File.OpenRead(XML))
+            using (StreamReader sr = new StreamReader(fs, true))
+            {
+                XElement xml = XElement.Load(sr);
+                string level_layer_spawn = xml.Descendants("layer")
+                                     .Single(l => l.Attribute("name").Value == "spawn")
+                                     .Element("data").Value;
+
+                level_array_spawn = level_layer_spawn.Split(',');
+            }
+
+            float x = 0;
+            float y = 0;
+
+            for (uint i = 0; i < level_array_collide.Length; i++)
+            {
+
+                int tileID = Int32.Parse(level_array_spawn[i]);
+
+
+                if (_tileIDCollide == false && tileID != 0)
+                {
+                    firstX = x;
+                    _tileIDCollide = true;
+                }
+
+
+                if (tileID == 0 && _tileIDCollide == true)
+                {
+                    _tileIDCollide = false;
+                    float lastX = x - (float)0.02;
+                    float collideLength = lastX - firstX;
+                    float[] _spawnCord = new float[4];
+                    _spawnCord[0] = (float)Math.Round(firstX, 2) - 1; //x
+                    _spawnCord[1] = y - 1;//y
+                    _spawn.Add(_spawnCord);
+                }
+                x = (float)(x + 0.02);
+                if (x > 1.98)
+                {
+                    y = (float)(y + 0.02);
+                    x = 0;
+                }
+
+            }
+
+            foreach (var item in _spawn)
+            {
+                Console.WriteLine("x: " + item[0]);
+                Console.WriteLine("y: " + item[1]);
+               
+            }
+
+            Console.WriteLine(_spawn.Count);
+
+            return _spawn;
+        
         }
 
     }

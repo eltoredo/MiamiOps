@@ -14,16 +14,18 @@ namespace MiamiOps
         private List<float[]> _obstacles;
         private float _enemiesLargeur;
         private float _enemiesHauteur;
-       
+
 
         public Round(
             int nb_enemies,
-            Vector? playerSpawn=null, Vector? enemieSpawn=null,
-            float enemiesLife=.1f, float enemiesSpeed=.05f, float enemiesAttack=.75f,
-            float playerLife=1, float playerSpeed=.1f, Vector? playerDirection=null,
-            float playerLargeur=0, float playerHauteur=0,
-            float enemiesLargeur=0, float enemiesHauteur=0
+            Vector? playerSpawn = null, Vector? enemieSpawn = null,
+            float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f,
+            float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null,
+            float playerLargeur = 0, float playerHauteur = 0,
+            float enemiesLargeur = 0, float enemiesHauteur = 0
+           
         )
+
         {
             Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
 
