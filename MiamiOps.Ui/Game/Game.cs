@@ -57,7 +57,7 @@ namespace MiamiOps
         {
             _playerInput.Handle();
             _round.Update();
-            _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 1200, 720, _view);
+            _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3160 , 3160, _view);
            
         }
 
