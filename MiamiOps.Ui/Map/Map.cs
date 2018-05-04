@@ -44,7 +44,7 @@ namespace MiamiOps
                                   .Single(l => l.Attribute("name").Value == "terrain2")
                                   .Element("data").Value;
                 string level_layer3 = xml.Descendants("layer")
-                                  .Single(l => l.Attribute("name").Value == "collide")
+                                  .Single(l => l.Attribute("name").Value == "spawn")
                                   .Element("data").Value;
                 level_array1 = level.Split(',');
                 level_array2 = level_layer2.Split(',');
@@ -93,21 +93,13 @@ namespace MiamiOps
                             }
                             uint index = (uint)(x + y * width) * 4;
                             Color _textureColor = new Color(255, 255, 255, 255);
-                            if (i == 2)
-                            {
-                                _textureColor.A = 0;
-                            }
+                            
 
                             _vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, tv * tileSize.Y));
                             _vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
                             _vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
                             _vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
 
-                            if (i == 2)
-                            {
-                                FloatRect _collideText = new FloatRect(_vertexArray[index + 0].Position.X, _vertexArray[index + 0].Position.Y, 32, 32);
-                                _collide.Add(_collideText);
-                            }
                         }
                         a++;
 
