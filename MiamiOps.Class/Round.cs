@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MiamiOps
 {
@@ -14,20 +15,22 @@ namespace MiamiOps
         private List<float[]> _obstacles;
         private float _enemiesLargeur;
         private float _enemiesHauteur;
+        private int _count;
+        private Dictionary<int, float[]> _spawn;
 
 
         public Round(
             int nb_enemies,
+            Dictionary<int, float[]> enemySpawn,
             Vector? playerSpawn = null, Vector? enemieSpawn = null,
             float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f,
             float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null,
             float playerLargeur = 0, float playerHauteur = 0,
-            float enemiesLargeur = 0, float enemiesHauteur = 0
-           
+            float enemiesLargeur = 0, float enemiesHauteur = 0 
         )
 
         {
-            Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+            Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
             if (
@@ -54,16 +57,18 @@ namespace MiamiOps
             this._enemiesAttack = enemiesAttack;
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
+            this._spawn = enemySpawn;
+            this._count = this._spawn.Count - 1;
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
             this._player = new Player(this, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
-            Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
-            if( enemieSpawn == null) createPosition = CreateRandomPosition;
-            else createPosition = () => enemieSpawn.Value;
+            Func<Vector> createPositionv1;    // This variable is type "Func" and that return a "Vector"
+            if( enemieSpawn == null) createPositionv1 = createPositionV2;
+            else createPositionv1 = () => enemieSpawn.Value;
             // Put enemies in the array
-            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
+            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPositionv1(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
 
             this._obstacles = new List<float[]>();
             
@@ -72,6 +77,17 @@ namespace MiamiOps
         internal float GetNextRandomFloat()
         {
             return ((float)this.random.NextDouble() * 2) -1;
+        }
+
+        Vector createPositionV2()
+        {
+            Vector Position = new Vector(this._spawn.Values.ElementAt(_count).ElementAt(0), this._spawn.Values.ElementAt(_count).ElementAt(1));
+           this._count--;
+            if(_count < 0)
+            {
+                this._count = _spawn.Count -1;
+            }
+            return Position;
         }
 
         Vector CreateRandomPosition()

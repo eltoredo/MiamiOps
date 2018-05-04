@@ -4,6 +4,7 @@ using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace MiamiOps
 {
@@ -22,6 +23,7 @@ namespace MiamiOps
         View _view;
         Map _map;
         Convert _convert = new Convert();
+       
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -40,12 +42,12 @@ namespace MiamiOps
         public override void Initialize()
         {
             _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
-            _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
-            _round = new Round(100, enemiesSpeed: 0.0005f, playerSpeed: 0.005f);
+            _round = new Round(100, _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"), enemiesSpeed: 0, playerSpeed: 0.05f);
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png", _round);
-            _roundUI = new RoundUI(_round, this, 1280, 720, _map);
+            _roundUI = new RoundUI(_round, this, 3160, 3160, _map);
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
+          
            
         }
 

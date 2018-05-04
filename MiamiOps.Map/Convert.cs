@@ -13,11 +13,12 @@ namespace MiamiOps
         public string[] level_array_collide;
         public string[] level_array_spawn;
         private HashSet<float[]> _collision = new HashSet<float[]>();
-        private HashSet<float[]> _spawn = new HashSet<float[]>();
+        private Dictionary<int ,float[]> _spawn = new Dictionary<int, float[]>();
         private bool _tileIDCollide;
         private bool _tileIDSpawn;
         private float firstX;
         int tileID;
+        int count;
         
         public HashSet<float[]> ConvertXMLCollide(String XML)
         {
@@ -80,7 +81,7 @@ namespace MiamiOps
         }
 
 
-        public HashSet<float[]> ConvertXMLSpawn(String XML)
+        public Dictionary<int, float[]> ConvertXMLSpawn(String XML)
         {
             using (FileStream fs = File.OpenRead(XML))
             using (StreamReader sr = new StreamReader(fs, true))
@@ -111,13 +112,14 @@ namespace MiamiOps
 
                 if (tileID == 0 && _tileIDCollide == true)
                 {
+                    count++;
                     _tileIDCollide = false;
                     float lastX = x - (float)0.02;
                     float collideLength = lastX - firstX;
-                    float[] _spawnCord = new float[4];
+                    float[] _spawnCord = new float[2];
                     _spawnCord[0] = (float)Math.Round(firstX, 2) - 1; //x
                     _spawnCord[1] = y - 1;//y
-                    _spawn.Add(_spawnCord);
+                    _spawn.Add(count, _spawnCord);
                 }
                 x = (float)(x + 0.02);
                 if (x > 1.98)
@@ -128,14 +130,8 @@ namespace MiamiOps
 
             }
 
-            foreach (var item in _spawn)
-            {
-                Console.WriteLine("x: " + item[0]);
-                Console.WriteLine("y: " + item[1]);
-               
-            }
 
-            Console.WriteLine(_spawn.Count);
+            float LOL = _spawn.Values.ElementAt(0).ElementAt(0);
 
             return _spawn;
         
