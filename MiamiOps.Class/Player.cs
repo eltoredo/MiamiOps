@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 
 
@@ -14,10 +13,13 @@ namespace MiamiOps
         Vector _oldPlace;
         float _life;
         float _speed;
+        float _width;
+        float _height;
         Vector _direction;
         Weapon _currentWeapon;
 
-        public Player(Round context, Vector place, float life, float speed, Vector direction)
+
+        public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._context = context;
             this._place = place;
@@ -25,6 +27,8 @@ namespace MiamiOps
             this._speed = speed;
             this._direction = direction;
             this._weapons = new List<Weapon>();
+            this._height = height;
+            this._width = width;
         }
 
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction) : this(context, place, life, speed, direction)
@@ -82,6 +86,45 @@ namespace MiamiOps
                 this._currentWeapon = this._weapons.OtherElem(this._currentWeapon, shift);
             }
         }
+
+        private (bool, Vector) CanMove(Vector direction)
+        {
+            bool canMove = true;
+
+            Vector nextPlace = SimulationMove(direction);
+
+            // Checks if the player doesn't go out of the map
+            if (Math.Round(nextPlace.X + this._width, 2) > 1 || Math.Round(nextPlace.Y, 2) > 1 || Math.Round(nextPlace.X, 2) < -1 || Math.Round(nextPlace.Y - this._height, 2) < -1)
+            {
+                canMove = false;
+            }
+
+            // Checks if the player don't go in a wall
+            foreach (float[] wall in this._context.Obstacles)
+            {
+                if (
+                    Math.Round(nextPlace.Y - this._height, 2) < wall[1] && wall[1] - wall[3] < Math.Round(nextPlace.Y, 2) && 
+                    Math.Round(nextPlace.X, 2) < wall[0] + wall[2] && Math.Round(nextPlace.X + this._width, 2) > wall[0]
+                )
+                {
+                    canMove = false;
+                }
+            }
+
+        
+            return (canMove, nextPlace);
+        }
+
+        private Vector SimulationMove(Vector direction)
+        {
+            double diviseur = direction.Magnitude;
+            if (direction.Magnitude == 0) diviseur = 1;
+            Vector unit_vector = direction * (1.0 / diviseur);
+            Vector move = unit_vector * this._speed;
+            Vector playerPlace = this._place + move;
+            return playerPlace;
+        }
+            
 
         public Vector Direction => this._direction;
         public List<Weapon> Weapons => this._weapons;
