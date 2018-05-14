@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MiamiOps
 {
     public class Weapon
     {
         Player _owner;
+
+        private List<Shoot> _bullets;
+
         float _attack;
         float _radius;    // rayon d'action
         float _range;    // la portée
@@ -17,6 +21,8 @@ namespace MiamiOps
             foreach (float nb in stats) {if (nb < 0 || nb > 1) {throw new ArgumentException("The parameters can't be lower than 0 or upper than 1.");}}
             if (_maxAmmo < 0) {throw new ArgumentException("The max ammo can't be lower than zero.");}
 
+            _bullets = new List<Shoot>();
+
             this._owner = owner;
             this._attack = attack;
             this._radius = radius;
@@ -25,9 +31,16 @@ namespace MiamiOps
             this._maxAmmo = _maxAmmo;
         }
 
-        public void Shoot(Vector mousePlace)
+        public void Shoot(Vector playerPosition, Vector mousePlace)
         {
-            // Player - Context - Monsters -> If X or Y of mousePlace is touching the bounding box of an enemy, he looses life
+            // Player - Context - Monsters -> If X or Y of mousePlace (direction of bullet) is touching the bounding box of an enemy, he looses life
+            // Position de départ et d'arrivée de la balle, vitesse / quand est-ce que j'ai tiré
+            // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
+            // Supprimer la balle après un certain temps
+
+            Shoot shoot = new Shoot(1f);
+            _bullets.Add(shoot);
+            if (shoot.LifeTime <= 0) _bullets.Remove(shoot);
 
             _ammo -= 1;
             if (_ammo <= 0) Reload();
@@ -37,6 +50,8 @@ namespace MiamiOps
         {
             _ammo = _maxAmmo;
         }
+
+        public List<Shoot> Bullets => _bullets;
     }
 
 

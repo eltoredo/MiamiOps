@@ -47,6 +47,7 @@ namespace MiamiOps
         {
             Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
             Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
+            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
 
             Random _random = new Random();
 
@@ -58,7 +59,7 @@ namespace MiamiOps
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
             for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
 
-            _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
+            _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;

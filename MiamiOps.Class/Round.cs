@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MiamiOps
 {
@@ -6,6 +7,7 @@ namespace MiamiOps
     {
         private Player _player;
         private Enemies[] _enemies;
+        private List<Weapon> _weapons = new List<Weapon>();
         private float _enemiesLife;
         private float _enemiesSpeed;
         private float _enemiesAttack;
@@ -40,7 +42,7 @@ namespace MiamiOps
             this._enemiesAttack = enemiesAttack;
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
-            this._player = new Player(this, player, playerLife, playerSpeed, playerDir);
+            this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir);
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"

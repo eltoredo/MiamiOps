@@ -12,12 +12,18 @@ namespace MiamiOps
         Texture _weaponTexture;
         Sprite _weaponSprite;
 
-        public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
+        Texture _bulletTexture;
+        Sprite _bulletSprite;
+
+        public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Texture bulletTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
         {
             _roundUIContext = roundUIContext;
 
             _weaponTexture = weaponTexture;
             _weaponSprite = new Sprite(_weaponTexture);
+
+            _bulletTexture = bulletTexture;
+            _bulletSprite = new Sprite(_bulletTexture);
 
             _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundContext.Player.Place.Y * (mapHeight / 2));
         }
@@ -32,6 +38,7 @@ namespace MiamiOps
             this._weaponSprite.Position = UpdatePlace(mapWidth, mapHeight);
 
             _weaponSprite.Draw(window, RenderStates.Default);
+            foreach(Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets) _bulletSprite.Draw(window, RenderStates.Default);
         }
 
         public Vector2f WeaponPosition

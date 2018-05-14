@@ -28,7 +28,8 @@ namespace MiamiOps
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction) : this(context, place, life, speed, direction)
         {
             this._weapons = weapons;
-            //this._currentWeapon = this._weapons[0];
+            _currentWeapon = new Weapon(this, 0.5f, 0.1f, 0.05f, 30);
+            GetNewWeapon(_currentWeapon);
         }
 
         // Method to handle the player's movements
@@ -62,7 +63,7 @@ namespace MiamiOps
         // When the player attacks the enemies
         public void Attack(Vector mousePlace)
         {
-            _currentWeapon.Shoot(mousePlace);
+            _currentWeapon.Shoot(this.Place, mousePlace);
         }
 
         public void GetNewWeapon(Weapon weapon)

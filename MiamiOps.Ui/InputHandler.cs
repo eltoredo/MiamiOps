@@ -1,4 +1,6 @@
-﻿using SFML.Window;
+﻿using SFML.Graphics;
+using SFML.System;
+using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,19 @@ namespace MiamiOps
     public class InputHandler
     {
         RoundUI _roundUIContext;
+        Shoot _shoot;
+
         Event _event;
+
+        Texture _bulletTexture;
 
         public InputHandler(RoundUI roundUIContext)
         {
             _roundUIContext = roundUIContext;
+
             _event = new Event();
+
+            _bulletTexture = new Texture("../../../../Images/fireball.png");
         }
 
         public void Handle()
