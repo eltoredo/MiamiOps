@@ -22,6 +22,7 @@ namespace MiamiOps
         View _view;
         Map _map;
         View _minimap;
+        Camera _camera;
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -41,10 +42,10 @@ namespace MiamiOps
         {         
             _map = new Map(@"..\..\..\Map\tilemap100.tmx", @"..\..\..\Map\tileset2.png");
             _round = new Round(100, enemiesSpeed: 0.0005f, playerSpeed: 0.005f);
-            _roundUI = new RoundUI(_round, this, 1280, 720, _map);
+            _roundUI = new RoundUI(_round, this, 3160, 3160, _map);
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
-            _view.Zoom(4.5f); 
+            _camera = new Camera();
         }
 
         public override void LoadContent()
@@ -55,9 +56,9 @@ namespace MiamiOps
         public override void Update(GameTime gameTime)
         {
             _playerInput.Handle();
-            _round.Update();            
-            _view.Center = new Vector2f(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y);
-            
+            _round.Update();
+            _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3160 , 3160, _view);
+           
         }
 
         public InputHandler Input => _playerInput;

@@ -53,10 +53,10 @@ namespace MiamiOps
 
 
             // Checks if the player doesn't go out of the map
-            //if (this._place.X > 1) this._place = new Vector(1, this._place.Y);
-            //if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
-            //if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
-            //if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
+            if (this._place.X > 1) this._place = new Vector(1, this._place.Y);
+            if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
+            if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
+            if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
 
             this._direction = direction;
         }
