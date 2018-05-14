@@ -13,7 +13,7 @@ namespace MiamiOps
         public string[] level_array_collide;
         public string[] level_array_spawn;
         private HashSet<float[]> _collision = new HashSet<float[]>();
-        private Dictionary<int ,float[]> _spawn = new Dictionary<int, float[]>();
+        private Dictionary<int ,Vector> _spawn = new Dictionary<int, Vector>();
         private bool _tileIDCollide;
         private bool _tileIDSpawn;
         private float firstX;
@@ -81,7 +81,7 @@ namespace MiamiOps
         }
 
 
-        public Dictionary<int, float[]> ConvertXMLSpawn(String XML)
+        public Dictionary<int,Vector> ConvertXMLSpawn(String XML)
         {
             using (FileStream fs = File.OpenRead(XML))
             using (StreamReader sr = new StreamReader(fs, true))
@@ -97,7 +97,7 @@ namespace MiamiOps
             float x = 0;
             float y = 0;
 
-            for (uint i = 0; i < level_array_collide.Length; i++)
+            for (uint i = 0; i < level_array_spawn.Length; i++)
             {
 
                 int tileID = Int32.Parse(level_array_spawn[i]);
@@ -119,7 +119,8 @@ namespace MiamiOps
                     float[] _spawnCord = new float[2];
                     _spawnCord[0] = (float)Math.Round(firstX, 2) - 1; //x
                     _spawnCord[1] = y - 1;//y
-                    _spawn.Add(count, _spawnCord);
+                    Vector _spawnVector = new Vector(_spawnCord[0], _spawnCord[1]);
+                    _spawn.Add(count, _spawnVector);
                 }
                 x = (float)(x + 0.02);
                 if (x > 1.98)
@@ -131,8 +132,8 @@ namespace MiamiOps
             }
 
 
-            float LOL = _spawn.Values.ElementAt(0).ElementAt(0);
-
+            //  float LOL = _spawn.Values.ElementAt(0).ElementAt(0);
+            Console.WriteLine(_spawn.Count);
             return _spawn;
         
         }
