@@ -66,6 +66,7 @@ namespace MiamiOps
         public void Update()
         {
             foreach (Enemies enemy in this._enemies) enemy.Move(this._player.Place);
+            _player.CurrentWeapon.Update();
         }
 
         public Enemies[] Enemies => this._enemies;

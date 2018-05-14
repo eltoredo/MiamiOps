@@ -38,9 +38,8 @@ namespace MiamiOps
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
 
-            Shoot shoot = new Shoot(1f);
+            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(500), 1f);
             _bullets.Add(shoot);
-            if (shoot.LifeTime <= 0) _bullets.Remove(shoot);
 
             _ammo -= 1;
             if (_ammo <= 0) Reload();
@@ -49,6 +48,17 @@ namespace MiamiOps
         public void Reload()
         {
             _ammo = _maxAmmo;
+        }
+
+        public void Update()
+        {
+            List<Shoot> toRemove = new List<Shoot>();
+            foreach(Shoot s in _bullets)
+            {
+                if (!s.IsAlive) toRemove.Add(s);
+            }
+
+            foreach (Shoot s in toRemove) _bullets.Remove(s);
         }
 
         public List<Shoot> Bullets => _bullets;

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 
@@ -14,6 +14,8 @@ namespace MiamiOps
 
         Texture _bulletTexture;
         Sprite _bulletSprite;
+
+        Music music = new Music("../../../Menu/fireball.ogg");
 
         public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Texture bulletTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
         {
@@ -38,7 +40,11 @@ namespace MiamiOps
             this._weaponSprite.Position = UpdatePlace(mapWidth, mapHeight);
 
             _weaponSprite.Draw(window, RenderStates.Default);
-            foreach(Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets) _bulletSprite.Draw(window, RenderStates.Default);
+            foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets)
+            {
+                music.Play();
+                _bulletSprite.Draw(window, RenderStates.Default);
+            }
         }
 
         public Vector2f WeaponPosition
