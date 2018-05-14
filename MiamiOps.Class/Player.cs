@@ -42,6 +42,7 @@ namespace MiamiOps
         {
             (bool, Vector) CanMoveInformation = CanMove(direction);
             if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
+
         }
 
         // When the player attacks the enemies
