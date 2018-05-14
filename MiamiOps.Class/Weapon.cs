@@ -25,8 +25,10 @@ namespace MiamiOps
             this._maxAmmo = _maxAmmo;
         }
 
-        public void Shoot()
+        public void Shoot(Vector mousePlace)
         {
+            // Player - Context - Monsters -> If X or Y of mousePlace is touching the bounding box of an enemy, he looses life
+
             _ammo -= 1;
             if (_ammo <= 0) Reload();
         }

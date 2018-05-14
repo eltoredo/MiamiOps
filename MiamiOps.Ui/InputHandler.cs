@@ -40,9 +40,8 @@ namespace MiamiOps
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
                 Vector _mouseVector = new Vector(_event.MouseMove.X, _event.MouseMove.Y);
-                Vector _playerVector = _roundUIContext.RoundContext.Player.Place;
-
-                _roundUIContext.RoundContext.Player.Attack(_playerVector - _mouseVector);
+                
+                _roundUIContext.RoundContext.Player.Attack(_mouseVector);
             }
         }
     }

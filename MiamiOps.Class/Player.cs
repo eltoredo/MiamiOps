@@ -60,9 +60,9 @@ namespace MiamiOps
         }
 
         // When the player attacks the enemies
-        public void Attack(Vector direction)
+        public void Attack(Vector mousePlace)
         {
-            _currentWeapon.Shoot();
+            _currentWeapon.Shoot(mousePlace);
         }
 
         public void GetNewWeapon(Weapon weapon)
