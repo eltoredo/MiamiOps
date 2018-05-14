@@ -40,29 +40,9 @@ namespace MiamiOps
         // Method to handle the player's movements
         public void Move(Vector direction)
         {
-           
-            // Builds a unit vector in the direction where the player will go
-            double diviseur = direction.Magnitude;
-            if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0), the magnitude is 0 and we can't divide by 0
-            Vector unit_vector = direction * (1.0 / diviseur);
-            // The vector of the movements
-            Vector move = unit_vector * this._speed;
-            // Changes the position of the player     
-            this._place += move;
+            (bool, Vector) CanMoveInformation = CanMove(direction);
+            if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
 
-
-            //Thread.Sleep(85);
-            //Console.WriteLine("x_place : " + this._place.X + "  y_place : " + this._place.Y);
-            //Console.WriteLine("x_oldPlace : " + this._oldPlace.X + "  y_oldPlace : " + this._oldPlace.Y);
-
-
-            // Checks if the player doesn't go out of the map
-            if (this._place.X > 1) this._place = new Vector(1, this._place.Y);
-            if (this._place.Y > 1) this._place = new Vector(this._place.X, 1);
-            if (this._place.X < -1) this._place = new Vector(-1, this._place.Y);
-            if (this._place.Y < -1) this._place = new Vector(this._place.X, -1);
-
-            this._direction = direction;
         }
 
         // When the player attacks the enemies
