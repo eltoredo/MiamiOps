@@ -67,5 +67,25 @@ namespace MiamiOps.Tests
              for (int idx = 0; idx < 15; idx += 1) {play.Player.Move(new Vector (direction_x, 0));}
              Assert.That(Math.Round(play.Player.Place.X, 2), Is.EqualTo(Math.Round(arrive_x, 2)));
         }
-    }
+
+        [TestCase(1, -1, -1, 0, 2f, 2f, -1, .2f)]
+        [TestCase(-.6f, 1, -1, 1, 2f, 1f, 1, 0f)]
+        public void Enemie_can_not_go_in_a_wall_verticaly(float spawn_y, float player_place_y, float x_obstacle, float y_obstacle, float largeur_obstacle, float hauteur_obstacle, float direction_y, float arrive_y)
+        {
+            Round play = new Round(1, new Vector(0, player_place_y), new Vector(0, spawn_y), enemiesHauteur : 0.2f, enemiesLargeur : 0.1f, enemiesSpeed : .1f);
+            play.AddObstacle(x_obstacle, y_obstacle, largeur_obstacle, hauteur_obstacle);
+            for (int idx = 0; idx < 15; idx += 1) {play.Update();}
+            Assert.That(Math.Round(play.Enemies[0].Place.Y, 2), Is.EqualTo(Math.Round(arrive_y, 2)));
+        }
+
+        [TestCase(1f, -1, -1, 1, 1, 2f, 0f)]
+        [TestCase(-1, 1, 0, 1, 2f, 2f, -.1f)]
+        public void Enemie_can_not_go_in_a_wall_horizontaly(float spawn_x, float player_place_x, float x_obstacle, float y_obstacle, float largeur_obstacle, float hauteur_obstacle, float arrive_x)
+        {
+            Round play = new Round(1, playerSpawn: new Vector(player_place_x, 0), enemieSpawn: new Vector(spawn_x, 0), enemiesHauteur : 0.2f, enemiesLargeur : 0.1f, enemiesSpeed : .1f);
+            play.AddObstacle(x_obstacle, y_obstacle, largeur_obstacle, hauteur_obstacle);
+            for (int idx = 0; idx < 15; idx += 1) {play.Update();}
+            Assert.AreEqual(arrive_x, play.Enemies[0].Place.X, 0.01);
+        }
+    }  
 }
