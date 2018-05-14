@@ -13,15 +13,8 @@ public struct Vector
             this._ord = ord;
         }
 
-        public double X {
-            get { return this._abs; }
-            set { this._abs = value; }
-        }
-        public double Y
-        {
-            get { return this._ord; }
-            set { this._ord = value; }
-        }
+        public double X => this._abs;
+        public double Y => this._ord;
 
         public double Magnitude => Math.Sqrt(this._abs * this._abs + this._ord * this._ord);
         public double MagnitudeInverse => Math.Sqrt(this._abs * this._abs + this._ord * this._ord);
