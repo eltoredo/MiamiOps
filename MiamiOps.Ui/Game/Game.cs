@@ -45,8 +45,8 @@ namespace MiamiOps
         {
             _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
-            _round = new Round(5, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"));
-            _roundUI = new RoundUI(_round, this, 3200, 3200, _map);
+            _round = new Round(15, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"));
+            _roundUI = new RoundUI(_round, this, 3168, 3168, _map);
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
             _camera = new Camera();
@@ -62,7 +62,7 @@ namespace MiamiOps
             _playerInput.Handle();
             _round.Update();
             _roundUI.UpdateSpawnEnnemie();
-            _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3200 , 3200, _view);
+            _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3168 , 3168, _view);
             
         }
 
