@@ -50,13 +50,7 @@ namespace MiamiOps
         {
             _nbDirection = Conversion(_roundUIContext.RoundContext.Player.Direction);
             Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), ((float)_player.Place.Y + 1) * (mapHeight / 2));
-            if (_ctxMap.Collide(this._hitBoxPlayer))
-            {
-                _playerSprite.Color = Color.Red;
-                return newPlayerPlace;
-            }
-
-            _playerSprite.Color = colorCharacters;
+            
             return newPlayerPlace;
         }
 
@@ -72,6 +66,8 @@ namespace MiamiOps
             ++_animFrames;
          
             _playerSprite.Draw(window, RenderStates.Default);
+            //Console.WriteLine("x : " + _player.Place.X);
+            //Console.WriteLine("y : " + _player.Place.Y);
         }
 
         private int Conversion(Vector vector)

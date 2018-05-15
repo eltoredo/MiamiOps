@@ -15,7 +15,7 @@ namespace MiamiOps.Tests
         [Test]
         public void SimpleTest()
         {
-            using (FileStream fs = File.OpenRead(@"..\..\..\tilemap.tmx"))
+            using (FileStream fs = File.OpenRead(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"))
             using (StreamReader sr = new StreamReader(fs, true))
             {
                 XElement xml = XElement.Load(sr);
@@ -28,12 +28,12 @@ namespace MiamiOps.Tests
         [Test]
         public void TestXMLName()
         {
-            using (FileStream fs = File.OpenRead(@"..\..\..\tilemap.tmx"))
+            using (FileStream fs = File.OpenRead(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"))
             using (StreamReader sr = new StreamReader(fs, true))
             {
                 XElement xml = XElement.Load(sr);
                 
-                Console.WriteLine(xml.Descendants("map"));
+               // Console.WriteLine(xml.Descendants("map"));
             }
         }
 

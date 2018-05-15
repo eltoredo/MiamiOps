@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+//using System.Linq;
 
 namespace MiamiOps
 {
@@ -12,8 +13,22 @@ namespace MiamiOps
         private float _enemiesSpeed;
         private float _enemiesAttack;
         private Random random = new Random();
-
-        public Round(int nb_enemies, Vector? playerSpawn = null, Vector? enemieSpawn = null, float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f, float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null)
+        private List<float[]> _obstacles;
+        private float _enemiesLargeur;
+        private float _enemiesHauteur;
+        private int _count;
+        private Dictionary<int, Vector> _spawn;
+        private Vector _enemiesSpawn;
+        
+        public Round(
+            int nb_enemies,
+            Vector? playerSpawn = null, Vector? enemieSpawn = null,
+            float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f,
+            float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null,
+            float playerLargeur = 0, float playerHauteur = 0,
+            float enemiesLargeur = 0, float enemiesHauteur = 0,
+            Dictionary<int, Vector> enemySpawn = null
+        )
         {
             Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
 
@@ -40,21 +55,44 @@ namespace MiamiOps
             this._enemiesLife = enemiesLife;
             this._enemiesSpeed = enemiesSpeed;
             this._enemiesAttack = enemiesAttack;
+            this._enemiesLargeur = enemiesLargeur;
+            this._enemiesHauteur = enemiesHauteur;
+            this._spawn = enemySpawn;
+            if (_spawn != null) {this._count = this._spawn.Count;}
+
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir);
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
-            if( enemieSpawn == null) createPosition = CreateRandomPosition;
-            else createPosition = () => enemieSpawn.Value;
-            // Put enemies in the array
-            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack);}
+            if (enemieSpawn == null) createPosition = CreateRandomPosition;
+            else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
+            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
+
+            this._obstacles = new List<float[]>();
         }
 
         internal float GetNextRandomFloat()
         {
             return ((float)this.random.NextDouble() * 2) -1;
+        }
+
+        Vector CreatePositionOnSpawn(Vector enemieSpawn)
+        {
+            Vector Position;
+            if (_spawn != null)
+            {
+                 Position = _spawn[_count];
+                this._count--;
+                if (_count < 1)
+                {
+                    this._count = _spawn.Count;
+                }
+                return Position;
+            }
+            Position = enemieSpawn;
+            return Position;
         }
 
         Vector CreateRandomPosition()
@@ -69,11 +107,16 @@ namespace MiamiOps
             _player.CurrentWeapon.Update();
         }
 
+        public void AddObstacle(float x, float y, float largeur, float hauteur)
+        {
+            this._obstacles.Add(new float[]{x, y, largeur, hauteur});
+        }
+        
         public Enemies[] Enemies => this._enemies;
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;
         public float EnemiesAttack => _enemiesAttack;
-
         public Player Player => this._player;
+        public List<float[]> Obstacles => this._obstacles;
     }
 }

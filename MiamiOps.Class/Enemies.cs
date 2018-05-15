@@ -10,9 +10,11 @@ namespace MiamiOps
         float _life;
         float _speed;
         float _attack;
+        float _width;
+        float _height;
         bool _isDead;
 
-        public Enemies(Round context, int name, Vector place, float life, float speed, float attack)
+        public Enemies(Round context, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
         {
             this._context = context;
             this._name = name;
@@ -21,6 +23,8 @@ namespace MiamiOps
             this._speed = speed;
             this._attack = attack;
             this._isDead = false;
+            this._height = height;
+            this._width = width;
         }
 
         // Method called when an enemy has less than 1 life point
@@ -44,15 +48,50 @@ namespace MiamiOps
         // The movements of the enemy
         public void Move(Vector target)
         {
-            // Builds a vector in the direction of the player
+            (bool, Vector) CanMoveInformation = CanMove(target);
+            if (CanMoveInformation.Item1)
+            {
+                this._place = CanMoveInformation.Item2;
+            }
+        }
+
+        private (bool, Vector) CanMove(Vector target)
+        {
+            bool canMove = true;
+
+            Vector nextPlace = SimulateMove(target);
+
+            // Check the next place of the enemie (don't in a wall or out of the map)
+            if (Math.Round(nextPlace.X + this._width, 2) > 1 || Math.Round(nextPlace.Y, 2) > 1 || Math.Round(nextPlace.X, 2) < -1 || Math.Round(nextPlace.Y - this._height, 2) < -1)
+            {
+                canMove = false;
+            }
+
+            foreach (float[] wall in this._context.Obstacles)
+            {
+                if (
+                    Math.Round(nextPlace.Y - this._height, 2) < wall[1] && wall[1] - wall[3] < Math.Round(nextPlace.Y, 2) && 
+                    Math.Round(nextPlace.X, 2) < wall[0] + wall[2] && Math.Round(nextPlace.X + this._width, 2) > wall[0]
+                )
+                {
+                    canMove = false;
+                }
+            }
+
+            return (canMove, nextPlace);
+        }
+
+        private Vector SimulateMove(Vector target)
+        {
+            // Builds a vector in the direction of the enemie
             Vector direction = target - this._place;
-            // Builds a unit vector in the direction of the player
+            // Builds a unit vector in the direction of the enemie
             double diviseur = direction.Magnitude;
-            if (direction.Magnitude == 0) diviseur = 1;    // In case if the player is in (0, 0) the magnitude is 0 and we can't devided by 0
+            if (direction.Magnitude == 0) diviseur = 1;    // In case if the enemie is in (0, 0) the magnitude is 0 and we can't devided by 0
             Vector unit_vector = direction * (1.0 / diviseur);
             Vector move = unit_vector * this._speed;
-            // Changes the position of the enemy
-            this._place += move;
+            Vector enemiePlace = this._place + move;
+            return enemiePlace;
         }
 
         public void Attack(float attack, float distance)
