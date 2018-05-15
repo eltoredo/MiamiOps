@@ -42,17 +42,19 @@ namespace MiamiOps
                 _roundUIContext.RoundContext.Player.Move(new Vector(1, 0));
             }
 
-            /*if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
                 music.Play();
 
-                Vector2i _mouseVector = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
-                Vector _mouseVector2 = new Vector(_mouseVector.X, _mouseVector.Y);
+                Vector2i _mouseVector2i = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
+                Vector _mouseVector = new Vector(_mouseVector2i.X, _mouseVector2i.Y);
 
-                Vector _realPosition = new Vector(_roundUIContext.GameCtx.Window)
+                Vector _realMousePosition = new Vector(_roundUIContext.RoundContext.Player.Place.X - (_roundUIContext.GameCtx.MyView.Size.X / 2), _roundUIContext.RoundContext.Player.Place.Y - (_roundUIContext.GameCtx.MyView.Size.Y / 2));
 
-                _roundUIContext.RoundContext.Player.Attack(_mouseVector2);
-            }*/
+                //_mouseVector = new Vector()
+
+                _roundUIContext.RoundContext.Player.Attack(_mouseVector);
+            }
         }
     }
 }
