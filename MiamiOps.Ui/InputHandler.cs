@@ -1,11 +1,7 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiamiOps
 {
@@ -18,11 +14,11 @@ namespace MiamiOps
 
         Texture _bulletTexture;
 
+        Music music = new Music("../../../Menu/fireball.ogg");
+
         public InputHandler(RoundUI roundUIContext)
         {
             _roundUIContext = roundUIContext;
-
-            _event = new Event();
 
             _bulletTexture = new Texture("../../../../Images/fireball.png");
         }
@@ -46,12 +42,17 @@ namespace MiamiOps
                 _roundUIContext.RoundContext.Player.Move(new Vector(1, 0));
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+            /*if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
-                Vector _mouseVector = new Vector(_event.MouseMove.X, _event.MouseMove.Y);
-                
-                _roundUIContext.RoundContext.Player.Attack(_mouseVector);
-            }
+                music.Play();
+
+                Vector2i _mouseVector = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
+                Vector _mouseVector2 = new Vector(_mouseVector.X, _mouseVector.Y);
+
+                Vector _realPosition = new Vector(_roundUIContext.GameCtx.Window)
+
+                _roundUIContext.RoundContext.Player.Attack(_mouseVector2);
+            }*/
         }
     }
 }

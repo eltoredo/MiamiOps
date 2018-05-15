@@ -9,12 +9,18 @@ namespace MiamiOps
         TimeSpan _lifeSpan;
         DateTime _creationDate;
 
-        public Shoot(float timeShot, TimeSpan lifeSpan, float speed)
+        Vector _playerPosition;
+        Vector _mousePosition;
+        
+        public Shoot(float timeShot, TimeSpan lifeSpan, float speed, Vector playerPosition, Vector mousePosition)
         {
             _speed = speed;
             _timeShot = timeShot;
             _lifeSpan = lifeSpan;
             _creationDate = DateTime.UtcNow;
+
+            _playerPosition = playerPosition;
+            _mousePosition = mousePosition;
         }
 
         public TimeSpan LifeSpan
@@ -31,5 +37,7 @@ namespace MiamiOps
                 return span < _lifeSpan;
             }
         }
+
+        public Vector MousePosition => _mousePosition;
     }
 }

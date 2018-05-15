@@ -1,5 +1,4 @@
 ﻿using System;
-using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 
@@ -14,9 +13,7 @@ namespace MiamiOps
 
         Texture _bulletTexture;
         Sprite _bulletSprite;
-
-        Music music = new Music("../../../Menu/fireball.ogg");
-
+        
         public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Texture bulletTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
         {
             _roundUIContext = roundUIContext;
@@ -30,21 +27,25 @@ namespace MiamiOps
             _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundContext.Player.Place.Y * (mapHeight / 2));
         }
 
-        private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
+        private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
         {
             return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + (float)1.03) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.Place.Y + (float)0.98) * (mapHeight / 2));
         }
 
+        private Vector2f UpdatePlaceBullet(uint mapWidth, uint mapHeight)
+        {
+            int i = _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count;
+            if (i > 0) return new Vector2f(((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[i].MousePosition.X + 1) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[i].MousePosition.Y + 1) * (mapHeight / 2));
+            else return new Vector2f(0, 0);
+        }
+
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            this._weaponSprite.Position = UpdatePlace(mapWidth, mapHeight);
+            this._weaponSprite.Position = UpdatePlaceWeapon(mapWidth, mapHeight);
+            this._bulletSprite.Position = UpdatePlaceBullet(mapWidth, mapHeight);
 
             _weaponSprite.Draw(window, RenderStates.Default);
-            foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets)
-            {
-                music.Play();
-                _bulletSprite.Draw(window, RenderStates.Default);
-            }
+            foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets) _bulletSprite.Draw(window, RenderStates.Default);
         }
 
         public Vector2f WeaponPosition
