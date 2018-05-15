@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 
-
 namespace MiamiOps
 {
     public class Player
@@ -17,7 +16,6 @@ namespace MiamiOps
         float _height;
         Vector _direction;
         Weapon _currentWeapon;
-
 
         public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
@@ -34,7 +32,6 @@ namespace MiamiOps
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction) : this(context, place, life, speed, direction)
         {
             this._weapons = weapons;
-            //this._currentWeapon = this._weapons[0];
         }
 
         // Method to handle the player's movements
@@ -42,7 +39,6 @@ namespace MiamiOps
         {
             (bool, Vector) CanMoveInformation = CanMove(direction);
             if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
-
         }
 
         // When the player attacks the enemies
@@ -90,8 +86,8 @@ namespace MiamiOps
                     canMove = false;
                 }
             }
-
-        
+            Console.WriteLine(_place.X);
+            Console.WriteLine(_place.Y);
             return (canMove, nextPlace);
         }
 
@@ -104,15 +100,13 @@ namespace MiamiOps
             Vector playerPlace = this._place + move;
             return playerPlace;
         }
-            
 
         public Vector Direction => this._direction;
         public List<Weapon> Weapons => this._weapons;
         public Weapon CurrentWeapon => this._currentWeapon;
-        public Vector Place {
+        public Vector Place
+        {
             get { return this._place; }
-            set { this._place = value; }
         }
-
     }
 }

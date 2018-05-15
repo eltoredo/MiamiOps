@@ -29,7 +29,7 @@ namespace MiamiOps
         Round _ctxround;
         private uint firstX;
 
-        public Map(String XML, string tilesset, Round ctxRound)
+        public Map(String XML, string tilesset)
         {
 
             using (FileStream fs = File.OpenRead(XML))
@@ -57,7 +57,7 @@ namespace MiamiOps
                 height = 100;
                 tileSize = new Vector2u(32, 32);
                 tileset = new Texture(tilesset);
-                _ctxround = ctxRound;
+               // _ctxround = ctxRound;
                 ConstructMap();
             }
            

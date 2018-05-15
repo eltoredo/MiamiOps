@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 
 namespace MiamiOps
 {
@@ -19,9 +19,6 @@ namespace MiamiOps
         private Dictionary<int, Vector> _spawn;
         private Vector _enemiesSpawn;
         
-
-
-
         public Round(
             int nb_enemies,
             Vector? playerSpawn = null, Vector? enemieSpawn = null,
@@ -30,9 +27,7 @@ namespace MiamiOps
             float playerLargeur = 0, float playerHauteur = 0,
             float enemiesLargeur = 0, float enemiesHauteur = 0,
             Dictionary<int, Vector> enemySpawn = null
-           
-            )
-
+        )
         {
             Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
 
@@ -62,10 +57,8 @@ namespace MiamiOps
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
             this._spawn = enemySpawn;
-            if (_spawn != null)
-            {
-                this._count = this._spawn.Count;
-            }
+            if (_spawn != null) {this._count = this._spawn.Count;}
+
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
             this._player = new Player(this, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
@@ -77,7 +70,6 @@ namespace MiamiOps
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
 
             this._obstacles = new List<float[]>();
-            
         }
 
         internal float GetNextRandomFloat()
