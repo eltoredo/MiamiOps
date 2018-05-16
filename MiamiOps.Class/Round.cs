@@ -109,13 +109,14 @@ namespace MiamiOps
         // Method to update the player and all the enemies
         public void Update()
         {
-           
             _player.CurrentWeapon.Update();
+
             for (int i = 0 ; i < _count; i++)
             {
                 this._enemies[i].Move(this._player.Place);
                 
             }
+
             _time++;
             if (_time == 120)
             {
@@ -124,10 +125,7 @@ namespace MiamiOps
                 {
                     _count = this.Enemies.Length;
                 }
-                
             }
-
-            
         }
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)

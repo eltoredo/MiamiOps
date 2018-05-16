@@ -11,6 +11,7 @@ namespace MiamiOps
 
         Vector _playerPosition;
         Vector _mousePosition;
+        Vector _bulletPosition;
         
         public Shoot(float timeShot, TimeSpan lifeSpan, float speed, Vector playerPosition, Vector mousePosition)
         {
@@ -21,6 +22,7 @@ namespace MiamiOps
 
             _playerPosition = playerPosition;
             _mousePosition = mousePosition;
+            _bulletPosition = new Vector();
         }
 
         public TimeSpan LifeSpan
@@ -39,5 +41,10 @@ namespace MiamiOps
         }
 
         public Vector MousePosition => _mousePosition;
+        public Vector BulletPosition
+        {
+            get { return _bulletPosition; }
+            set { _bulletPosition = value; }
+        }
     }
 }

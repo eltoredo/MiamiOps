@@ -56,8 +56,6 @@ namespace MiamiOps
 
                 Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth/2.0)) - 1.0, mouseAim.Y * (1.0 / (_roundUIContext.MapHeight/2.0)) - 1.0); // Vraie coordonnées de la souris en -1 / 1
 
-                //_mouseVector = new Vector()
-
                 _roundUIContext.RoundContext.Player.Attack(finalMousePosition);
             }
         }

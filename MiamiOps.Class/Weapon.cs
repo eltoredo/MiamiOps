@@ -15,6 +15,8 @@ namespace MiamiOps
         uint _ammo;    // le nombre de fois où tu peux attaquer
         uint _maxAmmo;    // le nombre maximum de munition
 
+        int _count;
+
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
             float[] stats = new float[3]{attack, radius, range};
@@ -45,6 +47,23 @@ namespace MiamiOps
             if (_ammo <= 0) Reload();
         }
 
+        public Vector BulletMove(Shoot bullet, float speed)
+        {
+            Vector bulletPlace;
+
+            // Builds a vector in the direction of the mouse
+            Vector direction = bullet.MousePosition - _owner.Place;
+            // Builds a unit vector in the direction of the mouse
+            double diviseur = direction.Magnitude;
+            if (direction.Magnitude == 0) diviseur = 1;    // In case if the enemie is in (0, 0) the magnitude is 0 and we can't devided by 0
+            Vector unit_vector = direction * (1.0 / diviseur);
+            Vector move = unit_vector * speed;
+            if (_count == 1) bulletPlace = bullet.BulletPosition + move;
+            else bulletPlace = _owner.Place + move;
+            bullet.BulletPosition = bulletPlace;
+            return bullet.BulletPosition;
+        }
+
         public void Reload()
         {
             _ammo = _maxAmmo;
@@ -59,6 +78,9 @@ namespace MiamiOps
             }
 
             foreach (Shoot s in toRemove) _bullets.Remove(s);
+
+            int i = _bullets.Count;
+            if (i > 0) BulletMove(_bullets[i - 1], 0.05f);
         }
 
         public List<Shoot> Bullets => _bullets;
