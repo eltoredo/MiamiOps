@@ -27,7 +27,7 @@ namespace MiamiOps
             float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null,
             float playerLargeur = 0, float playerHauteur = 0,
             float enemiesLargeur = 0, float enemiesHauteur = 0,
-            Dictionary<int, Vector> enemySpawn = null
+            Dictionary<int, Vector> spawnEnnemieInDictionnary = null
         )
         {
             Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
@@ -57,7 +57,7 @@ namespace MiamiOps
             this._enemiesAttack = enemiesAttack;
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
-            this._spawn = enemySpawn;
+            this._spawn = spawnEnnemieInDictionnary;
             this._count = _spawn.Count;
             
             if (_spawn != null) {this._count = this._spawn.Count;}
