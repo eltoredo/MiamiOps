@@ -61,8 +61,9 @@ namespace MiamiOps
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
-                
+
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
+            }
 
             _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
