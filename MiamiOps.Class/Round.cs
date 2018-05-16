@@ -19,6 +19,7 @@ namespace MiamiOps
         private int _count;
         private Dictionary<int, Vector> _spawn;
         private Vector _enemiesSpawn;
+        private int _time;
         
         public Round(
             int nb_enemies,
@@ -30,7 +31,7 @@ namespace MiamiOps
             Dictionary<int, Vector> enemySpawn = null
         )
         {
-            Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+            Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
             if (
@@ -58,6 +59,8 @@ namespace MiamiOps
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
             this._spawn = enemySpawn;
+            this._count = _spawn.Count;
+            
             if (_spawn != null) {this._count = this._spawn.Count;}
 
             // Create the player and the array of enemies
@@ -69,7 +72,10 @@ namespace MiamiOps
             if (enemieSpawn == null) createPosition = CreateRandomPosition;
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
-
+            if (this._count > this._enemies.Length)
+            {
+                this._count = this._enemies.Length;
+            }
             this._obstacles = new List<float[]>();
         }
 
@@ -103,8 +109,25 @@ namespace MiamiOps
         // Method to update the player and all the enemies
         public void Update()
         {
-            foreach (Enemies enemy in this._enemies) enemy.Move(this._player.Place);
+           
             _player.CurrentWeapon.Update();
+            for (int i = 0 ; i < _count; i++)
+            {
+                this._enemies[i].Move(this._player.Place);
+                
+            }
+            _time++;
+            if (_time == 120)
+            {
+                _count += _spawn.Count;
+                if (_count > this._enemies.Length)
+                {
+                    _count = this.Enemies.Length;
+                }
+                
+            }
+
+            
         }
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)
@@ -118,5 +141,14 @@ namespace MiamiOps
         public float EnemiesAttack => _enemiesAttack;
         public Player Player => this._player;
         public List<float[]> Obstacles => this._obstacles;
+        public int SpawnCount => this._spawn.Count;
+        public int CountEnnemi => this._count;
+        public int Time {
+            get { return this._time; }
+            set
+            {
+                this._time = value;
+            }
+        }
     }
 }

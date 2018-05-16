@@ -41,6 +41,7 @@ namespace MiamiOps
 
 
             view.Center = new Vector2f(Xplayer, Yplayer);
+            
             return view;
         }
 
