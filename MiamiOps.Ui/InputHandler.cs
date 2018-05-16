@@ -46,14 +46,19 @@ namespace MiamiOps
             {
                 music.Play();
 
-                Vector2i _mouseVector2i = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
-                Vector _mouseVector = new Vector(_mouseVector2i.X, _mouseVector2i.Y);
+                Vector2f viewPos = _roundUIContext.GameCtx.MyView.GetPosition();
+                Vector viewPosition = new Vector(viewPos.X, viewPos.Y);
 
-                Vector _realMousePosition = new Vector(_roundUIContext.RoundContext.Player.Place.X - (_roundUIContext.GameCtx.MyView.Size.X / 2), _roundUIContext.RoundContext.Player.Place.Y - (_roundUIContext.GameCtx.MyView.Size.Y / 2));
+                Vector2i mouseVector2i = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
+                Vector mouseVector = new Vector(mouseVector2i.X, mouseVector2i.Y);
+
+                Vector mouseAim = new Vector(viewPosition.X + mouseVector.X, viewPosition.Y + mouseVector.Y);
+
+                Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth/2.0)) - 1.0, mouseAim.Y * (1.0 / (_roundUIContext.MapHeight/2.0)) - 1.0); // Vraie coordonnées de la souris en -1 / 1
 
                 //_mouseVector = new Vector()
 
-                _roundUIContext.RoundContext.Player.Attack(_mouseVector);
+                _roundUIContext.RoundContext.Player.Attack(finalMousePosition);
             }
         }
     }
