@@ -86,8 +86,7 @@ namespace MiamiOps
                     canMove = false;
                 }
             }
-            Console.WriteLine(_place.X);
-            Console.WriteLine(_place.Y);
+            
             return (canMove, nextPlace);
         }
 

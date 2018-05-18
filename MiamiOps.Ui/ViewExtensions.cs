@@ -1,6 +1,7 @@
 ﻿
 
 using SFML.System;
+using SFML.Window;
 
 namespace SFML.Graphics
 {
@@ -10,5 +11,6 @@ namespace SFML.Graphics
         {
             return new Vector2f(view.Center.X - view.Size.X / 2, view.Center.Y - view.Size.Y / 2);
         }
+
     }
 }

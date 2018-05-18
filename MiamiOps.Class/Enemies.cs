@@ -54,7 +54,7 @@ namespace MiamiOps
                 this._place = CanMoveInformation.Item2;
             }
         }
-
+        
         private (bool, Vector) CanMove(Vector target)
         {
             bool canMove = true;

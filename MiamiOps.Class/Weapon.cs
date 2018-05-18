@@ -40,7 +40,7 @@ namespace MiamiOps
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
 
-            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(8000), 1f, playerPosition, mousePlace);
+            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(8000), 0.005f, playerPosition, mousePlace);
             _bullets.Add(shoot);
 
             _ammo -= 1;
@@ -52,14 +52,22 @@ namespace MiamiOps
             Vector bulletPlace;
 
             // Builds a vector in the direction of the mouse
-            Vector direction = bullet.MousePosition - _owner.Place;
+            Vector direction = bullet.MousePosition - bullet.StartPosition;
             // Builds a unit vector in the direction of the mouse
             double diviseur = direction.Magnitude;
             if (direction.Magnitude == 0) diviseur = 1;    // In case if the enemie is in (0, 0) the magnitude is 0 and we can't devided by 0
             Vector unit_vector = direction * (1.0 / diviseur);
             Vector move = unit_vector * speed;
-            if (_count == 1) bulletPlace = bullet.BulletPosition + move;
-            else bulletPlace = _owner.Place + move;
+            if(bullet.CountBullet == 0)
+            {
+                bulletPlace = bullet.StartPosition + move;
+                bullet.CountBullet++;
+            }
+            else
+            {
+                bulletPlace = bullet.BulletPosition + move;
+            }
+
             bullet.BulletPosition = bulletPlace;
             return bullet.BulletPosition;
         }
@@ -72,15 +80,23 @@ namespace MiamiOps
         public void Update()
         {
             List<Shoot> toRemove = new List<Shoot>();
-            foreach(Shoot s in _bullets)
-            {
-                if (!s.IsAlive) toRemove.Add(s);
+
+
+            if (_bullets.Count > 0) {
+                
+                foreach (Shoot s in _bullets)
+                {
+                    BulletMove(s, s.SpeedBullet);
+                }
             }
 
-            foreach (Shoot s in toRemove) _bullets.Remove(s);
+            //foreach (Shoot s in _bullets)
+            //{
+            //    if (s.BulletPosition.X >= s.MousePosition.X || s.BulletPosition.Y >= s.MousePosition.Y) toRemove.Add(s);
+            //}
 
-            int i = _bullets.Count;
-            if (i > 0) BulletMove(_bullets[i - 1], 0.05f);
+            //foreach (Shoot s in toRemove) _bullets.Remove(s);
+
         }
 
         public List<Shoot> Bullets => _bullets;

@@ -8,6 +8,7 @@ namespace MiamiOps
         float _timeShot;
         TimeSpan _lifeSpan;
         DateTime _creationDate;
+        int _count;
 
         Vector _playerPosition;
         Vector _mousePosition;
@@ -22,7 +23,9 @@ namespace MiamiOps
 
             _playerPosition = playerPosition;
             _mousePosition = mousePosition;
+
             _bulletPosition = new Vector();
+            _count = 0;
         }
 
         public TimeSpan LifeSpan
@@ -45,6 +48,13 @@ namespace MiamiOps
         {
             get { return _bulletPosition; }
             set { _bulletPosition = value; }
+        }
+        public Vector StartPosition => _playerPosition;
+        public float SpeedBullet => _speed;
+        public int CountBullet
+        {
+            get { return _count; }
+            set { _count = value; }
         }
     }
 }

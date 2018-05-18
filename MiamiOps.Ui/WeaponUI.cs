@@ -34,8 +34,7 @@ namespace MiamiOps
 
         private Vector2f UpdatePlaceBullet(uint mapWidth, uint mapHeight)
         {
-            int i = _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count;
-            if (i > 0) return new Vector2f(((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[i-1].BulletPosition.X + 1) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[i-1].BulletPosition.Y + 1) * (mapHeight / 2));
+            if (_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count > 0) return new Vector2f(((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count - 1].BulletPosition.X + 1) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count - 1].BulletPosition.Y + 1) * (mapHeight / 2));
             else return new Vector2f(0, 0);
         }
 

@@ -13,7 +13,7 @@ public struct Vector
             this._ord = ord;
         }
 
-        public double X => this._abs;
+        public double X =>this._abs;
         public double Y => this._ord;
 
         public double Magnitude => Math.Sqrt(this._abs * this._abs + this._ord * this._ord);
