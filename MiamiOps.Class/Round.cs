@@ -71,7 +71,7 @@ namespace MiamiOps
 
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
-            this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir);
+            this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
