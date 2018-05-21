@@ -60,7 +60,7 @@ namespace MiamiOps
             this._enemiesHauteur = enemiesHauteur;
             this._spawn = enemySpawn;
             if (this._spawn == null) {
-                this._count = 0;
+                this._count = nb_enemies;
             }
             else
             {
