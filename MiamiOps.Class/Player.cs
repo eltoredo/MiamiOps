@@ -27,7 +27,7 @@ namespace MiamiOps
             this._width = width;
         }
 
-        public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction) : this(context, place, life, speed, direction)
+        public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
         {
             this._weapons = weapons;
             if (context != null)
