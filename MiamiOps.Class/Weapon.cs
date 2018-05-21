@@ -40,7 +40,7 @@ namespace MiamiOps
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
 
-            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(8000), 0.005f, playerPosition, mousePlace);
+            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(8000), 0.05f, playerPosition, mousePlace);
             _bullets.Add(shoot);
 
             _ammo -= 1;

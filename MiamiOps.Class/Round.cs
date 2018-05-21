@@ -59,9 +59,15 @@ namespace MiamiOps
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
             this._spawn = enemySpawn;
-            this._count = _spawn.Count;
+            if (this._spawn == null) {
+                this._count = 0;
+            }
+            else
+            {
+                this._count = _spawn.Count;
+            }
             
-            if (_spawn != null) {this._count = this._spawn.Count;}
+           
 
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
@@ -118,7 +124,7 @@ namespace MiamiOps
             }
 
             _time++;
-            if (_time == 120)
+            if (_time == 120 && this._spawn != null)
             {
                 _count += _spawn.Count;
                 if (_count > this._enemies.Length)
