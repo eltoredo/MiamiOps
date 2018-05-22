@@ -8,13 +8,10 @@ namespace MiamiOps
     public class InputHandler
     {
         RoundUI _roundUIContext;
-        Shoot _shoot;
-
-        Event _event;
 
         Texture _bulletTexture;
 
-        Music music = new Music("../../../Menu/fireball.ogg");
+        int i = 20;
 
         public InputHandler(RoundUI roundUIContext)
         {
@@ -44,8 +41,6 @@ namespace MiamiOps
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
-                music.Play();
-
                 Vector2f viewPos = _roundUIContext.GameCtx.MyView.GetPosition();
                 Vector viewPosition = new Vector(viewPos.X, viewPos.Y);
 
@@ -56,7 +51,12 @@ namespace MiamiOps
 
                 Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth/2.0)) - 1.0, mouseAim.Y * (1.0 / (_roundUIContext.MapHeight/2.0)) - 1.0); // Vraie coordonnées de la souris en -1 / 1
 
-                _roundUIContext.RoundContext.Player.Attack(finalMousePosition);
+                if (i == 20)
+                {
+                    _roundUIContext.RoundContext.Player.Attack(finalMousePosition);
+                    i = 0;
+                }
+                i++;
             }
         }
     }
