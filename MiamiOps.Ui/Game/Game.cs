@@ -44,8 +44,8 @@ namespace MiamiOps
         public override void Initialize()
         {
             _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
-            _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
-            _round = new Round(22, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"));
+            _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx", @"..\..\..\..\MiamiOps.Map\Map\MiamiOPSlvl1.png");
+            _round = new Round(22, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx"));
             _roundUI = new RoundUI(_round, this, 3168, 3168, _map);
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
