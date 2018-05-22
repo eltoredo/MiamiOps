@@ -102,5 +102,7 @@ namespace MiamiOps
         {
             if (e.Code == Keyboard.Key.Escape) Window.Close();
         }
+
+        public Window GameWindow => Window;
     }
 }

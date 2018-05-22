@@ -8,6 +8,7 @@ namespace MiamiOps
     {
         private Player _player;
         private Enemies[] _enemies;
+        private List<Weapon> _weapons = new List<Weapon>();
         private float _enemiesLife;
         private float _enemiesSpeed;
         private float _enemiesAttack;
@@ -58,13 +59,19 @@ namespace MiamiOps
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
             this._spawn = enemySpawn;
-            this._count = _spawn.Count;
+            if (this._spawn == null) {
+                this._count = nb_enemies;
+            }
+            else
+            {
+                this._count = _spawn.Count;
+            }
             
-            if (_spawn != null) {this._count = this._spawn.Count;}
+           
 
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
-            this._player = new Player(this, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
+            this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
@@ -108,24 +115,23 @@ namespace MiamiOps
         // Method to update the player and all the enemies
         public void Update()
         {
-           
+            _player.CurrentWeapon.Update();
+
             for (int i = 0 ; i < _count; i++)
             {
                 this._enemies[i].Move(this._player.Place);
                 
             }
+
             _time++;
-            if (_time == 120)
+            if (_time == 120 && this._spawn != null)
             {
                 _count += _spawn.Count;
                 if (_count > this._enemies.Length)
                 {
                     _count = this.Enemies.Length;
                 }
-                
             }
-
-            
         }
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)

@@ -60,10 +60,13 @@ namespace MiamiOps
 
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
+<<<<<<< HEAD
             {
 
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
             }
+=======
+>>>>>>> 49b31dcc094342e6372eee13ad2348b78aba6b78
 
             _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
@@ -76,6 +79,7 @@ namespace MiamiOps
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+           
         }
 
         public void UpdateSpawnEnnemie()
