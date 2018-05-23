@@ -32,19 +32,21 @@ namespace MiamiOps
             return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + (float)1.03) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.Place.Y + (float)0.98) * (mapHeight / 2));
         }
 
-        private Vector2f UpdatePlaceBullet(uint mapWidth, uint mapHeight)
+        private Vector2f UpdatePlaceBullet(Shoot bullet, uint mapWidth, uint mapHeight)
         {
-            if (_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count > 0) return new Vector2f(((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count - 1].BulletPosition.X + 1) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets[_roundUIContext.RoundContext.Player.CurrentWeapon.Bullets.Count - 1].BulletPosition.Y + 1) * (mapHeight / 2));
-            else return new Vector2f(0, 0);
+            return new Vector2f(((float)bullet.BulletPosition.X + 1) * (mapWidth / 2), ((float)bullet.BulletPosition.Y + 1) * (mapHeight / 2));
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
             this._weaponSprite.Position = UpdatePlaceWeapon(mapWidth, mapHeight);
-            this._bulletSprite.Position = UpdatePlaceBullet(mapWidth, mapHeight);
-
             _weaponSprite.Draw(window, RenderStates.Default);
-            foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets) _bulletSprite.Draw(window, RenderStates.Default);
+
+            foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets)
+            {
+                this._bulletSprite.Position = UpdatePlaceBullet(bullet, mapWidth, mapHeight);
+                _bulletSprite.Draw(window, RenderStates.Default);
+            }
         }
 
         public Vector2f WeaponPosition
