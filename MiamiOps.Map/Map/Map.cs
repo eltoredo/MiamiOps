@@ -18,8 +18,8 @@ namespace MiamiOps
         private int width;
         private int height;
         private Vector2u tileSize;
-        private int tilewidth;
-        private int tileheight;
+        private uint tilewidth;
+        private uint tileheight;
         private string[] level_array1;
         private string[] level_array2;
         private string[] level_array3;
@@ -36,12 +36,37 @@ namespace MiamiOps
             using (StreamReader sr = new StreamReader(fs, true))
             {
                 XElement xml = XElement.Load(sr);
+
+                tileheight   = uint.Parse(xml.Attribute("tileheight").Value);
+                Console.WriteLine(tileheight);
+
+                tilewidth = tileheight;
+
+
+                height = int.Parse(xml.Attribute("height").Value);
+                width = int.Parse(xml.Attribute("width").Value);
+
+                Console.WriteLine(height);
+
+             /*
+
+                 IEnumerable<XAttribute> levelInfo = xml.Descendants("layer")
+                     .Single(l => l.Attribute("name").Value == "terrain1").Attributes();
+                  IEnumerator<XAttribute> attributes = levelInfo.GetEnumerator();
+                  while (attributes.MoveNext())
+                      if (attributes.Current.Name == "width") width = int.Parse(attributes.Current.Value);
+                      else if (attributes.Current.Name == "height")  height = int.Parse(attributes.Current.Value);
+              */  
                 string level = xml.Descendants("layer")
-                                  .Single(l => l.Attribute("name").Value == "terrain1")
+                                  .Single((l) => {
+                                      return l.Attribute("name").Value == "terrain1";
+                                  })
                                   .Element("data").Value;
+
                 string level_layer2 = xml.Descendants("layer")
                                   .Single(l => l.Attribute("name").Value == "terrain2")
                                   .Element("data").Value;
+
                 string level_layer3 = xml.Descendants("layer")
                                   .Single(l => l.Attribute("name").Value == "spawn")
                                   .Element("data").Value;
@@ -53,9 +78,7 @@ namespace MiamiOps
                 total_array.Add(2,level_array3);
                 level_layers_length = total_array.Count;
 
-                width = 100;
-                height = 100;
-                tileSize = new Vector2u(32, 32);
+                tileSize = new Vector2u(tileheight,tilewidth);
                 tileset = new Texture(tilesset);
                // _ctxround = ctxRound;
                 ConstructMap();
