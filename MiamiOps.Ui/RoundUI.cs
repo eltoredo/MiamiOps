@@ -56,7 +56,7 @@ namespace MiamiOps
             _roundCtx = roundCtx;
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
-            _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
+            _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
 
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)

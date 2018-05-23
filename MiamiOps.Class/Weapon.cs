@@ -16,8 +16,6 @@ namespace MiamiOps
         uint _ammo;    // le nombre de fois où tu peux attaquer
         uint _maxAmmo;    // le nombre maximum de munition
 
-        int _count;
-
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
             float[] stats = new float[3]{attack, radius, range};
@@ -41,7 +39,7 @@ namespace MiamiOps
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
 
-            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(8000), 0.05f, playerPosition, mousePlace);
+            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(5000), 0.005f, playerPosition, mousePlace);
             _bullets.Add(shoot);
 
             _ammo -= 1;
@@ -80,13 +78,6 @@ namespace MiamiOps
 
         public void Update()
         {
-            foreach (Shoot s in _bullets)
-            {
-                if (!s.IsAlive) toRemove.Add(s);
-            }
-
-            foreach (Shoot s in toRemove) _bullets.Remove(s);
-
             if (_bullets.Count > 0)
             {
                 foreach (Shoot s in _bullets)
@@ -94,6 +85,13 @@ namespace MiamiOps
                     BulletMove(s, s.SpeedBullet);
                 }
             }
+
+            foreach (Shoot s in _bullets)
+            {
+                if (!s.IsAlive) toRemove.Add(s);
+            }
+
+            foreach (Shoot s in toRemove) _bullets.Remove(s);
         }
 
         public List<Shoot> Bullets => _bullets;
