@@ -10,6 +10,7 @@ namespace MiamiOps
         RoundUI _roundUIContext;
 
         Texture _bulletTexture;
+        Music _bulletSound;
 
         int i = 20;
 
@@ -18,6 +19,7 @@ namespace MiamiOps
             _roundUIContext = roundUIContext;
 
             _bulletTexture = new Texture("../../../../Images/fireball.png");
+            _bulletSound = new Music("../../../Menu/bullet_sound.ogg");
         }
 
         public void Handle()
@@ -53,6 +55,7 @@ namespace MiamiOps
 
                 if (i == 20)
                 {
+                    _bulletSound.Play();
                     _roundUIContext.RoundContext.Player.Attack(finalMousePosition);
                     i = 0;
                 }
