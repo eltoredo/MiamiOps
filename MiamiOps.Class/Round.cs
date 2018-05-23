@@ -28,7 +28,7 @@ namespace MiamiOps
             float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null,
             float playerLargeur = 0, float playerHauteur = 0,
             float enemiesLargeur = 0, float enemiesHauteur = 0,
-            Dictionary<int, Vector> spawnEnnemieInDictionnary = null
+            Dictionary<int, Vector> enemySpawn = null
         )
         {
             Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
