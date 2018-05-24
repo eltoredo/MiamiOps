@@ -87,5 +87,27 @@ namespace MiamiOps.Tests
             for (int idx = 0; idx < 15; idx += 1) {play.Update();}
             Assert.AreEqual(arrive_x, play.Enemies[0].Place.X, 0.01);
         }
+
+        [Test]
+        public void test_if_triangle_colide()
+        {
+            bool colide;
+            colide = ColideHelpers.areColide(new(double, double)[3] { (1, 3),(3, 3),(5, 5) },new(double, double)[3] { (2, 2),(4, 2),(4, 5) });
+            Assert.That(colide,Is.True);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (2, 1),(4, 3),(4, 1) },new(double, double)[3] { (4, 0),(3, 3),(5, 2) });
+            Assert.That(colide,Is.True);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (4, 0),(3, 3),(5, 2) },new(double, double)[3] { (2, 1),(4, 3),(4, 1) });
+            Assert.That(colide,Is.True);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (1, 1),(3, 6),(5, 1) },new(double, double)[3] { (2, 2),(3, 4),(4, 2) });
+            Assert.That(colide,Is.True);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (1, 4),(2, 6),(3, 4) },new(double, double)[3] { (2, 2),(6, 5),(5, 3) });
+            Assert.That(colide,Is.False);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (2, 2),(6, 5),(5, 3) },new(double, double)[3] { (1, 4),(2, 6),(3, 4) });
+            Assert.That(colide,Is.False);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (1, 0),(2, 0),(3, 0) },new(double, double)[3] { (2, 3),(6, 3),(5, 3) });
+            Assert.That(colide,Is.False);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (0, 0),(0, 0),(0, 0) },new(double, double)[3] { (2, 2),(6, 5),(5, 3) });
+            Assert.That(colide,Is.False);
+        }
     }  
 }
