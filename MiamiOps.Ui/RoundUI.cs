@@ -72,7 +72,7 @@ namespace MiamiOps
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
             }
 
-            _ath = new ATH(_roundCtx, screenWidth, screenHeight,_viewATH);
+            _ath = new ATH(_roundCtx, screenWidth, screenHeight,_view);
             _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
@@ -89,7 +89,7 @@ namespace MiamiOps
 
         public void Update()
         {
-            _ath.UpdateATH(this._view);
+            _ath.UpdateATH(this._view,MapWidth,MapHeight);
             UpdateSpawnEnnemie();
         }
 
