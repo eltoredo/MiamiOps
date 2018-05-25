@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiamiOps.Class\MiamiOps.Class.csproj" />
+    <ProjectReference Include="..\MiamiOps.Map\MiamiOps.Map.csproj" />
   </ItemGroup>
 
   <ItemGroup>

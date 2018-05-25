@@ -1,9 +1,6 @@
 ﻿using SFML.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace MiamiOps
 {
@@ -12,11 +9,15 @@ namespace MiamiOps
         PlayerUI _playerUI;
         EnemiesUI[] _enemies;
         WeaponUI _weaponUI;
+        Game _gameCtx;
+        Map _mapCtx;
+        Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
 
         uint _mapWidth;
         uint _mapHeight;
 
         Round _roundCtx;
+       
         //EnemiesUI = _enemiesUI;
 
         public Round RoundContext
@@ -34,20 +35,37 @@ namespace MiamiOps
             get { return _mapHeight; }
         }
 
-        public RoundUI(Round roundCtx, uint mapWidth, uint mapHeight)
+        public PlayerUI PlayerUI
         {
-            Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
+            get { return _playerUI; }
+        }
+
+        public Game GameCtx
+        {
+            get { return _gameCtx; }
+        }
+
+        public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx)
+        {
+           
+            Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
+            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
 
             Random _random = new Random();
 
             _roundCtx = roundCtx;
-
-            _playerUI = new PlayerUI(this, 2, 3, 33, 32, new Vector(0, 0), mapWidth, mapHeight);
+            _gameCtx = gameCtx;
+            _mapCtx = mapCtx;
+            _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
 
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
-            for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight);
+            for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
+            {
 
-            _weaponUI = new WeaponUI(this, _roundCtx.Player.Place, mapWidth, mapHeight);
+                _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
+            }
+
+            _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
@@ -57,7 +75,30 @@ namespace MiamiOps
         {
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
-            for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+            for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
         }
+
+        public void UpdateSpawnEnnemie()
+        {
+            if (this._roundCtx.Time == 120)
+            {
+                int index = this._roundCtx.CountEnnemi - this._roundCtx.SpawnCount;
+                if(index < 0)
+                {
+                    index = 0;
+                }
+
+                for (int i = index; i < this._roundCtx.CountEnnemi; i++)
+                {
+                    _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, MapWidth, MapHeight, MapCtx);
+                }
+                this._roundCtx.Time = 0;
+
+            }
+ 
+        
+        }
+
+        public Map MapCtx => _mapCtx;
     }
 }

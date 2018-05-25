@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiamiOps.Class", "MiamiOps.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiamiOps.Tests", "MiamiOps.Tests\MiamiOps.Tests.csproj", "{1EA4959D-C9A4-45D0-A48E-73EF763DD07F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiamiOps.UI", "MiamiOps.Ui\MiamiOps.UI.csproj", "{7AD04F08-32D1-4BF6-9156-85BC9863DAE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiamiOps.UI", "MiamiOps.Ui\MiamiOps.UI.csproj", "{7AD04F08-32D1-4BF6-9156-85BC9863DAE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiamiOps.Map", "MiamiOps.Map\MiamiOps.Map.csproj", "{205E6891-7C28-4705-8936-E2C0A833EA75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{7AD04F08-32D1-4BF6-9156-85BC9863DAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AD04F08-32D1-4BF6-9156-85BC9863DAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AD04F08-32D1-4BF6-9156-85BC9863DAE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205E6891-7C28-4705-8936-E2C0A833EA75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205E6891-7C28-4705-8936-E2C0A833EA75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205E6891-7C28-4705-8936-E2C0A833EA75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205E6891-7C28-4705-8936-E2C0A833EA75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

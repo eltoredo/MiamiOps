@@ -29,12 +29,12 @@ namespace MiamiOps.Tests
             WeaponFactory factory = new WeaponFactory();
             Player player = CreatePlayer(factory);
 
-            player.ChangeWeapon(-2);
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
+            player.ChangeWeapon(1);
             Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[0]));
-            player.ChangeWeapon(-1);
-            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
-            player.ChangeWeapon(3);
-            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[2]));
+            player.ChangeWeapon(-2);
+            player.ChangeWeapon(2);
+            Assert.That(player.CurrentWeapon, Is.EqualTo(player.Weapons[0]));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace MiamiOps.Tests
         [Test]
         public void If_the_player_have_any_weapon_nothing_append_when_he_try_to_change()
         {
-            Player player = new Player(null, new Vector(0, 0), 1, 1);
+            Player player = new Player(null, new Vector(0, 0), 1, 1, new Vector(0, 0));
             player.ChangeWeapon(9);
             Assert.That(player.CurrentWeapon, Is.EqualTo(null));
         }
@@ -67,7 +67,7 @@ namespace MiamiOps.Tests
 
         private Player CreatePlayer(WeaponFactory factory)
         {
-            Player player = new Player(new List<Weapon>(), null, new Vector(0, 0), 1, 1);
+            Player player = new Player(new List<Weapon>(), null, new Vector(0, 0), 1, 1, new Vector(0, 0));
             player.GetNewWeapon(factory.CreateAssaultRifle(player));
             player.GetNewWeapon(factory.CreateBaseballBat(player));
             player.GetNewWeapon(factory.CreateSoulcalibur(player));

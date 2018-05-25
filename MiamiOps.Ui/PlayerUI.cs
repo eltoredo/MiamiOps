@@ -15,12 +15,16 @@ namespace MiamiOps
         int _nbSprite;    // The number of column in a sprite
         int _spriteWidth;
         int _spriteHeight;
+        Map _ctxMap;
 
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
-        int _direction;    // Direction in which the player is looking
-        int _animStop;    // The width of the player multiplied by the number of frames to get the actual animated movement
+        int _nbDirection;
+        int _direction;
+        int _animStop;
+        FloatRect _hitBoxPlayer;
+        Color colorCharacters = new Color(255, 255, 255, 255);
 
-        public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight)
+        public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight,Map ctxMap)
         {
             _roundUIContext = roundUIContext;
             _player = _roundUIContext.RoundContext.Player;
@@ -36,23 +40,42 @@ namespace MiamiOps
             this._playerSprite.Position = new Vector2f((float)playerPlace.X * (mapWidth / 2), (float)playerPlace.Y * (mapHeight / 2));
 
             _animFrames = 0;    // Basically, the player is not moving
-            _direction = spriteHeight * 2;    // Basically, the player looks to the right
+            _direction = 2;
+            _animStop = 0;
+            _ctxMap = ctxMap;
+            _hitBoxPlayer = _playerSprite.GetGlobalBounds();
         }
 
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
         {
-            return new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), ((float)_player.Place.Y + 1) * (mapHeight / 2));
+            _nbDirection = Conversion(_roundUIContext.RoundContext.Player.Direction);
+            Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), ((float)_player.Place.Y + 1) * (mapHeight / 2));
+            
+            return newPlayerPlace;
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            this._playerSprite.Position = UpdatePlace(mapWidth, mapHeight);
+            _animStop = _spriteWidth;
+            _direction = _spriteHeight * _nbDirection;
+            _hitBoxPlayer = _playerSprite.GetGlobalBounds();
 
+            this._playerSprite.Position = UpdatePlace(mapWidth, mapHeight);
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-
+         
             _playerSprite.Draw(window, RenderStates.Default);
+           
+        }
+
+        private int Conversion(Vector vector)
+        {
+            if (vector.X > 0) return 2;
+            if (vector.X < 0) return 1;
+            if (vector.Y > 0) return 0;
+            if (vector.Y < 0) return 3;
+            return 1;
         }
 
         public Vector2f PlayerPosition
