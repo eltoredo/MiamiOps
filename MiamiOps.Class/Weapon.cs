@@ -16,6 +16,9 @@ namespace MiamiOps
         uint _ammo;    // le nombre de fois où tu peux attaquer
         uint _maxAmmo;    // le nombre maximum de munition
 
+        int _time;
+
+
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
             float[] stats = new float[3]{attack, radius, range};
@@ -92,52 +95,32 @@ namespace MiamiOps
             }
 
             foreach (Shoot s in toRemove) _bullets.Remove(s);
+
         }
 
         public List<Shoot> Bullets => _bullets;
     }
 
-
     public class WeaponFactory
     {
-        public Weapon CreateAssaultRifle(Player owner)
+        readonly float _attack;
+        readonly float _radius;
+        readonly float _range;
+        readonly uint _maxAmmo;
+
+
+
+        public WeaponFactory(float attack, float radius, float range, uint maxAmmo)
         {
-            return new Weapon(owner, 0, 0, 0, 30);
+            _attack = attack;
+            _radius = radius;
+            _range = range;
+            _maxAmmo = maxAmmo;
         }
 
-        public Weapon CreateShotgun(Player owner)
+        public Weapon CreateWeapon(Player owner)
         {
-            return new Weapon(owner, 0, 0, 0, 8);
-        }
-
-        public Weapon CreatePistol(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 12);
-        }
-
-        public Weapon CreateBaseballBat(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateSoulcalibur(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateChaosBlade(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateGodBlade(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateCompanion()
-        {
-            throw new NotImplementedException();
+            return new Weapon(owner, _attack, _radius, _range, _maxAmmo);
         }
     }
 }

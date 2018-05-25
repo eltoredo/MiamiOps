@@ -20,6 +20,9 @@ namespace MiamiOps
         private Dictionary<int, Vector> _spawn;
         private Vector _enemiesSpawn;
         private int _time;
+        private int _timeForWeaponSpawn;
+
+        private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
         
         public Round(
             int nb_enemies,
@@ -83,6 +86,8 @@ namespace MiamiOps
                 this._count = this._enemies.Length;
             }
             this._obstacles = new List<float[]>();
+
+         
         }
 
         internal float GetNextRandomFloat()
@@ -124,6 +129,7 @@ namespace MiamiOps
             }
 
             _time++;
+            _timeForWeaponSpawn++;
             if (_time == 120 && this._spawn != null)
             {
                 _count += _spawn.Count;
@@ -131,6 +137,12 @@ namespace MiamiOps
                 {
                     _count = this.Enemies.Length;
                 }
+            }
+
+            if(_timeForWeaponSpawn == 60)
+            {
+              
+
             }
         }
 
