@@ -8,22 +8,11 @@ namespace MiamiOps
 {
     public interface IStuff
     {
-
-
+        void WalkOn();
     }
 
-    public class IStuffFactory
+    public interface IStuffFactory : IStuff
     {
-        public IStuffFactory()
-        {
-
-        }
-
-
-        public IStuff CreateIStuff()
-        {
-            throw new NotImplementedException();
-        }
-
+        IStuff Create();
     }
 }

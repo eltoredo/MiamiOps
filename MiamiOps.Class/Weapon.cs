@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MiamiOps
 {
-    public class Weapon
+    public class Weapon : IStuff
     {
         Player _owner;
 
@@ -98,10 +98,15 @@ namespace MiamiOps
 
         }
 
+        public void WalkOn()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Shoot> Bullets => _bullets;
     }
 
-    public class WeaponFactory
+    public class WeaponFactory : IStuffFactory
     {
         readonly float _attack;
         readonly float _radius;
@@ -118,9 +123,14 @@ namespace MiamiOps
             _maxAmmo = maxAmmo;
         }
 
-        public Weapon CreateWeapon(Player owner)
+        public IStuff Create()
         {
-            return new Weapon(owner, _attack, _radius, _range, _maxAmmo);
+            return new Weapon(_owner, _attack, _radius, _range, _maxAmmo);
+        }
+
+        public void WalkOn()
+        {
+            throw new NotImplementedException();
         }
     }
 }

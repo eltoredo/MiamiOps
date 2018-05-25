@@ -22,6 +22,8 @@ namespace MiamiOps
         private int _time;
         private int _timeForWeaponSpawn;
 
+        private List<IStuffFactory>_stuffFactory = new List<IStuffFactory>();
+
         private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
         
         public Round(

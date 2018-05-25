@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiamiOps
 {
-    public class Package
+    public class Package : IStuff
     {
 
         Vector _place;
@@ -45,6 +45,11 @@ namespace MiamiOps
             return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
         }
 
+        public void WalkOn()
+        {
+            throw new NotImplementedException();
+        }
+
         public TimeSpan LifeSpan
         {
             get { return _lifeSpan; }
@@ -62,8 +67,7 @@ namespace MiamiOps
 
     }
 
-
-    public class PackageFactory
+    public class PackageFactory : IStuffFactory
     {
         readonly string _name;
        readonly TimeSpan _lifeSpan;
@@ -76,12 +80,16 @@ namespace MiamiOps
             _name = name;
             _lifeSpan = lifeSpan;
             _id = id;
-           
         }
 
-        public Package CreatePackage()
+        public IStuff Create()
         {
             return new Package(_name, _lifeSpan, _id);
+        }
+
+        public void WalkOn()
+        {
+            throw new NotImplementedException();
         }
     }
 }
