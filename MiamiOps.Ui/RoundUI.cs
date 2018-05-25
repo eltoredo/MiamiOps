@@ -13,8 +13,9 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
-        Texture _athLifeBar = new Texture("../../../../Images/LifeBar.png");
         ATH _ath;
+        View _view;
+        View _viewATH;
 
         uint _mapWidth;
         uint _mapHeight;
@@ -48,17 +49,20 @@ namespace MiamiOps
             get { return _gameCtx; }
         }
 
-        public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx,uint screenWidth,uint screenHeight)
+        public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx,uint screenWidth,uint screenHeight,View viewPlayer, View viewATH)
         {
            
             Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
-           
+            Texture _athLifeBar = new Texture("../../../../Images/LifeBar.png");
+
             Random _random = new Random();
 
             _roundCtx = roundCtx;
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
+            _view = viewPlayer;
+            _viewATH = viewATH;
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
 
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
@@ -68,7 +72,7 @@ namespace MiamiOps
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
             }
 
-            _ath = new ATH(_roundCtx, screenWidth, screenHeight);
+            _ath = new ATH(_roundCtx, screenWidth, screenHeight,_viewATH);
             _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
@@ -81,6 +85,12 @@ namespace MiamiOps
             _weaponUI.Draw(window, mapWidth, mapHeight);
             _ath.Draw(window);
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+        }
+
+        public void Update()
+        {
+            _ath.UpdateATH(this._view);
+            UpdateSpawnEnnemie();
         }
 
         public void UpdateSpawnEnnemie()
@@ -101,19 +111,7 @@ namespace MiamiOps
             }
         }
 
-        public void UpdateATH(View view)
-        {
-            int b = 300;
-            for (int i = 0; i < _ath.AthList.Count; i++)
-            {
-                _ath.AthList[i].Position = new Vector2f(view.Center.X + 200*2, view.Center.Y - b );
-                b-=100;
-            }
-
-           _ath.AthList[0].DisplayedString =  "PV: " +_roundCtx.Player.LifePlayer.ToString()+ "/100";
-
-        }
-
+      
         public Map MapCtx => _mapCtx;
     }
 }

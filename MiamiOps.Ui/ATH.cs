@@ -17,17 +17,18 @@ namespace MiamiOps
 
         Round _ctx;
 
-        public ATH(Round Context, float width, float height)
+        public ATH(Round Context, float width, float height, View View)
         {
             _life = Context.Player.LifePlayer;
             _ammo = Context.Player.CurrentWeapon.Ammo;
+            _ctx = Context;
 
             Text LifeBar = new Text
             {
                 Font = font,
                 Color = Color.White,
                 DisplayedString = "PV: "+_life.ToString() + "/100",
-                Position = new Vector2f(width / 2 - width / 10, height - height / 3),
+                Position = new Vector2f(View.Size.X, View.Size.Y/3),
                 
             };
             athList.Add(LifeBar);
@@ -37,10 +38,11 @@ namespace MiamiOps
                 Font = font,
                 Color = Color.White,
                 DisplayedString ="Ammo: " + _ammo.ToString(),
-                Position = new Vector2f(width / 2 - width / 10, height - height / 4),
+                Position = new Vector2f(View.Size.X, View.Size.Y / 2),
 
             };
             athList.Add(AmmoBar);
+
         }
 
 
@@ -50,6 +52,19 @@ namespace MiamiOps
             {
                 window.Draw(athList[i]);
             }
+
+        }
+
+        public void UpdateATH(View view)
+        {
+            int b = 300;
+            for (int i = 0; i < athList.Count; i++)
+            {
+                athList[i].Position = new Vector2f(view.Center.X + 200 * 2, view.Center.Y - b);
+                b -= 100;
+            }
+
+            athList[0].DisplayedString = "PV: " + this._ctx.Player.LifePlayer.ToString() + "/100";
 
         }
 
