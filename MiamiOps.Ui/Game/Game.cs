@@ -25,7 +25,8 @@ namespace MiamiOps
         View _minimap;
         Camera _camera;
         Convert _convert = new Convert();
-       
+        
+
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -45,8 +46,8 @@ namespace MiamiOps
         {
             _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx", @"..\..\..\..\MiamiOps.Map\Map\MiamiOPSlvl1.png");
-            _round = new Round(22, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx"));
-            _roundUI = new RoundUI(_round, this, 3168, 3168, _map);
+            _round = new Round(22, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx"),playerLife:100);
+            _roundUI = new RoundUI(_round, this, 3168, 3168, _map,DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
             _camera = new Camera();
@@ -61,10 +62,12 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
+            _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3168, 3168, _view);
             _playerInput.Handle();
             _round.Update();
             _roundUI.UpdateSpawnEnnemie();
-            _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3168 , 3168, _view);
+            _roundUI.UpdateATH(_view);
+           
         
         }
 

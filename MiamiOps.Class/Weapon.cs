@@ -95,6 +95,7 @@ namespace MiamiOps
         }
 
         public List<Shoot> Bullets => _bullets;
+        public uint Ammo => this._ammo;
     }
 
 
