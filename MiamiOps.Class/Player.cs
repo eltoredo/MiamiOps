@@ -12,6 +12,9 @@ namespace MiamiOps
         float _speed;
         float _width;
         float _height;
+        int _level;
+        float _experience;
+        float _experienceMax;
         Vector _direction;
         Weapon _currentWeapon;
 
@@ -25,6 +28,9 @@ namespace MiamiOps
             this._weapons = new List<Weapon>();
             this._height = height;
             this._width = width;
+            this._level = 1;
+            this._experience = 0;
+            this._experienceMax = 100;
         }
 
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
@@ -63,6 +69,17 @@ namespace MiamiOps
             }
         }
 
+        public bool LevelUp()
+        {
+            if (_experience == _experienceMax)
+            {
+                this._level++;
+                _experienceMax += 100;
+                return true;
+            }
+            else return false;
+        }
+
         private (bool, Vector) CanMove(Vector direction)
         {
             bool canMove = true;
@@ -98,6 +115,18 @@ namespace MiamiOps
             Vector move = unit_vector * this._speed;
             Vector playerPlace = this._place + move;
             return playerPlace;
+        }
+
+        public void Update()
+        {
+            LevelUp();
+        }
+
+        public int Level => _level;
+        public float Experience
+        {
+            get { return _experience; }
+            set { _experience = value; }
         }
 
         public Vector Direction => this._direction;
