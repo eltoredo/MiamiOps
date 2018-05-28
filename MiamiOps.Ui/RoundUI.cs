@@ -49,21 +49,22 @@ namespace MiamiOps
 
         public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx)
         {
+            Random _random = new Random();
+
+            _roundCtx = roundCtx;
+
             // Si c'est l'arme 1 soit le fusil d'assaut
-            //if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[0])
-            //{
+            /*if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[0])
+            {
                 Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
                 Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
-            //}
+            }*/
             /*else if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[1])
             {
                 Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
                 Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
             }*/
 
-            Random _random = new Random();
-
-            _roundCtx = roundCtx;
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
