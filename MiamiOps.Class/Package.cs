@@ -47,7 +47,6 @@ namespace MiamiOps
 
         public void WalkOn()
         {
-            throw new NotImplementedException();
         }
 
         public TimeSpan LifeSpan
@@ -70,10 +69,8 @@ namespace MiamiOps
     public class PackageFactory : IStuffFactory
     {
         readonly string _name;
-       readonly TimeSpan _lifeSpan;
-       readonly int _id;
-
-
+        readonly TimeSpan _lifeSpan;
+        readonly int _id;
 
         public PackageFactory(string name, TimeSpan lifeSpan, int id)
         {
@@ -85,11 +82,6 @@ namespace MiamiOps
         public IStuff Create()
         {
             return new Package(_name, _lifeSpan, _id);
-        }
-
-        public void WalkOn()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -100,7 +100,6 @@ namespace MiamiOps
 
         public void WalkOn()
         {
-            throw new NotImplementedException();
         }
 
         public List<Shoot> Bullets => _bullets;
@@ -113,10 +112,12 @@ namespace MiamiOps
         readonly float _range;
         readonly uint _maxAmmo;
 
+        Round _roundCtx;
 
-
-        public WeaponFactory(float attack, float radius, float range, uint maxAmmo)
+        public WeaponFactory(Round roundCtx, float attack, float radius, float range, uint maxAmmo)
         {
+            _roundCtx = roundCtx;
+
             _attack = attack;
             _radius = radius;
             _range = range;
@@ -125,12 +126,7 @@ namespace MiamiOps
 
         public IStuff Create()
         {
-            return new Weapon(_owner, _attack, _radius, _range, _maxAmmo);
-        }
-
-        public void WalkOn()
-        {
-            throw new NotImplementedException();
+            return new Weapon(_roundCtx.Player, _attack, _radius, _range, _maxAmmo);
         }
     }
 }

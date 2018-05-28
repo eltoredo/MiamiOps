@@ -22,7 +22,9 @@ namespace MiamiOps
         private int _time;
         private int _timeForWeaponSpawn;
 
-        private List<IStuffFactory>_stuffFactory = new List<IStuffFactory>();
+
+        Random _random;
+        private List<IStuffFactory> _stuffFactories;
 
         private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
         
@@ -36,6 +38,11 @@ namespace MiamiOps
             Dictionary<int, Vector> enemySpawn = null
         )
         {
+            _random = new Random();
+            _stuffFactories = new List<IStuffFactory>();
+            _stuffFactories.Add(new PackageFactory("Health Package", TimeSpan.FromMinutes(2), 1)); // indice de rareté
+            _stuffFactories.Add(new WeaponFactory(this, 10, 1, 1, 12));
+
             Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
@@ -143,8 +150,11 @@ namespace MiamiOps
 
             if(_timeForWeaponSpawn == 60)
             {
-              
+                int factoryIndex = _random.Next(0, _stuffFactories.Count);
+                IStuffFactory randomStuffFactory = _stuffFactories[factoryIndex];
+                IStuff stuff = randomStuffFactory.Create();
 
+                _timeForWeaponSpawn = 0;
             }
         }
 

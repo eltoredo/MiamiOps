@@ -11,7 +11,7 @@ namespace MiamiOps
         void WalkOn();
     }
 
-    public interface IStuffFactory : IStuff
+    public interface IStuffFactory
     {
         IStuff Create();
     }
