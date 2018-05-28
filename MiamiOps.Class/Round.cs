@@ -85,7 +85,11 @@ namespace MiamiOps
 
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
+
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
+            this._player.GetNewWeapon(new Weapon("baseball_bat", 0f, 0, 0f, 60));
+            this._player.GetNewWeapon(new Weapon("ak47", 0f, 0, 0f, 30));
+            this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"

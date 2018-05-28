@@ -2,6 +2,8 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using System;
+using System.Threading;
 
 namespace MiamiOps
 {
@@ -13,6 +15,7 @@ namespace MiamiOps
         Music _bulletSound;
 
         int i = 20;
+        int _changeWeapon;
 
         public InputHandler(RoundUI roundUIContext)
         {
@@ -20,6 +23,7 @@ namespace MiamiOps
 
             _bulletTexture = new Texture("../../../../Images/fireball.png");
             _bulletSound = new Music("../../../Menu/bullet_sound.ogg");
+            _changeWeapon = 0;
         }
 
         public void Handle()
@@ -43,7 +47,14 @@ namespace MiamiOps
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.P))
             {
-                _roundUIContext.RoundContext.Player.ChangeWeapon(1);
+                Thread.Sleep(45);
+                _changeWeapon++;
+                if(_changeWeapon >= _roundUIContext.RoundContext.Player.Weapons.Count-1)
+                {
+                    _changeWeapon = 0;
+                }
+                _roundUIContext.RoundContext.Player.ChangeWeapon(_changeWeapon);
+               
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
