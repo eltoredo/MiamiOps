@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using System;
 using System.Threading;
 
@@ -19,9 +20,9 @@ namespace MiamiOps
         uint _mapHeight;
 
         Round _roundCtx;
-       
-        //EnemiesUI = _enemiesUI;
 
+        Texture _stuffTexture;
+       
         public Round RoundContext
         {
             get { return _roundCtx; }
@@ -87,6 +88,14 @@ namespace MiamiOps
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+
+            foreach (IStuff stuff in _roundCtx.StuffList)
+            {
+                _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
+                Sprite _stuffSprite = new Sprite(_stuffTexture);
+                _stuffSprite.Position = new Vector2f((float)stuff.Position.X * (mapWidth / 2), (float)stuff.Position.Y * (mapHeight / 2));
+                _stuffSprite.Draw(window, RenderStates.Default);
+            }
         }
 
         public void UpdateSpawnEnnemie()
