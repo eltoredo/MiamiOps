@@ -22,8 +22,10 @@ namespace MiamiOps
 
         Round _roundCtx;
 
-        Texture _stuffTexture;
-       
+        Texture _stuffTexture = new Texture("../../../../Images/monstersprite.png");
+        Sprite _stuffSprite = new Sprite();
+
+
         public Round RoundContext
         {
             get { return _roundCtx; }
@@ -98,8 +100,10 @@ namespace MiamiOps
 
             foreach (IStuff stuff in _roundCtx.StuffList)
             {
+                _stuffTexture.Dispose();
+                _stuffSprite.Dispose();
                 _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
-                Sprite _stuffSprite = new Sprite(_stuffTexture);
+                 _stuffSprite = new Sprite(_stuffTexture);
                 _stuffSprite.Position = new Vector2f((float)stuff.Position.X * (mapWidth / 2), (float)stuff.Position.Y * (mapHeight / 2));
                 _stuffSprite.Draw(window, RenderStates.Default);
             }

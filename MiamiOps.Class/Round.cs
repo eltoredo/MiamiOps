@@ -154,7 +154,7 @@ namespace MiamiOps
                 }
             }
 
-            if(_timeForWeaponSpawn == 60)
+            if (_timeForWeaponSpawn == 60)
             {
                 int factoryIndex = _random.Next(0, _stuffFactories.Count);
                 IStuffFactory randomStuffFactory = _stuffFactories[factoryIndex];
