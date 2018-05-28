@@ -102,7 +102,10 @@ namespace MiamiOps
 
         public Vector Direction => this._direction;
         public List<Weapon> Weapons => this._weapons;
-        public Weapon CurrentWeapon => this._currentWeapon;
+        public Weapon CurrentWeapon {
+            get { return this._currentWeapon; }
+            set { this._currentWeapon = value; }
+        }
         public Vector Place
         {
             get { return this._place; }
