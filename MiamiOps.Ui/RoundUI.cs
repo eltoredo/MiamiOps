@@ -54,7 +54,7 @@ namespace MiamiOps
            
             Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
-            Texture _athLifeBar = new Texture("../../../../Images/LifeBar.png");
+            Texture _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
 
             Random _random = new Random();
 
