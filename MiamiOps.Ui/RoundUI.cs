@@ -13,6 +13,9 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
+        ATH _ath;
+        View _view;
+        View _viewATH;
 
         uint _mapWidth;
         uint _mapHeight;
@@ -46,16 +49,30 @@ namespace MiamiOps
             get { return _gameCtx; }
         }
 
-        public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx)
+        public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx,uint screenWidth,uint screenHeight,View viewPlayer, View viewATH)
         {
-            Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
-            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+            Texture _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
 
             Random _random = new Random();
 
             _roundCtx = roundCtx;
+
+            // Si c'est l'arme 1 soit le fusil d'assaut
+            //if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[0])
+            //{
+            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+            Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
+            // }
+            /*else if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[1])
+            {
+                Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
+                Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+            }*/
+
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
+            _view = viewPlayer;
+            _viewATH = viewATH;
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
 
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
@@ -65,6 +82,7 @@ namespace MiamiOps
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
             }
 
+            _ath = new ATH(_roundCtx, screenWidth, screenHeight,_view);
             _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
@@ -75,6 +93,7 @@ namespace MiamiOps
         {
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
+            _ath.Draw(window);
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
 
             foreach (IStuff stuff in _roundCtx.StuffList)
@@ -84,6 +103,12 @@ namespace MiamiOps
                 _stuffSprite.Position = new Vector2f((float)stuff.Position.X * (mapWidth / 2), (float)stuff.Position.Y * (mapHeight / 2));
                 _stuffSprite.Draw(window, RenderStates.Default);
             }
+        }
+
+        public void Update()
+        {
+            _ath.UpdateATH(this._view,MapWidth,MapHeight);
+            UpdateSpawnEnnemie();
         }
 
         public void UpdateSpawnEnnemie()
@@ -101,12 +126,10 @@ namespace MiamiOps
                     _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, MapWidth, MapHeight, MapCtx);
                 }
                 this._roundCtx.Time = 0;
-
             }
- 
-        
         }
 
+      
         public Map MapCtx => _mapCtx;
     }
 }

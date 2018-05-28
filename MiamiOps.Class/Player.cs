@@ -30,11 +30,8 @@ namespace MiamiOps
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
         {
             this._weapons = weapons;
-            if (context != null)
-            {
                 _currentWeapon = new Weapon("Gun", 0.5f, 0.1f, 0.05f, 30);
-                GetNewWeapon(_currentWeapon);
-            }
+            GetNewWeapon(_currentWeapon);
         }
 
         // Method to handle the player's movements
@@ -110,5 +107,11 @@ namespace MiamiOps
         {
             get { return this._place; }
         }
+        public float LifePlayer
+        {
+            get { return this._life; }
+            set { this._life = value; }
+        }
+
     }
 }
