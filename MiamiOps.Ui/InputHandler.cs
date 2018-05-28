@@ -41,6 +41,11 @@ namespace MiamiOps
                 _roundUIContext.RoundContext.Player.Move(new Vector(1, 0));
             }
 
+            if (Keyboard.IsKeyPressed(Keyboard.Key.P))
+            {
+                _roundUIContext.RoundContext.Player.ChangeWeapon(1);
+            }
+
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
                 Vector2f viewPos = _roundUIContext.GameCtx.MyView.GetPosition();

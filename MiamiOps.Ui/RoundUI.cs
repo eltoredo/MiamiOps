@@ -12,6 +12,8 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
+        Texture _weaponTexture;
+        Texture _bulletTexture;
 
         uint _mapWidth;
         uint _mapHeight;
@@ -47,13 +49,22 @@ namespace MiamiOps
 
         public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx)
         {
-           
-            Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
-            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
-
             Random _random = new Random();
 
             _roundCtx = roundCtx;
+
+            // Si c'est l'arme 1 soit le fusil d'assaut
+            /*if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[0])
+            {
+                Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
+                Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+            }*/
+            /*else if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[1])
+            {
+                Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
+                Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+            }*/
+
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
@@ -65,7 +76,7 @@ namespace MiamiOps
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
             }
 
-            _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
+            _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
