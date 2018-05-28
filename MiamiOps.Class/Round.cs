@@ -25,6 +25,7 @@ namespace MiamiOps
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
+        private List<IStuff> _stuffList;
 
         private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
         
@@ -40,8 +41,9 @@ namespace MiamiOps
         {
             _random = new Random();
             _stuffFactories = new List<IStuffFactory>();
-            _stuffFactories.Add(new PackageFactory("Health Package", TimeSpan.FromMinutes(2), 1)); // indice de rareté
-            _stuffFactories.Add(new WeaponFactory(this, 10, 1, 1, 12));
+            _stuffList = new List<IStuff>();
+            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromMinutes(2), 1)); // indice de rareté
+            _stuffFactories.Add(new WeaponFactory(this, "USP", 0.5f, 0.1f, 0.05f, 30));
 
             Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
 
@@ -153,6 +155,7 @@ namespace MiamiOps
                 int factoryIndex = _random.Next(0, _stuffFactories.Count);
                 IStuffFactory randomStuffFactory = _stuffFactories[factoryIndex];
                 IStuff stuff = randomStuffFactory.Create();
+                _stuffList.Add(stuff);
 
                 _timeForWeaponSpawn = 0;
             }
@@ -162,7 +165,9 @@ namespace MiamiOps
         {
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
         }
-        
+
+        public List<IStuff> StuffList => _stuffList;
+
         public Enemies[] Enemies => this._enemies;
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;

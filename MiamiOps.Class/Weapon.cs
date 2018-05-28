@@ -10,6 +10,9 @@ namespace MiamiOps
         private List<Shoot> _bullets;
         private List<Shoot> toRemove = new List<Shoot>();
 
+        private Random random = new Random();
+        Vector _place;
+        string _name;
         float _attack;
         float _radius;    // rayon d'action
         float _range;    // la portée
@@ -33,6 +36,12 @@ namespace MiamiOps
             this._range = range;
             this._ammo = _maxAmmo;
             this._maxAmmo = _maxAmmo;
+        }
+
+        public Weapon(string name, float attack, float radius, float range, uint _maxAmmo) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        {
+            this._name = name;
+            this._place = CreateRandomPosition();
         }
 
         public void Shoot(Vector playerPosition, Vector mousePlace)
@@ -79,6 +88,16 @@ namespace MiamiOps
             _ammo = _maxAmmo;
         }
 
+        internal float GetNextRandomFloat()
+        {
+            return ((float)this.random.NextDouble() * 2) - 1;
+        }
+
+        Vector CreateRandomPosition()
+        {
+            return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+        }
+
         public void Update()
         {
             if (_bullets.Count > 0)
@@ -103,10 +122,15 @@ namespace MiamiOps
         }
 
         public List<Shoot> Bullets => _bullets;
+
+        public string Name => _name;
+
+        public Vector Position => _place;
     }
 
     public class WeaponFactory : IStuffFactory
     {
+        readonly string _name;
         readonly float _attack;
         readonly float _radius;
         readonly float _range;
@@ -114,10 +138,11 @@ namespace MiamiOps
 
         Round _roundCtx;
 
-        public WeaponFactory(Round roundCtx, float attack, float radius, float range, uint maxAmmo)
+        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo)
         {
             _roundCtx = roundCtx;
 
+            _name = name;
             _attack = attack;
             _radius = radius;
             _range = range;
@@ -126,7 +151,7 @@ namespace MiamiOps
 
         public IStuff Create()
         {
-            return new Weapon(_roundCtx.Player, _attack, _radius, _range, _maxAmmo);
+            return new Weapon(_name, _attack, _radius, _range, _maxAmmo);
         }
     }
 }

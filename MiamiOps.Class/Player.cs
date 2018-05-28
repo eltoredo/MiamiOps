@@ -32,7 +32,7 @@ namespace MiamiOps
             this._weapons = weapons;
             if (context != null)
             {
-                _currentWeapon = new Weapon(this, 0.5f, 0.1f, 0.05f, 30);
+                _currentWeapon = new Weapon("Gun", 0.5f, 0.1f, 0.05f, 30);
                 GetNewWeapon(_currentWeapon);
             }
         }

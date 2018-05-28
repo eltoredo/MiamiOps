@@ -24,8 +24,11 @@ namespace MiamiOps
            
         }
 
-        public Package(string name, TimeSpan lifeSpan, int id,float width=0, float height=0)
+        public Package(Round ctx, string name, TimeSpan lifeSpan, int id,float width=0, float height=0)
         {
+            _ctx = ctx;
+
+            this._name = name;
             this._place = CreateRandomPosition();
             this._width = width;
             this._height = height;
@@ -64,16 +67,21 @@ namespace MiamiOps
             }
         }
 
+        public string Name => _name;
+
+        public Vector Position => _place;
     }
 
     public class PackageFactory : IStuffFactory
     {
+        Round _ctx;
         readonly string _name;
         readonly TimeSpan _lifeSpan;
         readonly int _id;
 
-        public PackageFactory(string name, TimeSpan lifeSpan, int id)
+        public PackageFactory(Round ctx, string name, TimeSpan lifeSpan, int id)
         {
+            _ctx = ctx;
             _name = name;
             _lifeSpan = lifeSpan;
             _id = id;
@@ -81,7 +89,7 @@ namespace MiamiOps
 
         public IStuff Create()
         {
-            return new Package(_name, _lifeSpan, _id);
+            return new Package(_ctx, _name, _lifeSpan, _id);
         }
     }
 }
