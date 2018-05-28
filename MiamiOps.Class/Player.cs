@@ -107,5 +107,11 @@ namespace MiamiOps
         {
             get { return this._place; }
         }
+        public float LifePlayer
+        {
+            get { return this._life; }
+            set { this._life = value; }
+        }
+
     }
 }
