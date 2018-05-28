@@ -21,9 +21,9 @@ namespace MiamiOps
         uint _mapHeight;
 
         Round _roundCtx;
-       
-        //EnemiesUI = _enemiesUI;
 
+        Texture _stuffTexture;
+       
         public Round RoundContext
         {
             get { return _roundCtx; }
@@ -51,14 +51,24 @@ namespace MiamiOps
 
         public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx,uint screenWidth,uint screenHeight,View viewPlayer, View viewATH)
         {
-           
-            Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
-            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
             Texture _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
 
             Random _random = new Random();
 
             _roundCtx = roundCtx;
+
+            // Si c'est l'arme 1 soit le fusil d'assaut
+            //if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[0])
+            //{
+            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+            Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
+            // }
+            /*else if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[1])
+            {
+                Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
+                Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+            }*/
+
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
             _view = viewPlayer;
@@ -85,6 +95,14 @@ namespace MiamiOps
             _weaponUI.Draw(window, mapWidth, mapHeight);
             _ath.Draw(window);
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+
+            foreach (IStuff stuff in _roundCtx.StuffList)
+            {
+                _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
+                Sprite _stuffSprite = new Sprite(_stuffTexture);
+                _stuffSprite.Position = new Vector2f((float)stuff.Position.X * (mapWidth / 2), (float)stuff.Position.Y * (mapHeight / 2));
+                _stuffSprite.Draw(window, RenderStates.Default);
+            }
         }
 
         public void Update()
