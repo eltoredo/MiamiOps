@@ -50,8 +50,6 @@ namespace MiamiOps
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
             _camera = new Camera();
-            
-            
         }
 
         public override void LoadContent()

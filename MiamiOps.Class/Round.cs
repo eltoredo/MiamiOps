@@ -20,6 +20,14 @@ namespace MiamiOps
         private Dictionary<int, Vector> _spawn;
         private Vector _enemiesSpawn;
         private int _time;
+        private int _timeForWeaponSpawn;
+
+
+        Random _random;
+        private List<IStuffFactory> _stuffFactories;
+        private List<IStuff> _stuffList;
+
+        private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
         
         public Round(
             int nb_enemies,
@@ -31,6 +39,12 @@ namespace MiamiOps
             Dictionary<int, Vector> enemySpawn = null
         )
         {
+            _random = new Random();
+            _stuffFactories = new List<IStuffFactory>();
+            _stuffList = new List<IStuff>();
+            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromMinutes(2), 1)); // indice de rareté
+            _stuffFactories.Add(new WeaponFactory(this, "USP", 0.5f, 0.1f, 0.05f, 30));
+
             Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
@@ -83,6 +97,8 @@ namespace MiamiOps
                 this._count = this._enemies.Length;
             }
             this._obstacles = new List<float[]>();
+
+         
         }
 
         internal float GetNextRandomFloat()
@@ -124,6 +140,7 @@ namespace MiamiOps
             }
 
             _time++;
+            _timeForWeaponSpawn++;
             if (_time == 120 && this._spawn != null)
             {
                 _count += _spawn.Count;
@@ -132,13 +149,25 @@ namespace MiamiOps
                     _count = this.Enemies.Length;
                 }
             }
+
+            if(_timeForWeaponSpawn == 60)
+            {
+                int factoryIndex = _random.Next(0, _stuffFactories.Count);
+                IStuffFactory randomStuffFactory = _stuffFactories[factoryIndex];
+                IStuff stuff = randomStuffFactory.Create();
+                _stuffList.Add(stuff);
+
+                _timeForWeaponSpawn = 0;
+            }
         }
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)
         {
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
         }
-        
+
+        public List<IStuff> StuffList => _stuffList;
+
         public Enemies[] Enemies => this._enemies;
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;
