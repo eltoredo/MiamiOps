@@ -126,6 +126,8 @@ namespace MiamiOps
         public string Name => _name;
 
         public Vector Position => _place;
+
+        public uint Ammo => this._ammo;
     }
 
     public class WeaponFactory : IStuffFactory
