@@ -11,6 +11,7 @@ namespace MiamiOps
         Vector _place;
         Vector _oldPlace;
         float _life;
+        float _lifeMax;
         float _speed;
         float _width;
         float _height;
@@ -29,6 +30,7 @@ namespace MiamiOps
 
             this._place = place;
             this._life = life;
+            this._lifeMax = life;
             this._speed = speed;
             this._direction = direction;
             this._weapons = new List<Weapon>();
@@ -80,6 +82,7 @@ namespace MiamiOps
             {
                 this._level++;
                 _experienceMax += _level * 100;
+                _experience = 0;
                 return true;
             }
             else return false;
@@ -140,29 +143,35 @@ namespace MiamiOps
             set { _experience = value; }
         }
 
-        public float Life
-        {
-            get { return _life; }
-            set { _life = value; }
-        }
         public float Speed
         {
             get { return _speed; }
             set { _speed = value; }
         }
 
-        public Vector Direction => this._direction;
-        public List<Weapon> Weapons => this._weapons;
-        public Weapon CurrentWeapon => this._currentWeapon;
         public Vector Place
         {
             get { return this._place; }
         }
+
         public float LifePlayer
         {
             get { return this._life; }
             set { this._life = value; }
         }
+        public float LifePlayerMax {
+            get { return this._lifeMax; }
+            set { this._lifeMax = value; }
+        }
+
+
+        public float ExperienceMax => this._experienceMax;
+        public Vector Direction => this._direction;
+        public List<Weapon> Weapons => this._weapons;
+        public Weapon CurrentWeapon => this._currentWeapon;
+       
+
+
 
     }
 }
