@@ -136,6 +136,7 @@ namespace MiamiOps
         public void Update()
         {
             _player.CurrentWeapon.Update();
+            _player.Update();
 
             for (int i = 0 ; i < _count; i++)
             {
@@ -163,6 +164,9 @@ namespace MiamiOps
 
                 _timeForWeaponSpawn = 0;
             }
+
+
+
         }
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)

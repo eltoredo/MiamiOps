@@ -13,7 +13,8 @@
         {
             if (_roundContext.Player.LevelUp())
             {
-                _roundContext.Player.Life += 10;
+                _roundContext.Player.LifePlayerMax += 10;
+                _roundContext.Player.LifePlayer = _roundContext.Player.LifePlayerMax;
                 _roundContext.Player.Speed += 0.005f;
             }
         }
