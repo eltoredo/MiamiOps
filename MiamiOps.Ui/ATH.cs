@@ -18,6 +18,7 @@ namespace MiamiOps
         Sprite _athLifeSprite;
         Texture _athGun;
         Sprite _athGunSprite;
+        Texture _athGunUpdate;
 
         Vector2f _barPlace = new Vector2f(20, 50);
         RectangleShape _athBar;
@@ -32,7 +33,7 @@ namespace MiamiOps
             _ctx = Context;
             _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
             _athLifeSprite = new Sprite(_athLifeBar);
-            _athGun = new Texture("../../../../Images/HUD/empty.png");
+            _athGun = new Texture("../../../../Images/HUD/" + this._ctx.Player.CurrentWeapon.Name + ".png");
             _athGunSprite = new Sprite(_athGun);
 
             _athBar = new RectangleShape(_barPlace);
@@ -57,20 +58,14 @@ namespace MiamiOps
             };
             _athList.Add(AmmoBar);
 
-       
-            
-            
-
         }
 
 
         public void Draw(RenderWindow window)
         {
-            _athBar.FillColor = _couleur;
-            _athBar.Position = new Vector2f((float)_athList[0].Position.X - 85, (float)_athList[0].Position.Y);
+            
             _athBar.Draw(window, RenderStates.Default);
 
-            
             for (int i = 0; i < _athList.Count; i++)
             {
                 window.Draw(_athList[i]);
@@ -84,6 +79,7 @@ namespace MiamiOps
 
         public void UpdateATH(View view,uint mapWidth, uint mapHeigth)
         {
+
             int b = 3;
             for (int i = 0; i < _athList.Count; i++)
             {
@@ -91,19 +87,25 @@ namespace MiamiOps
                 b++;
             }
 
-          //  _athBar.Size = new Vector2f((this._ctx.Player.LifePlayer*275/ 100),40);
+              _athBar.Size = new Vector2f((this._ctx.Player.LifePlayer*275/ 100),40);
 
+            // _athBar.Size = new Vector2f((this._ctx.Player.CurrentWeapon.Ammo*275 /30), 40);
+            _athGun.Dispose();
+            _athGunSprite.Dispose();
+            _athGun = new Texture("../../../../Images/HUD/" + this._ctx.Player.CurrentWeapon.Name + ".png");
+            _athGunSprite = new Sprite(_athGun);
 
-            _athBar.Size = new Vector2f((this._ctx.Player.CurrentWeapon.Ammo*275 /30), 40);
-
-
-
+            
+            
             _athList[0].DisplayedString = this._ctx.Player.LifePlayer.ToString() + "/100";
-            _athList[1].DisplayedString = this._ctx.Player.CurrentWeapon.Ammo.ToString() + "/30";
+            _athList[1].DisplayedString = this._ctx.Player.CurrentWeapon.Ammo.ToString() +"/"+ this._ctx.Player.CurrentWeapon.MaxAmmo.ToString();
             _athList[1].Position = new Vector2f(_athList[1].Position.X + 40, _athList[1].Position.Y);
             _athLifeSprite.Position = new Vector2f((float)_athList[0].Position.X - 100 , (float)_athList[0].Position.Y - 80);
             _athGunSprite.Position = new Vector2f((float)_athList[1].Position.X -100, (float)_athList[1].Position.Y);
-            
+            _athBar.FillColor = _couleur;
+            _athBar.Position = new Vector2f((float)_athList[0].Position.X - 85, (float)_athList[0].Position.Y);
+
+
         }
 
         public List<Text> AthList => _athList;
