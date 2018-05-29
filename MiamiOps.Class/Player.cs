@@ -4,6 +4,8 @@ namespace MiamiOps
 {
     public class Player
     {
+        SkillsTree _skillsTree;
+
         List<Weapon> _weapons;
         Round _context;
         Vector _place;
@@ -12,12 +14,19 @@ namespace MiamiOps
         float _speed;
         float _width;
         float _height;
+        int _level;
+        float _points;
+        float _experience;
+        float _experienceMax;
         Vector _direction;
         Weapon _currentWeapon;
 
         public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._context = context;
+
+            _skillsTree = new SkillsTree(context);
+
             this._place = place;
             this._life = life;
             this._speed = speed;
@@ -25,6 +34,10 @@ namespace MiamiOps
             this._weapons = new List<Weapon>();
             this._height = height;
             this._width = width;
+            this._level = 1;
+            this._points = 0;
+            this._experience = 0;
+            this._experienceMax = 100;
         }
 
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
@@ -59,6 +72,17 @@ namespace MiamiOps
                 if (this._currentWeapon == null) {this._currentWeapon = this._weapons.OtherElem(this._weapons[0], shift);}
                 this._currentWeapon = this._weapons.OtherElem(this._currentWeapon, shift);
             }
+        }
+
+        public bool LevelUp()
+        {
+            if (_experience == _experienceMax)
+            {
+                this._level++;
+                _experienceMax += _level * 100;
+                return true;
+            }
+            else return false;
         }
 
         private (bool, Vector) CanMove(Vector direction)
@@ -96,6 +120,35 @@ namespace MiamiOps
             Vector move = unit_vector * this._speed;
             Vector playerPlace = this._place + move;
             return playerPlace;
+        }
+
+        public void Update()
+        {
+            LevelUp();
+            _skillsTree.Update();
+        }
+
+        public float Points
+        {
+            get { return _points; }
+            set { _points = value; }
+        }
+        public int Level => _level;
+        public float Experience
+        {
+            get { return _experience; }
+            set { _experience = value; }
+        }
+
+        public float Life
+        {
+            get { return _life; }
+            set { _life = value; }
+        }
+        public float Speed
+        {
+            get { return _speed; }
+            set { _speed = value; }
         }
 
         public Vector Direction => this._direction;
