@@ -4,6 +4,8 @@ namespace MiamiOps
 {
     public class Player
     {
+        SkillsTree _skillsTree;
+
         List<Weapon> _weapons;
         Round _context;
         Vector _place;
@@ -13,6 +15,7 @@ namespace MiamiOps
         float _width;
         float _height;
         int _level;
+        float _points;
         float _experience;
         float _experienceMax;
         Vector _direction;
@@ -21,6 +24,9 @@ namespace MiamiOps
         public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._context = context;
+
+            _skillsTree = new SkillsTree(context);
+
             this._place = place;
             this._life = life;
             this._speed = speed;
@@ -29,6 +35,7 @@ namespace MiamiOps
             this._height = height;
             this._width = width;
             this._level = 1;
+            this._points = 0;
             this._experience = 0;
             this._experienceMax = 100;
         }
@@ -36,7 +43,7 @@ namespace MiamiOps
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
         {
             this._weapons = weapons;
-                _currentWeapon = new Weapon("Gun", 0.5f, 0.1f, 0.05f, 30);
+            _currentWeapon = new Weapon("Gun", 0.5f, 0.1f, 0.05f, 30);
             GetNewWeapon(_currentWeapon);
         }
 
@@ -74,7 +81,7 @@ namespace MiamiOps
             if (_experience == _experienceMax)
             {
                 this._level++;
-                _experienceMax += 100;
+                _experienceMax += _level * 100;
                 return true;
             }
             else return false;
@@ -120,13 +127,30 @@ namespace MiamiOps
         public void Update()
         {
             LevelUp();
+            _skillsTree.Update();
         }
 
+        public float Points
+        {
+            get { return _points; }
+            set { _points = value; }
+        }
         public int Level => _level;
         public float Experience
         {
             get { return _experience; }
             set { _experience = value; }
+        }
+
+        public float Life
+        {
+            get { return _life; }
+            set { _life = value; }
+        }
+        public float Speed
+        {
+            get { return _speed; }
+            set { _speed = value; }
         }
 
         public Vector Direction => this._direction;
