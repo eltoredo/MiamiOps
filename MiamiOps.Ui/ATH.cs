@@ -18,7 +18,6 @@ namespace MiamiOps
         Sprite _athLifeSprite;
         Texture _athGun;
         Sprite _athGunSprite;
-        Texture _athGunUpdate;
 
         Vector2f _barPlace = new Vector2f(20, 50);
         RectangleShape _athBar;

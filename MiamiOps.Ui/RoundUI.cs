@@ -59,6 +59,9 @@ namespace MiamiOps
 
             _roundCtx = roundCtx;
 
+            Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
+            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
             _view = viewPlayer;
@@ -73,7 +76,7 @@ namespace MiamiOps
             }
 
             _ath = new ATH(_roundCtx, screenWidth, screenHeight,_view);
-            _weaponUI = new WeaponUI(this, _closeRangeWeaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
+            _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;

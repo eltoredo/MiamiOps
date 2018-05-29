@@ -22,7 +22,6 @@ namespace MiamiOps
         InputHandler _playerInput;
         View _view;
         Map _map;
-        View _minimap;
         View _viewATH;
         Camera _camera;
         Convert _convert = new Convert();
