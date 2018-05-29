@@ -43,31 +43,31 @@ namespace MiamiOps
                 if (point3.Item2 < image)
                 {
                     otherSide = (
-                        (triangle2[0].Item2 > FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
-                        (triangle2[1].Item2 > FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
-                        (triangle2[2].Item2 > FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
+                        (triangle2[0].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
+                        (triangle2[1].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
+                        (triangle2[2].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
                     );
                 }
                 else if (point3.Item2 > image)
                 {
                     otherSide = (
-                        (triangle2[0].Item2 < FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
-                        (triangle2[1].Item2 < FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
-                        (triangle2[2].Item2 < FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
+                        (triangle2[0].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
+                        (triangle2[1].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
+                        (triangle2[2].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
                     );
                 }
                 else if (point3.Item2 == image)
                 {
                     otherSide = (
                         (
-                            (triangle2[0].Item2 > FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
-                            (triangle2[1].Item2 > FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
-                            (triangle2[2].Item2 > FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
+                            (triangle2[0].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
+                            (triangle2[1].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
+                            (triangle2[2].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
                         ) ||
                         (
-                            (triangle2[0].Item2 < FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
-                            (triangle2[1].Item2 < FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
-                            (triangle2[2].Item2 < FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
+                            (triangle2[0].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
+                            (triangle2[1].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
+                            (triangle2[2].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
                         )
                     );
                 }

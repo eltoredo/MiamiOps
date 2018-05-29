@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace MiamiOps
@@ -76,17 +77,107 @@ namespace MiamiOps
             }
 
             // Checks if the player don't go in a wall
-            foreach (float[] wall in this._context.Obstacles)
+            // The form of the player at tn and at tn+1 (to get the hexagone)
+            List<(double, double)> playerCoordonateTn = new List<(double, double)>    // Tn
             {
-                if (
-                    Math.Round(nextPlace.Y - this._height, 2) < wall[1] && wall[1] - wall[3] < Math.Round(nextPlace.Y, 2) && 
-                    Math.Round(nextPlace.X, 2) < wall[0] + wall[2] && Math.Round(nextPlace.X + this._width, 2) > wall[0]
-                )
+                (this._place.X, this._place.Y),
+                (this._place.X + this._width, this._place.Y),
+                (this._place.X + this._width, this._place.Y - this._height),
+                (this._place.X, this._place.Y - this._height)
+            };
+            List<(double, double)> playerCoordonateTnn = new List<(double, double)>    // Tn+1
+            {
+                (nextPlace.X, nextPlace.Y),
+                (nextPlace.X + this._width, nextPlace.Y),
+                (nextPlace.X + this._width, nextPlace.Y - this._height),
+                (nextPlace.X, nextPlace.Y - this._height)
+            };
+            // we choose the higher and the lower segment of the two position
+            // Les segments sont de la forme y = ax + b
+            // On cherche donc les sebment avec le plus petit et plus grand b, ce sont les droites qui permettend de faire l'hexagone
+            // y1 = a * x1 + b
+            // b = y1 - (a * x1) or a = ((y2 - y1) / (x2 - x1))
+            // b = y1 - (((y2 - y1) / (x2 - x1)) * x1)
+            // b = y1 - ((y2 - y1) * x1) / (x2 - x1)
+            // b = ((y1 * (x2 - x1)) / (x2 - x1)) - (((y2 - y1) * x1) / (x2 - x1))
+            // b = (((y1 * (x2 - x1)) - ((y2 - y1) * x1)) / (x2 - x1)
+            // b = (y1x2 - y1x1 - (y2x1 - y1x1)) / (x2 - x1)
+            // b = (y1x2 - y1x1 - y2x1 + y1x1) / (x2 - x1)
+            // b = (y1x2 - y2x1) / (x2 - x1)
+            List<double> ordori = new List<double>(); // ORDone à l'ORIgine
+            for (int i = 0; i < playerCoordonateTn.Count; i += 1)
+            {
+                double numerateur = (
+                    (playerCoordonateTn[i].Item2 * playerCoordonateTnn[i].Item1) -
+                    (playerCoordonateTnn[i].Item2 * playerCoordonateTn[i].Item1)
+                );
+                double denominateur = playerCoordonateTnn[i].Item1 - playerCoordonateTn[i].Item1;
+                // In case of the denominateur is equal to 0
+                if (denominateur == 0){denominateur = 1;}
+                ordori.Add(numerateur / denominateur);
+            }
+
+            int idxMax = ordori.IndexOf(ordori.Max());
+            int idxMin = ordori.IndexOf(ordori.Min());
+
+            List<(double, double)> hexagone = new List<(double, double)>(); // The list of all point of the move
+            if (playerCoordonateTnn[0].Item1 == playerCoordonateTn[0].Item1)    // If the move is verticaly, we have a rectangle
+            {
+                hexagone.Add(playerCoordonateTn[0].Max(playerCoordonateTnn[0]));
+                hexagone.Add(playerCoordonateTn[1].Max(playerCoordonateTnn[1]));
+                hexagone.Add(playerCoordonateTn[2].Min(playerCoordonateTnn[2]));
+                hexagone.Add(playerCoordonateTn[3].Min(playerCoordonateTnn[3]));
+            }
+            else if (playerCoordonateTnn[0].Item2 == playerCoordonateTn[0].Item2)    // If tha move is horizontaly, we have a recctangle
+            {
+                hexagone.Add(playerCoordonateTn[0].Min(playerCoordonateTnn[0]));
+                hexagone.Add(playerCoordonateTn[1].Max(playerCoordonateTnn[1]));
+                hexagone.Add(playerCoordonateTn[2].Max(playerCoordonateTnn[2]));
+                hexagone.Add(playerCoordonateTn[3].Min(playerCoordonateTnn[3]));
+            }
+            else
+            {
+                // We now make the hexagone
+                hexagone.Add(playerCoordonateTn[((idxMax - 1) + playerCoordonateTn.Count) % playerCoordonateTn.Count]); // premier points
+                hexagone.Add(playerCoordonateTn[(idxMax + playerCoordonateTn.Count) % playerCoordonateTn.Count]);
+                hexagone.Add(playerCoordonateTnn[(idxMax + playerCoordonateTn.Count) % playerCoordonateTn.Count]);
+                hexagone.Add(playerCoordonateTnn[((idxMin - 1) + playerCoordonateTn.Count) % playerCoordonateTn.Count]);
+                hexagone.Add(playerCoordonateTnn[(idxMin + playerCoordonateTn.Count) % playerCoordonateTn.Count]);
+                hexagone.Add(playerCoordonateTn[(idxMin + playerCoordonateTn.Count) % playerCoordonateTn.Count]);
+                // We have our fucking hexagone (mais ça pue d'avoir fait ça parce que ça fonctionne seulement si la forme finale est un hexagone fait a partir de deux rectangles # This is shit (c'est du'autant plus sale qu'on traite les cas particulier a la main
+            }
+            // Test if the hexagone colide with wall
+            bool colision = false;
+            for (int idx  = 0; idx < hexagone.Count - 2; idx += 1)
+            {
+                // We cut the hexagone in triangles, below, one of the triangle
+                (double, double)[] triangle = new (double, double)[3]{hexagone[idx], hexagone[idx + 1], hexagone[hexagone.Count-1]};    // Le découpage en triangle est bon !
+                foreach(float[] wall in this._context.Obstacles)
                 {
-                    canMove = false;
+                    // The wall is cut in two triangle
+                    (double, double)[] part1 = new(double, double)[3] {(wall[0], wall[1]),(wall[0] + wall[2], wall[1]),(wall[0], wall[1] - wall[3])};
+                    (double, double)[] part2 = new(double, double)[3] {(wall[0] + wall[2], wall[1]),(wall[0] + wall[2], wall[1] - wall[3]),(wall[0], wall[1] - wall[3])};
+
+                    // Calcule the colition between the triangle and the two part of the wall
+                    colision = ColideHelpers.areColide(triangle, part1) || ColideHelpers.areColide(triangle, part2);
+                    if(colision) {break;}
                 }
             }
+            canMove = canMove && !colision;
+
+        //    // Checks if the player don't go in a wall
+        //    foreach (float[] wall in this._context.Obstacles)
+        //    {
+        //        if (
+        //            Math.Round(nextPlace.Y - this._height, 2) < wall[1] && wall[1] - wall[3] < Math.Round(nextPlace.Y, 2) && 
+        //            Math.Round(nextPlace.X, 2) < wall[0] + wall[2] && Math.Round(nextPlace.X + this._width, 2) > wall[0]
+        //        )
+        //        {
+        //            canMove = false;
+        //        }
+        //    }
             return (canMove, nextPlace);
+
         }
 
         private Vector SimulationMove(Vector direction)
@@ -106,5 +197,7 @@ namespace MiamiOps
         {
             get { return this._place; }
         }
+
+        
     }
 }
