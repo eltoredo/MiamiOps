@@ -18,7 +18,7 @@ namespace MiamiOps
         {
             _roundUIContext = roundUIContext;
 
-            _weaponTexture = weaponTexture;
+            _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundContext.Player.CurrentWeapon.Name + ".png");
             _weaponSprite = new Sprite(_weaponTexture);
 
             _bulletTexture = bulletTexture;
@@ -29,7 +29,7 @@ namespace MiamiOps
 
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
         {
-            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + (float)1.03) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.Place.Y + (float)0.98) * (mapHeight / 2));
+            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X +(float)1.01) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.Place.Y + (float)1.01) * (mapHeight / 2));
         }
 
         private Vector2f UpdatePlaceBullet(Shoot bullet, uint mapWidth, uint mapHeight)
@@ -39,6 +39,10 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
+            this._weaponTexture.Dispose();
+            this._weaponSprite.Dispose();
+            _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundContext.Player.CurrentWeapon.Name + ".png");
+            _weaponSprite = new Sprite(_weaponTexture);
             this._weaponSprite.Position = UpdatePlaceWeapon(mapWidth, mapHeight);
             _weaponSprite.Draw(window, RenderStates.Default);
 
