@@ -59,18 +59,6 @@ namespace MiamiOps
 
             _roundCtx = roundCtx;
 
-            // Si c'est l'arme 1 soit le fusil d'assaut
-            //if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[0])
-            //{
-            Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
-            Texture _closeRangeWeaponTexture = new Texture("../../../../Images/weaponsprite.png");
-            // }
-            /*else if (_roundCtx.Player.CurrentWeapon == _roundCtx.Player.Weapons[1])
-            {
-                Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
-                Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
-            }*/
-
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
             _view = viewPlayer;

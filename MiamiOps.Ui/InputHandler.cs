@@ -15,7 +15,9 @@ namespace MiamiOps
         Music _bulletSound;
 
         int i = 20;
-        int _changeWeapon;
+        int _timerNextWeapon = 4;
+        int _timerPreviousWeapon = 4;
+
 
         public InputHandler(RoundUI roundUIContext)
         {
@@ -23,7 +25,6 @@ namespace MiamiOps
 
             _bulletTexture = new Texture("../../../../Images/fireball.png");
             _bulletSound = new Music("../../../Menu/bullet_sound.ogg");
-            _changeWeapon = 0;
         }
 
         public void Handle()
@@ -47,14 +48,23 @@ namespace MiamiOps
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.P))
             {
-                Thread.Sleep(45);
-                _changeWeapon++;
-                if(_changeWeapon >= _roundUIContext.RoundContext.Player.Weapons.Count-1)
+                if (_timerNextWeapon == 5)
                 {
-                    _changeWeapon = 0;
+                    _roundUIContext.RoundContext.Player.ChangeWeapon(1);
+                    _timerNextWeapon = 0;
                 }
-                _roundUIContext.RoundContext.Player.ChangeWeapon(_changeWeapon);
+                _timerNextWeapon++;
                
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.O))
+            {
+                if (_timerPreviousWeapon == 4)
+                {
+                    _roundUIContext.RoundContext.Player.ChangeWeapon(-1);
+                    _timerPreviousWeapon = 0;
+                }
+                _timerPreviousWeapon++;
+
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
