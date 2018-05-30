@@ -117,8 +117,9 @@ namespace MiamiOps
 
         }
 
-        public void WalkOn()
+        public void WalkOn(IStuff stuff,Round Ctx)
         {
+           // Ctx.Player.CurrentWeapon = stuff;
         }
 
         public List<Shoot> Bullets => _bullets;

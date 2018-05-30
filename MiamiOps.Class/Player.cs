@@ -78,7 +78,7 @@ namespace MiamiOps
 
         public bool LevelUp()
         {
-            if (_experience == _experienceMax)
+            if (_experience >= _experienceMax)
             {
                 this._level++;
                 _experienceMax += _level * 100;
@@ -149,6 +149,10 @@ namespace MiamiOps
             set { _speed = value; }
         }
 
+        public Weapon CurrentWeapon {
+            get { return this._currentWeapon; }
+            set { this._currentWeapon = value; }
+        }
         public Vector Place
         {
             get { return this._place; }
@@ -164,11 +168,9 @@ namespace MiamiOps
             set { this._lifeMax = value; }
         }
 
-
         public float ExperienceMax => this._experienceMax;
         public Vector Direction => this._direction;
         public List<Weapon> Weapons => this._weapons;
-        public Weapon CurrentWeapon => this._currentWeapon;
        
 
 

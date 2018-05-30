@@ -2,7 +2,7 @@
 {
     public interface IStuff
     {
-        void WalkOn();
+        void WalkOn(IStuff stuff, Round ctx);
 
         string Name { get; }
         Vector Position { get; }

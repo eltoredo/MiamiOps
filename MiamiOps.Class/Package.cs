@@ -48,8 +48,13 @@ namespace MiamiOps
             return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
         }
 
-        public void WalkOn()
+        public void WalkOn(IStuff stuff,Round Ctx)
         {
+            if(stuff.Name == "health")
+            {
+                Ctx.Player.LifePlayer += 50;
+
+            }
         }
 
         public TimeSpan LifeSpan
