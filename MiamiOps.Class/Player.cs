@@ -78,7 +78,7 @@ namespace MiamiOps
 
         public bool LevelUp()
         {
-            if (_experience == _experienceMax)
+            if (_experience >= _experienceMax)
             {
                 this._level++;
                 _experienceMax += _level * 100;

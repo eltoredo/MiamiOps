@@ -21,6 +21,8 @@ namespace MiamiOps
         private Vector _enemiesSpawn;
         private int _time;
         private int _timeForWeaponSpawn;
+        private int _passOut = 0;
+
 
 
         Random _random;
@@ -88,8 +90,7 @@ namespace MiamiOps
 
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
             this._player.GetNewWeapon(new Weapon("baseball_bat", 0f, 0, 0f, 60));
-            this._player.GetNewWeapon(new Weapon("ak47", 0f, 0, 0f, 30));
-            this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
+          //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
@@ -137,6 +138,7 @@ namespace MiamiOps
         {
             _player.CurrentWeapon.Update();
             _player.Update();
+            UpdateList();
 
             for (int i = 0 ; i < _count; i++)
             {
@@ -155,7 +157,7 @@ namespace MiamiOps
                 }
             }
 
-            if (_timeForWeaponSpawn == 60)
+            if (_timeForWeaponSpawn == 150)
             {
                 int factoryIndex = _random.Next(0, _stuffFactories.Count);
                 IStuffFactory randomStuffFactory = _stuffFactories[factoryIndex];
@@ -166,8 +168,34 @@ namespace MiamiOps
             }
 
 
+        }
+
+        public void UpdateList()
+        {
+          
+            if (this.Player.Level == 5&& _passOut == 0)
+            {
+                this._player.GetNewWeapon(new Weapon("ak47", 0, 0, 0, 30));
+                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromMinutes(2), 1));
+                _passOut++;
+            }else if(this.Player.Level == 10 && _passOut == 1)
+            {
+                this._player.GetNewWeapon(new Weapon("shotgun", 0, 0, 0, 10));
+                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromMinutes(2), 1));
+                this._stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30));
+                _passOut++;
+            }
+            else if (this.Player.Level == 15 && _passOut == 2)
+            {
+                this._stuffFactories.Add(new PackageFactory(this, "point", TimeSpan.FromMinutes(2), 1));
+                this._stuffFactories.Add(new WeaponFactory(this, "soulcalibur", 0.5f, 0.1f, 0.05f, 30));
+                _passOut++;
+            }
+
 
         }
+
+        
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)
         {
