@@ -24,7 +24,7 @@ namespace MiamiOps
 
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
         {
-            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + (float)1.03) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.Place.Y + (float)0.98) * (mapHeight / 2));
+            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + (float)1.03) * (mapWidth / 2), (((float)_roundUIContext.RoundContext.Player.Place.Y + (float)0.98) * (mapHeight / 2)))*-1;
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)

@@ -13,6 +13,7 @@ namespace MiamiOps
         WeaponUI _weaponUI;
         Game _gameCtx;
         Map _mapCtx;
+        RectangleShape playerBound = new RectangleShape();
 
         uint _mapWidth;
         uint _mapHeight;
@@ -79,11 +80,11 @@ namespace MiamiOps
                 Vector2f size = new Vector2f();
 
 
-                float xPixel = (item[0] * 32) / 0.02f;
-                float yPixel = (item[1] * 32) / 0.02f;
+                float xPixel = ((item[0]) * 32) / 0.02f;
+                float yPixel = ((item[1]-1) * 32) / 0.02f;
 
                 position.X = xPixel;
-                position.Y = yPixel * -1;
+                position.Y = yPixel*-1;
 
                 lol.Position = position;
 
@@ -98,9 +99,13 @@ namespace MiamiOps
 
                 _drawObstacles.Add(lol);
 
-
             }
 
+            playerBound.Position = new Vector2f(1000, 1000);
+            playerBound.Size = new Vector2f(32, 32);
+            playerBound.FillColor = Color.Red;
+           
+     
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
@@ -112,6 +117,8 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
+            playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
+            playerBound.Draw(window, RenderStates.Default);
         }
     }
 }

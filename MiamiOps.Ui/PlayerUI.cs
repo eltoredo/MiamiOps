@@ -16,6 +16,7 @@ namespace MiamiOps
         int _spriteWidth;
         int _spriteHeight;
         Map _ctxMap;
+        RectangleShape boundingBox;
 
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
         int _nbDirection;
@@ -60,6 +61,7 @@ namespace MiamiOps
         {
             _nbDirection = Conversion(_roundUIContext.RoundContext.Player.Direction);
             Vector2f newPlayerPlace = new Vector2f(((float)this._player.Place.X + 1) * (mapWidth / 2), (((float)this._player.Place.Y - 1) * (mapHeight / 2)) * (-1));
+           
             
             return newPlayerPlace;
         }
@@ -77,8 +79,8 @@ namespace MiamiOps
          
             _playerSprite.Draw(window, RenderStates.Default);
 
-            Console.WriteLine("x : " + _player.Place.X);
-            Console.WriteLine("y : " + _player.Place.Y);
+            //Console.WriteLine("x : " + _player.Place.X);
+            //Console.WriteLine("y : " + _player.Place.Y);
         }
 
         private int Conversion(Vector vector)

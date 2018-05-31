@@ -197,7 +197,8 @@ namespace MiamiOps
         {
             get { return this._place; }
         }
+        public float Hauteur => this._height;
+        public float Longueur => this._width;
 
-        
     }
 }
