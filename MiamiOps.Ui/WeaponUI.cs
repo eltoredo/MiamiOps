@@ -29,7 +29,7 @@ namespace MiamiOps
 
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
         {
-            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X +(float)1.01) * (mapWidth / 2), ((float)_roundUIContext.RoundContext.Player.Place.Y + (float)1.01) * (mapHeight / 2));
+            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X +(float)1.01) * (mapWidth / 2), (((float)_roundUIContext.RoundContext.Player.Place.Y - (float)1.01) * (mapHeight / 2))*-1);
         }
 
         private Vector2f UpdatePlaceBullet(Shoot bullet, uint mapWidth, uint mapHeight)
