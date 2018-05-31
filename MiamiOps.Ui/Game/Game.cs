@@ -25,7 +25,8 @@ namespace MiamiOps
         View _minimap;
         Camera _camera;
         Convert _convert = new Convert();
-       
+        HashSet<float[]> _collide;
+
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -43,14 +44,18 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
+            _collide = _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
-            _round = new Round(100, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.05f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"));
+            _round = new Round(100, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"));
+            foreach (var item in _collide)
+            {
+                _round.AddObstacle(item[0], item[1], item[2], item[3]);
+            }
             _roundUI = new RoundUI(_round, this, 3160, 3160, _map);
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
             _camera = new Camera();
-            _view.Zoom(4f);
+            _view.Zoom(3f);
         }
 
         public override void LoadContent()

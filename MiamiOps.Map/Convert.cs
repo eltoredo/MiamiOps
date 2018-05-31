@@ -56,6 +56,7 @@ namespace MiamiOps
                     float[] _collideCord = new float[4];
                     _collideCord[0] = (float)Math.Round(firstX, 2) - 1; //x
                     _collideCord[1] = (y - 1) * -1;    //y
+                    _collideCord[1] =(y - 1)*-1;//y
                     _collideCord[2] = (float)Math.Round(collideLength, 2) ;//longueur
                     if (_collideCord[2] == 0) _collideCord[2] = (float)0.02;
                     _collideCord[3] = (float)0.02;//largeur
@@ -118,7 +119,7 @@ namespace MiamiOps
                     float collideLength = lastX - firstX;
                     float[] _spawnCord = new float[2];
                     _spawnCord[0] = (float)Math.Round(firstX, 2) - 1; //x
-                    _spawnCord[1] = (y - 1) * -1;//y
+                    _spawnCord[1] = (y - 1)*-1;//y
                     Vector _spawnVector = new Vector(_spawnCord[0], _spawnCord[1]);
                     _spawn.Add(count, _spawnVector);
                 }
