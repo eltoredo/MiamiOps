@@ -47,7 +47,7 @@ namespace MiamiOps
             _athGunSprite = new Sprite(_athGun);
 
             _athBar = new RectangleShape(_barPlace);
-            _athBar.Size = new Vector2f(272, 40);
+            _athBar.Size = new Vector2f(271, 40);
             _athBar.Position = new Vector2f(-1f, -0.5f);
 
             Text LifeBar = new Text
@@ -132,14 +132,14 @@ namespace MiamiOps
                 }
                 else
                 {
-                    _athList[i].Position = new Vector2f(view.Center.X + view.Size.X / 3, view.Center.Y - view.Size.Y / b);
+                    _athList[i].Position = new Vector2f(view.Center.X + view.Size.X / 3, (view.Center.Y - view.Size.Y / b));
                 }
 
                 b++;
                 
             }
 
-              _athBar.Size = new Vector2f((this._ctx.Player.LifePlayer*275 / this._ctx.Player.LifePlayerMax),40);
+              _athBar.Size = new Vector2f((this._ctx.Player.LifePlayer*271 / this._ctx.Player.LifePlayerMax),40);
 
           //  _athBar.Size = new Vector2f((this._ctx.Player.CurrentWeapon.Ammo*275 /30), 40);
             _athGun.Dispose();
@@ -154,10 +154,10 @@ namespace MiamiOps
             _athList[3].DisplayedString = "Lvl: " + this._ctx.Player.Level.ToString();
             _athList[4].DisplayedString = "XP: " + this._ctx.Player.Experience.ToString()+"/"+this._ctx.Player.ExperienceMax.ToString();
             _athList[1].Position = new Vector2f(_athList[1].Position.X + 40, _athList[1].Position.Y);
-            _athLifeSprite.Position = new Vector2f((float)_athList[0].Position.X - 100 , (float)_athList[0].Position.Y - 80);
+            _athLifeSprite.Position = new Vector2f((float)_athList[0].Position.X - 100 , (float)_athList[0].Position.Y - 100);
             _athGunSprite.Position = new Vector2f((float)_athList[1].Position.X -100, (float)_athList[1].Position.Y);
             _athBar.FillColor = _couleur;
-            _athBar.Position = new Vector2f((float)_athList[0].Position.X - 85, (float)_athList[0].Position.Y);
+            _athBar.Position = new Vector2f((float)_athList[0].Position.X - 85, (float)_athList[0].Position.Y -20);
 
 
         }
