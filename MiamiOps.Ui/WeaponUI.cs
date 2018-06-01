@@ -34,7 +34,7 @@ namespace MiamiOps
 
         private Vector2f UpdatePlaceBullet(Shoot bullet, uint mapWidth, uint mapHeight)
         {
-            return new Vector2f(((float)bullet.BulletPosition.X + 1) * (mapWidth / 2), ((float)bullet.BulletPosition.Y + 1) * (mapHeight / 2));
+            return new Vector2f(((float)bullet.BulletPosition.X + 1) * (mapWidth / 2), (((float)bullet.BulletPosition.Y - 1) * (mapHeight / 2))*-1);
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
