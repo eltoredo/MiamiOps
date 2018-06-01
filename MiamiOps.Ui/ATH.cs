@@ -110,8 +110,8 @@ namespace MiamiOps
                       
             _athLifeSprite.Draw(window, RenderStates.Default);
             _athGunSprite.Draw(window, RenderStates.Default);
-            Console.WriteLine(_athBar.Position);
-            Console.WriteLine(_athGunSprite.Scale.Y);           
+            //Console.WriteLine(_athBar.Position);
+            //Console.WriteLine(_athGunSprite.Scale.Y);           
         }
 
         public void UpdateATH(View view,uint mapWidth, uint mapHeigth)
