@@ -95,7 +95,7 @@ namespace MiamiOps
                 _stuffSprite.Dispose();
                 _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
                  _stuffSprite = new Sprite(_stuffTexture);
-                _stuffSprite.Position = new Vector2f((float)stuff.Position.X * (mapWidth / 2), (float)stuff.Position.Y * (mapHeight / 2));
+                _stuffSprite.Position = new Vector2f(((float)stuff.Position.X + 1) * (mapWidth / 2), (((float)stuff.Position.Y - 1) * (mapHeight / 2)) * (-1));
                 _stuffSprite.Draw(window, RenderStates.Default);
             }
         }

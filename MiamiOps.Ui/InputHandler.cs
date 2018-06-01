@@ -31,11 +31,11 @@ namespace MiamiOps
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(0, -1));
+                _roundUIContext.RoundContext.Player.Move(new Vector(0, 1));
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.S))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(0, 1));
+                _roundUIContext.RoundContext.Player.Move(new Vector(0, -1));
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
             {

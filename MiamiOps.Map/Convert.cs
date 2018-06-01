@@ -118,7 +118,7 @@ namespace MiamiOps
                     float collideLength = lastX - firstX;
                     float[] _spawnCord = new float[2];
                     _spawnCord[0] = (float)Math.Round(firstX, 2) - 1; //x
-                    _spawnCord[1] = y - 1;//y
+                    _spawnCord[1] = (y - 1)*-1;//y
                     Vector _spawnVector = new Vector(_spawnCord[0], _spawnCord[1]);
                     _spawn.Add(count, _spawnVector);
                 }
