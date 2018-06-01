@@ -77,8 +77,8 @@ namespace MiamiOps
 
                 Vector mouseAim = new Vector(viewPosition.X + mouseVector.X, viewPosition.Y + mouseVector.Y);
 
-                Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth/2.0)) - 1.0, mouseAim.Y * (1.0 / (_roundUIContext.MapHeight/2.0)) - 1.0); // Vraie coordonnées de la souris en -1 / 1
-
+                Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth/2.0)) - 1.0, -(mouseAim.Y * (1.0 / (_roundUIContext.MapHeight/2.0)) - 1.0)); // Vraie coordonnées de la souris en -1 / 1
+                
                 if (i == 20)
                 {
                     _bulletSound.Play();
