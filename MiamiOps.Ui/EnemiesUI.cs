@@ -48,7 +48,7 @@ namespace MiamiOps
 
         private Vector2f UpdatePlace(Vector enemyPlace, uint mapWidth, uint mapHeight)
         {
-            Vector2f newEnnemyPlace = new Vector2f(((float)enemyPlace.X + 1) * (mapWidth / 2), ((float)enemyPlace.Y + 1) * (mapHeight / 2));
+            Vector2f newEnnemyPlace = new Vector2f(((float)enemyPlace.X + 1) * (mapWidth / 2), (((float)enemyPlace.Y - 1) * (mapHeight / 2))*-1);
             //if (_ctxMap.Collide(this._hitBoxEnnemi))
             //{
             //    _enemySprite.Color = Color.Red;

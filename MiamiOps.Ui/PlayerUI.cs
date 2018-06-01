@@ -49,7 +49,7 @@ namespace MiamiOps
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
         {
             _nbDirection = Conversion(_roundUIContext.RoundContext.Player.Direction);
-            Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), ((float)_player.Place.Y + 1) * (mapHeight / 2));
+            Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), (((float)_player.Place.Y - 1) * (mapHeight / 2))*-1);
             
             return newPlayerPlace;
         }

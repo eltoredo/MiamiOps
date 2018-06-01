@@ -3,19 +3,24 @@ using System.Collections.Generic;
 
 namespace MiamiOps
 {
-    public class Weapon
+    public class Weapon : IStuff
     {
         Player _owner;
 
         private List<Shoot> _bullets;
+        private List<Shoot> toRemove = new List<Shoot>();
 
+        private Random random = new Random();
+        Vector _place;
+        string _name;
         float _attack;
         float _radius;    // rayon d'action
         float _range;    // la portée
         uint _ammo;    // le nombre de fois où tu peux attaquer
         uint _maxAmmo;    // le nombre maximum de munition
 
-        int _count;
+        int _time;
+
 
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
@@ -33,6 +38,12 @@ namespace MiamiOps
             this._maxAmmo = _maxAmmo;
         }
 
+        public Weapon(string name, float attack, float radius, float range, uint _maxAmmo) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        {
+            this._name = name;
+            this._place = CreateRandomPosition();
+        }
+
         public void Shoot(Vector playerPosition, Vector mousePlace)
         {
             // Player - Context - Monsters -> If X or Y of mousePlace (direction of bullet) is touching the bounding box of an enemy, he looses life
@@ -40,7 +51,7 @@ namespace MiamiOps
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
 
-            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(8000), 0.05f, playerPosition, mousePlace);
+            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(5000), 0.005f, playerPosition, mousePlace);
             _bullets.Add(shoot);
 
             _ammo -= 1;
@@ -77,72 +88,75 @@ namespace MiamiOps
             _ammo = _maxAmmo;
         }
 
+        internal float GetNextRandomFloat()
+        {
+            return ((float)this.random.NextDouble() * 2) - 1;
+        }
+
+        Vector CreateRandomPosition()
+        {
+            return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+        }
+
         public void Update()
         {
-            List<Shoot> toRemove = new List<Shoot>();
-
-
-            if (_bullets.Count > 0) {
-                
+            if (_bullets.Count > 0)
+            {
                 foreach (Shoot s in _bullets)
                 {
                     BulletMove(s, s.SpeedBullet);
                 }
             }
 
-            //foreach (Shoot s in _bullets)
-            //{
-            //    if (s.BulletPosition.X >= s.MousePosition.X || s.BulletPosition.Y >= s.MousePosition.Y) toRemove.Add(s);
-            //}
+            foreach (Shoot s in _bullets)
+            {
+                if (!s.IsAlive) toRemove.Add(s);
+            }
 
-            //foreach (Shoot s in toRemove) _bullets.Remove(s);
+            foreach (Shoot s in toRemove) _bullets.Remove(s);
 
+        }
+
+        public void WalkOn(IStuff stuff,Round Ctx)
+        {
+           // Ctx.Player.CurrentWeapon = stuff;
         }
 
         public List<Shoot> Bullets => _bullets;
+
+        public string Name => _name;
+
+        public Vector Position => _place;
+
+        public uint Ammo => this._ammo;
+        public uint MaxAmmo => this._maxAmmo;
+
     }
 
-
-    public class WeaponFactory
+    public class WeaponFactory : IStuffFactory
     {
-        public Weapon CreateAssaultRifle(Player owner)
+        readonly string _name;
+        readonly float _attack;
+        readonly float _radius;
+        readonly float _range;
+        readonly uint _maxAmmo;
+
+        Round _roundCtx;
+
+        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo)
         {
-            return new Weapon(owner, 0, 0, 0, 30);
+            _roundCtx = roundCtx;
+
+            _name = name;
+            _attack = attack;
+            _radius = radius;
+            _range = range;
+            _maxAmmo = maxAmmo;
         }
 
-        public Weapon CreateShotgun(Player owner)
+        public IStuff Create()
         {
-            return new Weapon(owner, 0, 0, 0, 8);
-        }
-
-        public Weapon CreatePistol(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 12);
-        }
-
-        public Weapon CreateBaseballBat(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateSoulcalibur(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateChaosBlade(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateGodBlade(Player owner)
-        {
-            return new Weapon(owner, 0, 0, 0, 0);
-        }
-
-        public Weapon CreateCompanion()
-        {
-            throw new NotImplementedException();
+            return new Weapon(_name, _attack, _radius, _range, _maxAmmo);
         }
     }
 }
