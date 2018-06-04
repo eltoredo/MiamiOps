@@ -47,7 +47,7 @@ namespace MiamiOps
             _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromMinutes(2), 1)); // indice de rareté
             _stuffFactories.Add(new WeaponFactory(this, "USP", 0.5f, 0.1f, 0.05f, 30));
 
-            Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
+            Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
             if (
@@ -82,8 +82,6 @@ namespace MiamiOps
             {
                 this._count = _spawn.Count;
             }
-            
-           
 
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
@@ -111,7 +109,7 @@ namespace MiamiOps
             return ((float)this.random.NextDouble() * 2) -1;
         }
 
-        Vector CreatePositionOnSpawn(Vector enemieSpawn)
+      public  Vector CreatePositionOnSpawn(Vector enemieSpawn)
         {
             Vector Position;
             if (_spawn != null)
@@ -204,14 +202,22 @@ namespace MiamiOps
 
         public List<IStuff> StuffList => _stuffList;
 
-        public Enemies[] Enemies => this._enemies;
+        public Enemies[] Enemies
+        {
+            get { return this._enemies; }
+            set { this._enemies = value; }
+        }
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;
         public float EnemiesAttack => _enemiesAttack;
         public Player Player => this._player;
         public List<float[]> Obstacles => this._obstacles;
         public int SpawnCount => this._spawn.Count;
-        public int CountEnnemi => this._count;
+        public int CountEnnemi
+        {
+            get { return this._count; }
+            set { this._count = value; }
+        }
         public int Time {
             get { return this._time; }
             set
@@ -219,5 +225,6 @@ namespace MiamiOps
                 this._time = value;
             }
         }
+        
     }
 }

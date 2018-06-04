@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.System;
 
@@ -13,7 +14,10 @@ namespace MiamiOps
 
         Texture _bulletTexture;
         Sprite _bulletSprite;
-        
+
+        List<Sprite> _bulletSpriteList;
+        bool reset;
+
         public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Texture bulletTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
         {
             _roundUIContext = roundUIContext;
@@ -25,6 +29,7 @@ namespace MiamiOps
             _bulletSprite = new Sprite(_bulletTexture);
 
             _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundContext.Player.Place.Y * (mapHeight / 2));
+            _bulletSpriteList = new List<Sprite>();
         }
 
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
@@ -48,14 +53,26 @@ namespace MiamiOps
 
             foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets)
             {
+                if(reset == false)
+                {
+                    this._bulletSpriteList.Clear();
+                     reset = true;
+                }
+
                 this._bulletSprite.Position = UpdatePlaceBullet(bullet, mapWidth, mapHeight);
+                this._bulletSpriteList.Add(_bulletSprite);
                 _bulletSprite.Draw(window, RenderStates.Default);
+                
             }
+
+            reset = false;
         }
 
         public Vector2f WeaponPosition
         {
             get { return _weaponSprite.Position; }
         }
+
+        public List<Sprite> SpriteBulletList => this._bulletSpriteList;
     }
 }

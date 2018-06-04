@@ -32,9 +32,31 @@ namespace MiamiOps
         {
             this._isDead = true;
             // We put a new enemy in place of the old one
-            this._context.Enemies[this._name] = new Enemies(this._context, this._name, new Vector(this._context.GetNextRandomFloat(), this._context.GetNextRandomFloat()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
+            this._context.CountEnnemi = 1;
+            Enemies[] _enemies = new Enemies[this._context.Enemies.Length];
+            for (int i = 0; i < this._context.Enemies.Length; i++)
+            {
+                if(i >= this._name)
+                {
+                    if (i == this._context.Enemies.Length - 1)
+                    {
+                        _enemies[i] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack); ;
+                    }
+                    else
+                    {
+                        _enemies[i] = this._context.Enemies[i + 1];
+                    }
+                }
+                else
+                {
+                    _enemies[i] = this._context.Enemies[i];
+                }
+            }
+            this._context.Enemies = _enemies;
             _context.Player.Experience += _context.Player.Level * 10;
             _context.Player.Points += 10;
+            this._context.CountEnnemi = this._context.Enemies.Length ;
+
         }
 
         // When a enemy is touched by the player, he loses some life point

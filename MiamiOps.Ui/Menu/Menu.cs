@@ -11,7 +11,7 @@ using SFML.System;
 
 namespace MiamiOps
 {
-    class Menu
+   public class Menu
     {
         private int selectedItemIndex;
         private Text[] menuList = new Text[3];
@@ -51,7 +51,7 @@ namespace MiamiOps
                 Position = new Vector2f(width / 2 - width / 18, height-height/6)
             };
             menuList[2] = menu3;
-         //  _backgroundSprite = new Sprite(_backgroundTexture);
+         //  _backgroundSprite = new Sprite(_backgroundTexture);zzzzz
 
         }
 

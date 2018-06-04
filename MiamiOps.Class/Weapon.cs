@@ -111,6 +111,7 @@ namespace MiamiOps
             foreach (Shoot s in _bullets)
             {
                 if (!s.IsAlive) toRemove.Add(s);
+                if(s.LifeBullet == false) toRemove.Add(s);
             }
 
             foreach (Shoot s in toRemove) _bullets.Remove(s);

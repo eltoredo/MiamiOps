@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 namespace MiamiOps
 {
     public class Player
@@ -172,8 +173,5 @@ namespace MiamiOps
         public Vector Direction => this._direction;
         public List<Weapon> Weapons => this._weapons;
        
-
-
-
     }
 }

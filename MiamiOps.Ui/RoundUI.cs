@@ -51,6 +51,7 @@ namespace MiamiOps
             get { return _gameCtx; }
         }
 
+
         public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx,uint screenWidth,uint screenHeight,View viewPlayer, View viewATH)
         {
             Texture _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
@@ -87,7 +88,10 @@ namespace MiamiOps
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
             _ath.Draw(window);
-            for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+            for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
+            {
+                _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+            }
 
             foreach (IStuff stuff in _roundCtx.StuffList)
             {
@@ -97,6 +101,34 @@ namespace MiamiOps
                  _stuffSprite = new Sprite(_stuffTexture);
                 _stuffSprite.Position = new Vector2f(((float)stuff.Position.X + 1) * (mapWidth / 2), (((float)stuff.Position.Y - 1) * (mapHeight / 2)) * (-1));
                 _stuffSprite.Draw(window, RenderStates.Default);
+            }
+
+            for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
+            {
+                for (int a = 0; a < this._weaponUI.SpriteBulletList.Count; a++)
+                {
+                    if (this._weaponUI.SpriteBulletList.Count > 0)
+                    {
+                        if (this._weaponUI.SpriteBulletList[a].GetGlobalBounds().Intersects(_enemies[i].HitBoxEnnemies))
+                        {
+                            if (_roundCtx.Player.CurrentWeapon.Bullets.Count > 0)
+                            {
+                                _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life);
+                                _roundCtx.Player.CurrentWeapon.Bullets[a].LifeBullet = false;
+                                this._weaponUI.SpriteBulletList.RemoveAt(a);
+                            }
+                        }
+                    }
+                }
+
+                if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
+                {
+                    _roundCtx.Player.LifePlayer -=1;
+                    if(_roundCtx.Player.LifePlayer <= 0)
+                    {
+                        window.Close();
+                    }
+                }
             }
         }
 
@@ -124,7 +156,8 @@ namespace MiamiOps
             }
         }
 
-      
+        
+        
         public Map MapCtx => _mapCtx;
     }
 }
