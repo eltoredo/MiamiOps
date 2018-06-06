@@ -123,8 +123,11 @@ namespace MiamiOps
                 count++;
                 if (this._playerUI.HitBoxPlayer.Intersects(item))
                 {
-                    _roundCtx.StuffList[count-1].WalkOn(_roundCtx);
-                    break;
+                    if (_roundCtx.StuffList.Count != 0)
+                    {
+                        _roundCtx.StuffList[count - 1].WalkOn(_roundCtx);
+                        break;
+                    }
                 }
 
             }

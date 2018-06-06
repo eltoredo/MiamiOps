@@ -20,7 +20,7 @@ namespace MiamiOps
         private Dictionary<int, Vector> _spawn;
         private Vector _enemiesSpawn;
         private int _time;
-        private int _timeForWeaponSpawn;
+        private int _timeForWeaponSpawn = 299;
         private int _passOut = 0;
         int _countSpawn;
 
@@ -157,7 +157,7 @@ namespace MiamiOps
                 }
             }
 
-            if (_timeForWeaponSpawn == 150)
+            if (_timeForWeaponSpawn == 300)
             {
                 int factoryIndex = _random.Next(0, _stuffFactories.Count);
                 IStuffFactory randomStuffFactory = _stuffFactories[factoryIndex];
