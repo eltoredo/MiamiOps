@@ -91,13 +91,12 @@ namespace MiamiOps
         {
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
-            _ath.Draw(window);
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
                 _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
             }
 
-
+          
             foreach (IStuff stuff in _roundCtx.StuffList)
             {
                 if (reset == false)
@@ -113,6 +112,8 @@ namespace MiamiOps
                 _boundingBoxPackage.Add(_stuffSprite.GetGlobalBounds());
                 _stuffSprite.Draw(window, RenderStates.Default);
             }
+            _ath.Draw(window);
+
 
             reset = false;
 

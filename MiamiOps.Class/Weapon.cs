@@ -18,7 +18,9 @@ namespace MiamiOps
         float _range;    // la portée
         uint _ammo;    // le nombre de fois où tu peux attaquer
         uint _maxAmmo;    // le nombre maximum de munition
-
+        TimeSpan _lifeSpan;
+        DateTime _creationDate;
+        bool verifWeaponInList;
         int _time;
 
 
@@ -42,6 +44,8 @@ namespace MiamiOps
         {
             this._name = name;
             this._place = CreateRandomPosition();
+            this._lifeSpan = TimeSpan.MaxValue;
+            this._creationDate = DateTime.UtcNow;
         }
 
         public void Shoot(Vector playerPosition, Vector mousePlace)
@@ -120,7 +124,30 @@ namespace MiamiOps
 
         public void WalkOn(Round Ctx)
         {
-           // Ctx.Player.CurrentWeapon = stuff;
+            int count = 0;
+            foreach (var item in Ctx.Player.Weapons)
+            {
+                count++;
+                if(item.Name == this.Name)
+                {
+                    verifWeaponInList = true;
+                }
+            }
+
+            if (verifWeaponInList == false)
+            {
+                this.LifeSpan = TimeSpan.FromSeconds(5);
+                this.CreationDate = DateTime.UtcNow;
+                Ctx.Player.Weapons.Add(this);
+                Ctx.Player.CurrentWeapon = this;
+            }
+            else
+            {
+                Ctx.Player.Weapons[count-1].LifeSpan = TimeSpan.FromSeconds(5);
+                Ctx.Player.Weapons[count-1].CreationDate = DateTime.UtcNow;
+            }
+            Ctx.StuffList.Remove(this);
+
         }
 
         public List<Shoot> Bullets => _bullets;
@@ -131,7 +158,26 @@ namespace MiamiOps
 
         public uint Ammo => this._ammo;
         public uint MaxAmmo => this._maxAmmo;
+        public TimeSpan LifeSpan
+        {
+            get { return _lifeSpan; }
+            set { _lifeSpan = value; }
+        }
 
+        public bool IsAlive
+        {
+            get
+            {
+                TimeSpan span = DateTime.UtcNow - _creationDate;
+                return span < _lifeSpan;
+            }
+        }
+
+        public DateTime CreationDate
+        {
+            get { return _creationDate; }
+            set { _creationDate = value; }
+        }
     }
 
     public class WeaponFactory : IStuffFactory

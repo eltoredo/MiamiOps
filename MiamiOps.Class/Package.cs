@@ -52,7 +52,8 @@ namespace MiamiOps
         {
             if(this.Name == "health")
             {
-                Ctx.Player.LifePlayer += 50;
+                Ctx.Player.LifePlayer += 20;
+                if (Ctx.Player.LifePlayer > Ctx.Player.LifePlayerMax) Ctx.Player.LifePlayer = Ctx.Player.LifePlayerMax;
                 Ctx.StuffList.Remove(this);
             }
         }

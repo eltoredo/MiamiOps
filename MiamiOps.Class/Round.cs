@@ -138,6 +138,7 @@ namespace MiamiOps
             _player.CurrentWeapon.Update();
             _player.Update();
             UpdateList();
+            UpdatePackage();
 
             for (int i = 0 ; i < _count; i++)
             {
@@ -191,6 +192,21 @@ namespace MiamiOps
                 _passOut++;
             }
 
+
+        }
+
+        public void UpdatePackage()
+        {
+            
+            foreach (Weapon weapon in _weapons)
+            {
+                if (!weapon.IsAlive)
+                {
+                    if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._weapons[this._weapons.Count - 2];
+                    _weapons.Remove(weapon);
+                    break;
+                }
+            }
 
         }
 
