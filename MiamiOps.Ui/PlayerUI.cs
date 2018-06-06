@@ -16,6 +16,7 @@ namespace MiamiOps
         int _spriteWidth;
         int _spriteHeight;
         Map _ctxMap;
+        RectangleShape boundingBox;
 
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
         int _nbDirection;
@@ -24,7 +25,17 @@ namespace MiamiOps
         FloatRect _hitBoxPlayer;
         Color colorCharacters = new Color(255, 255, 255, 255);
 
-        public PlayerUI(RoundUI roundUIContext, int levelTexture, int nbSprite, int spriteWidth, int spriteHeight, Vector playerPlace, uint mapWidth, uint mapHeight,Map ctxMap)
+        public PlayerUI(
+            RoundUI roundUIContext,
+            int levelTexture,
+            int nbSprite,
+            int spriteWidth,
+            int spriteHeight,
+            Vector playerPlace,
+            uint mapWidth,
+            uint mapHeight,
+            Map ctxMap
+        )
         {
             _roundUIContext = roundUIContext;
             _player = _roundUIContext.RoundContext.Player;
@@ -66,6 +77,9 @@ namespace MiamiOps
             ++_animFrames;
          
             _playerSprite.Draw(window, RenderStates.Default);
+
+            //Console.WriteLine("x : " + _player.Place.X);
+            //Console.WriteLine("y : " + _player.Place.Y);
            
         }
 

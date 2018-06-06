@@ -47,7 +47,7 @@ namespace MiamiOps
             _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromMinutes(2), 1)); // indice de rareté
             _stuffFactories.Add(new WeaponFactory(this, "USP", 0.5f, 0.1f, 0.05f, 30));
 
-            Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
+            Vector player = playerSpawn ?? new Vector(-0.7f, 0.5f);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
             if (
@@ -167,7 +167,7 @@ namespace MiamiOps
                 _timeForWeaponSpawn = 0;
             }
 
-
+            _player.Experience += 10;
         }
 
         public void UpdateList()
