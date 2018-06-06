@@ -48,12 +48,13 @@ namespace MiamiOps
             return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
         }
 
-        public void WalkOn(IStuff stuff,Round Ctx)
+        public void WalkOn(Round Ctx)
         {
-            if(stuff.Name == "health")
+            if(this.Name == "health")
             {
-                Ctx.Player.LifePlayer += 50;
-
+                Ctx.Player.LifePlayer += 20;
+                if (Ctx.Player.LifePlayer > Ctx.Player.LifePlayerMax) Ctx.Player.LifePlayer = Ctx.Player.LifePlayerMax;
+                Ctx.StuffList.Remove(this);
             }
         }
 

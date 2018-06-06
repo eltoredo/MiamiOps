@@ -18,6 +18,10 @@ namespace MiamiOps
         ATH _ath;
         View _view;
         View _viewATH;
+        bool reset;
+
+        List<FloatRect> _boundingBoxPackage;
+
         uint _mapWidth;
         uint _mapHeight;
         Round _roundCtx;
@@ -54,6 +58,7 @@ namespace MiamiOps
             get { return _gameCtx; }
         }
 
+
         public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx,uint screenWidth,uint screenHeight,View viewPlayer, View viewATH)
         {
             Texture _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
@@ -70,7 +75,7 @@ namespace MiamiOps
             _view = viewPlayer;
             _viewATH = viewATH;
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
-
+            _boundingBoxPackage = new List<FloatRect>();
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
@@ -131,15 +136,67 @@ namespace MiamiOps
             //playerBound.Draw(window, RenderStates.Default);
             foreach (IStuff stuff in _roundCtx.StuffList)
             {
+                if (reset == false)
+                {
+                    this._boundingBoxPackage.Clear();
+                    reset = true;
+                }
                 _stuffTexture.Dispose();
                 _stuffSprite.Dispose();
                 _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
                 _stuffSprite = new Sprite(_stuffTexture);
                 _stuffSprite.Position = new Vector2f(((float)stuff.Position.X + 1) * (mapWidth / 2), (((float)stuff.Position.Y - 1) * (mapHeight / 2)) * (-1));
+                _boundingBoxPackage.Add(_stuffSprite.GetGlobalBounds());
                 _stuffSprite.Draw(window, RenderStates.Default);
             }
             _ath.Draw(window);
 
+
+            reset = false;
+
+            int count = 0;
+            foreach (var item in _boundingBoxPackage)
+            {
+                count++;
+                if (this._playerUI.HitBoxPlayer.Intersects(item))
+                {
+                    if (_roundCtx.StuffList.Count != 0)
+                    {
+                        _roundCtx.StuffList[count - 1].WalkOn(_roundCtx);
+                        break;
+                    }
+                }
+
+            }
+
+            for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
+            {
+                for (int a = 0; a < this._weaponUI.SpriteBulletList.Count; a++)
+                {
+                    if (this._weaponUI.SpriteBulletList.Count > 0)
+                    {
+                        if (this._weaponUI.SpriteBulletList[a].GetGlobalBounds().Intersects(_enemies[i].HitBoxEnnemies))
+                        {
+                            if (_roundCtx.Player.CurrentWeapon.Bullets.Count > 0)
+                            {
+                                _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life);
+                                _roundCtx.Player.CurrentWeapon.Bullets[a].LifeBullet = false;
+                                this._weaponUI.SpriteBulletList.RemoveAt(a);
+                            }
+                        }
+                    }
+                }
+
+                    if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
+                    {
+                        _roundCtx.Player.LifePlayer -= 1;
+                        if (_roundCtx.Player.LifePlayer <= 0)
+                        {
+                            window.Close();
+                        }
+                    }
+                
+            }
         }
 
         public void Update()
@@ -166,7 +223,8 @@ namespace MiamiOps
             }
         }
 
-      
+        
+        
         public Map MapCtx => _mapCtx;
     }
 }

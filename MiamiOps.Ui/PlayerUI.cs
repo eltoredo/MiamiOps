@@ -96,5 +96,8 @@ namespace MiamiOps
         {
             get { return _playerSprite.Position; }
         }
+
+        public FloatRect HitBoxPlayer => this._hitBoxPlayer;
+
     }
 }

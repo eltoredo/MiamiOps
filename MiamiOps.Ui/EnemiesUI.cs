@@ -76,5 +76,7 @@ namespace MiamiOps
         {
             get { return _enemySprite.Position; }
         }
+
+        public FloatRect HitBoxEnnemies => this._hitBoxEnnemi;
     }
 }
