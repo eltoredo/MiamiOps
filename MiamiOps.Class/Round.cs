@@ -167,7 +167,6 @@ namespace MiamiOps
                 _timeForWeaponSpawn = 0;
             }
 
-            _player.Experience += 10;
         }
 
         public void UpdateList()
