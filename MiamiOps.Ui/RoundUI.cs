@@ -1,5 +1,7 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace MiamiOps
@@ -11,12 +13,17 @@ namespace MiamiOps
         WeaponUI _weaponUI;
         Game _gameCtx;
         Map _mapCtx;
+        RectangleShape playerBound = new RectangleShape();
 
         uint _mapWidth;
         uint _mapHeight;
 
         Round _roundCtx;
-       
+
+        private List<float[]> _obstacles;
+        private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
+
+
         //EnemiesUI = _enemiesUI;
 
         public Round RoundContext
@@ -66,10 +73,39 @@ namespace MiamiOps
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
+            foreach (var item in _roundCtx.Obstacles)
+            {
+                RectangleShape lol = new RectangleShape();
+                Vector2f position = new Vector2f();
+                Vector2f size = new Vector2f();
 
-         
-            
 
+                float xPixel = ((item[0]) * 32) / 0.02f;
+                float yPixel = ((item[1]-1) * 32) / 0.02f;
+
+                position.X = xPixel;
+                position.Y = yPixel*-1;
+
+                lol.Position = position;
+
+                float lengthPixel = (item[2] * 32) / 0.02f;
+                float heigthPixel = (item[3] * 32) / 0.02f;
+
+                size.X = lengthPixel;
+                size.Y = heigthPixel;
+
+                lol.Size = size;
+                lol.FillColor = Color.Red;
+
+                _drawObstacles.Add(lol);
+
+            }
+
+            playerBound.Position = new Vector2f(1000, 1000);
+            playerBound.Size = new Vector2f(32, 32);
+            playerBound.FillColor = Color.Red;
+           
+     
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
@@ -77,7 +113,12 @@ namespace MiamiOps
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
             for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
-           
+            foreach (var item in _drawObstacles)
+            {
+                item.Draw(window, RenderStates.Default);
+            }
+            playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
+            playerBound.Draw(window, RenderStates.Default);
         }
     }
 }

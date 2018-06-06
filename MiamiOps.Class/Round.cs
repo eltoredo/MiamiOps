@@ -29,7 +29,7 @@ namespace MiamiOps
             Dictionary<int, Vector> enemySpawn = null
         )
         {
-            Vector player = playerSpawn ?? new Vector(GetNextRandomFloat(), GetNextRandomFloat());
+            Vector player = playerSpawn ?? new Vector(-0.7f, 0.5f);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
             if (
