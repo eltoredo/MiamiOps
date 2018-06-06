@@ -13,31 +13,21 @@ namespace MiamiOps
         WeaponUI _weaponUI;
         Game _gameCtx;
         Map _mapCtx;
-<<<<<<< HEAD
         RectangleShape playerBound = new RectangleShape();
-=======
         Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
         ATH _ath;
         View _view;
         View _viewATH;
->>>>>>> develop
-
         uint _mapWidth;
         uint _mapHeight;
-
         Round _roundCtx;
-
-<<<<<<< HEAD
         private List<float[]> _obstacles;
         private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
 
 
         //EnemiesUI = _enemiesUI;
-=======
         Texture _stuffTexture = new Texture("../../../../Images/monstersprite.png");
         Sprite _stuffSprite = new Sprite();
-
->>>>>>> develop
 
         public Round RoundContext
         {
@@ -93,7 +83,6 @@ namespace MiamiOps
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
-<<<<<<< HEAD
             foreach (var item in _roundCtx.Obstacles)
             {
                 RectangleShape lol = new RectangleShape();
@@ -127,35 +116,30 @@ namespace MiamiOps
             //playerBound.FillColor = Color.Red;
            
      
-=======
->>>>>>> develop
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
-<<<<<<< HEAD
-            for (int i = 0; i < _roundCtx.Enemies.Length; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+            for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
             foreach (var item in _drawObstacles)
             {
                 item.Draw(window, RenderStates.Default);
             }
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
             //playerBound.Draw(window, RenderStates.Default);
-=======
-            _ath.Draw(window);
-            for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
-
             foreach (IStuff stuff in _roundCtx.StuffList)
             {
                 _stuffTexture.Dispose();
                 _stuffSprite.Dispose();
                 _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
-                 _stuffSprite = new Sprite(_stuffTexture);
+                _stuffSprite = new Sprite(_stuffTexture);
                 _stuffSprite.Position = new Vector2f(((float)stuff.Position.X + 1) * (mapWidth / 2), (((float)stuff.Position.Y - 1) * (mapHeight / 2)) * (-1));
                 _stuffSprite.Draw(window, RenderStates.Default);
             }
+            _ath.Draw(window);
+
         }
 
         public void Update()
@@ -180,7 +164,6 @@ namespace MiamiOps
                 }
                 this._roundCtx.Time = 0;
             }
->>>>>>> develop
         }
 
       

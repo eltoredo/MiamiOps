@@ -60,12 +60,7 @@ namespace MiamiOps
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
         {
             _nbDirection = Conversion(_roundUIContext.RoundContext.Player.Direction);
-<<<<<<< HEAD
-            Vector2f newPlayerPlace = new Vector2f(((float)this._player.Place.X + 1) * (mapWidth / 2), (((float)this._player.Place.Y - 1) * (mapHeight / 2)) * (-1));
-           
-=======
             Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), (((float)_player.Place.Y - 1) * (mapHeight / 2))*-1);
->>>>>>> develop
             
             return newPlayerPlace;
         }
@@ -82,13 +77,10 @@ namespace MiamiOps
             ++_animFrames;
          
             _playerSprite.Draw(window, RenderStates.Default);
-<<<<<<< HEAD
 
             //Console.WriteLine("x : " + _player.Place.X);
             //Console.WriteLine("y : " + _player.Place.Y);
-=======
            
->>>>>>> develop
         }
 
         private int Conversion(Vector vector)
