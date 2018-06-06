@@ -146,18 +146,26 @@ namespace MiamiOps
                 hexagone.Add(playerCoordonateTn[(idxMin + playerCoordonateTn.Count) % playerCoordonateTn.Count]);
                 // We have our fucking hexagone (mais ça pue d'avoir fait ça parce que ça fonctionne seulement si la forme finale est un hexagone fait a partir de deux rectangles # This is shit (c'est du'autant plus sale qu'on traite les cas particulier a la main
             }
+            foreach ((double, double) point in hexagone){Console.WriteLine(point);}
+            Console.WriteLine();
             // Test if the hexagone colide with wall
             bool colision = false;
             for (int idx  = 0; idx < hexagone.Count - 2; idx += 1)
             {
                 // We cut the hexagone in triangles, below, one of the triangle
                 (double, double)[] triangle = new (double, double)[3]{hexagone[idx], hexagone[idx + 1], hexagone[hexagone.Count-1]};    // Le découpage en triangle est bon !
+                foreach ((double, double) tri in triangle){Console.WriteLine(tri);}
+                Console.WriteLine();
                 foreach(float[] wall in this._context.Obstacles)
                 {
                     // The wall is cut in two triangle
                     (double, double)[] part1 = new(double, double)[3] {(wall[0], wall[1]),(wall[0] + wall[2], wall[1]),(wall[0], wall[1] - wall[3])};
                     (double, double)[] part2 = new(double, double)[3] {(wall[0] + wall[2], wall[1]),(wall[0] + wall[2], wall[1] - wall[3]),(wall[0], wall[1] - wall[3])};
 
+                    Console.WriteLine("}}}");
+                    foreach ((double, double) pt in part1){Console.WriteLine(pt);}
+                    Console.WriteLine(ColideHelpers.areColide(triangle, part1));
+                    Console.WriteLine(ColideHelpers.areColide(triangle, part2));
                     // Calcule the colition between the triangle and the two part of the wall
                     colision = ColideHelpers.areColide(triangle, part1) || ColideHelpers.areColide(triangle, part2);
                     if(colision) {break;}
@@ -165,19 +173,7 @@ namespace MiamiOps
             }
             canMove = canMove && !colision;
 
-        //    // Checks if the player don't go in a wall
-        //    foreach (float[] wall in this._context.Obstacles)
-        //    {
-        //        if (
-        //            Math.Round(nextPlace.Y - this._height, 2) < wall[1] && wall[1] - wall[3] < Math.Round(nextPlace.Y, 2) && 
-        //            Math.Round(nextPlace.X, 2) < wall[0] + wall[2] && Math.Round(nextPlace.X + this._width, 2) > wall[0]
-        //        )
-        //        {
-        //            canMove = false;
-        //        }
-        //    }
             return (canMove, nextPlace);
-
         }
 
         private Vector SimulationMove(Vector direction)

@@ -16,7 +16,7 @@ namespace MiamiOps
         private static (double, double) CreatFonctionAffine((double, double) point1, (double, double) point2)
         {
             double a = (point2.Item2 - point1.Item2) / (point2.Item1 - point1.Item1);
-            // b = (y1x2 - y2x1) / (x2 - x1)    voire plus haut pour la démonstration
+            // b = (y1x2 - y2x1) / (x2 - x1)    voire dans player.canMove
             double b = (point1.Item2 * point2.Item1 - point2.Item2 * point1.Item1) / (point2.Item1 - point1.Item1);
             return (a, b);
         }
@@ -34,43 +34,78 @@ namespace MiamiOps
                 (double, double) point2 = triangle1[((idx + 1) + triangle1.Length) % triangle1.Length];
                 (double, double) point3 = triangle1[((idx + 2) + triangle1.Length) % triangle1.Length];
 
-                // On prends le a et le b de la fonction passant par les deux points du triangle
-                (double, double) a_et_b = CreatFonctionAffine(point1, point2);
-                
-                // On regare où est le troisième points par rapport a la droite passant par ces deux points
-                double image = FonctionAffine(a_et_b.Item1, point3.Item1, a_et_b.Item2);
+                if (point1.Item1 == point2.Item1)
+                {
+                    if (point3.Item1 > point1.Item1)
+                    {
+                        otherSide = (
+                            (triangle2[0].Item1 < point1.Item1) &&
+                            (triangle2[1].Item1 < point1.Item1) &&
+                            (triangle2[2].Item1 < point1.Item1)
+                        );
+                    }
+                    else if (point3.Item1 < point1.Item1)
+                    {
+                        otherSide = (
+                            (triangle2[0].Item1 > point1.Item1) &&
+                            (triangle2[1].Item1 > point1.Item1) &&
+                            (triangle2[2].Item1 > point1.Item1)
+                        );
+                    }
+                    else if (point3.Item1 == point1.Item1)
+                    {
+                        otherSide = (
+                            (triangle2[0].Item1 < point1.Item1) &&
+                            (triangle2[1].Item1 < point1.Item1) &&
+                            (triangle2[2].Item1 < point1.Item1)
+                            ||
+                            (triangle2[0].Item1 > point1.Item1) &&
+                            (triangle2[1].Item1 > point1.Item1) &&
+                            (triangle2[2].Item1 > point1.Item1)
+                        );
+                    }
+                }
+                else
+                {
+                    // On prends le a et le b de la fonction passant par les deux points du triangle
+                    (double, double) a_et_b = CreatFonctionAffine(point1, point2);
+                    
+                    // On regare où est le troisième points par rapport a la droite passant par ces deux points
+                    double image = FonctionAffine(a_et_b.Item1, point3.Item1, a_et_b.Item2);
 
-                if (point3.Item2 < image)
-                {
-                    otherSide = (
-                        (triangle2[0].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
-                        (triangle2[1].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
-                        (triangle2[2].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
-                    );
-                }
-                else if (point3.Item2 > image)
-                {
-                    otherSide = (
-                        (triangle2[0].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
-                        (triangle2[1].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
-                        (triangle2[2].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
-                    );
-                }
-                else if (point3.Item2 == image)
-                {
-                    otherSide = (
-                        (
+                    if (point3.Item2 < image)
+                    {
+                        otherSide = (
                             (triangle2[0].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
                             (triangle2[1].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
                             (triangle2[2].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
-                        ) ||
-                        (
+                        );
+                    }
+                    else if (point3.Item2 > image)
+                    {
+                        otherSide = (
                             (triangle2[0].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
                             (triangle2[1].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
                             (triangle2[2].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
-                        )
-                    );
+                        );
+                    }
+                    else if (point3.Item2 == image)
+                    {
+                        otherSide = (
+                            (
+                                (triangle2[0].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
+                                (triangle2[1].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
+                                (triangle2[2].Item2 >= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
+                            ) ||
+                            (
+                                (triangle2[0].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[0].Item1, a_et_b.Item2)) &&
+                                (triangle2[1].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[1].Item1, a_et_b.Item2)) &&
+                                (triangle2[2].Item2 <= FonctionAffine(a_et_b.Item1, triangle2[2].Item1, a_et_b.Item2))
+                            )
+                        );
+                    }
                 }
+
                 if (otherSide){return true;}
             }
             return otherSide;

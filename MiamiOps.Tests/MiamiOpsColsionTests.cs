@@ -110,8 +110,8 @@ namespace MiamiOps.Tests
             Assert.That(colide,Is.False);
             colide = ColideHelpers.areColide(new(double, double)[3] { (0, 0),(0, 0),(0, 0) },new(double, double)[3] { (2, 2),(6, 5),(5, 3) });
             Assert.That(colide,Is.False);
+            colide = ColideHelpers.areColide(new(double, double)[3] { (-1, 0),(-.8, 0),(-1, -0.2) },new(double, double)[3] { (0, 1),(1, 1),(0, -1) });
+            Assert.That(colide,Is.False);
         }
-
-        // Faire un teste pour une diabonale du player (une devrai suffire)
     }
 }
