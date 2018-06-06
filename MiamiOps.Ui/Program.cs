@@ -23,6 +23,11 @@ namespace MiamiOps
 
             while (window.IsOpen)
             {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                {
+                    window.Close();
+                }
+
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
                 {
                     menu.Move(Keyboard.Key.Z);
@@ -50,6 +55,8 @@ namespace MiamiOps
                     {
                         window.Close();
                     }
+
+
                 }
 
                 menu.Draw(window);
@@ -66,7 +73,11 @@ namespace MiamiOps
 
             while (window.IsOpen)
             {
-
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                {
+                    window.Close();
+                }
+                
                 if (Keyboard.IsKeyPressed(Keyboard.Key.D))
                 {
                     gameOver.Move(Keyboard.Key.D);
