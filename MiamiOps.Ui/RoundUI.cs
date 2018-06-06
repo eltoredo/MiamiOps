@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace MiamiOps
@@ -16,6 +17,9 @@ namespace MiamiOps
         ATH _ath;
         View _view;
         View _viewATH;
+        bool reset;
+
+        List<FloatRect> _boundingBoxPackage;
 
         uint _mapWidth;
         uint _mapHeight;
@@ -68,7 +72,7 @@ namespace MiamiOps
             _view = viewPlayer;
             _viewATH = viewATH;
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
-
+            _boundingBoxPackage = new List<FloatRect>();
             _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
@@ -93,14 +97,35 @@ namespace MiamiOps
                 _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
             }
 
+
             foreach (IStuff stuff in _roundCtx.StuffList)
             {
+                if (reset == false)
+                {
+                    this._boundingBoxPackage.Clear();
+                    reset = true;
+                }
                 _stuffTexture.Dispose();
                 _stuffSprite.Dispose();
                 _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
-                 _stuffSprite = new Sprite(_stuffTexture);
+                _stuffSprite = new Sprite(_stuffTexture);
                 _stuffSprite.Position = new Vector2f(((float)stuff.Position.X + 1) * (mapWidth / 2), (((float)stuff.Position.Y - 1) * (mapHeight / 2)) * (-1));
+                _boundingBoxPackage.Add(_stuffSprite.GetGlobalBounds());
                 _stuffSprite.Draw(window, RenderStates.Default);
+            }
+
+            reset = false;
+
+            int count = 0;
+            foreach (var item in _boundingBoxPackage)
+            {
+                count++;
+                if (this._playerUI.HitBoxPlayer.Intersects(item))
+                {
+                    _roundCtx.StuffList[count-1].WalkOn(_roundCtx);
+                    break;
+                }
+
             }
 
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
@@ -121,14 +146,15 @@ namespace MiamiOps
                     }
                 }
 
-                if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
-                {
-                    _roundCtx.Player.LifePlayer -=1;
-                    if(_roundCtx.Player.LifePlayer <= 0)
+                    if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
                     {
-                        window.Close();
+                        _roundCtx.Player.LifePlayer -= 1;
+                        if (_roundCtx.Player.LifePlayer <= 0)
+                        {
+                            window.Close();
+                        }
                     }
-                }
+                
             }
         }
 

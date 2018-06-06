@@ -47,7 +47,7 @@ namespace MiamiOps
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx", @"..\..\..\..\MiamiOps.Map\Map\MiamiOPSlvl1.png");
             _view = new View(new FloatRect(0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
             _viewATH = new View(Window.GetView());
-            _round = new Round(5, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx"),playerLife:100);
+            _round = new Round(10, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\miamiOPSlvl1.tmx"),playerLife:100);
             _roundUI = new RoundUI(_round, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
             _playerInput = new InputHandler(_roundUI);
             _camera = new Camera();

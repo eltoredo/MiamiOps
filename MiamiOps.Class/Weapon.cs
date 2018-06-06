@@ -118,7 +118,7 @@ namespace MiamiOps
 
         }
 
-        public void WalkOn(IStuff stuff,Round Ctx)
+        public void WalkOn(Round Ctx)
         {
            // Ctx.Player.CurrentWeapon = stuff;
         }

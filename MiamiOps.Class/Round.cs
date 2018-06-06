@@ -22,7 +22,7 @@ namespace MiamiOps
         private int _time;
         private int _timeForWeaponSpawn;
         private int _passOut = 0;
-
+        int _countSpawn;
 
 
         Random _random;
@@ -41,6 +41,7 @@ namespace MiamiOps
             Dictionary<int, Vector> enemySpawn = null
         )
         {
+            _countSpawn = 1 ;
             _random = new Random();
             _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
@@ -193,8 +194,6 @@ namespace MiamiOps
 
         }
 
-        
-
         public void AddObstacle(float x, float y, float largeur, float hauteur)
         {
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
@@ -217,6 +216,11 @@ namespace MiamiOps
         {
             get { return this._count; }
             set { this._count = value; }
+        }
+        public int CountSpawnDead
+        {
+            get { return this._countSpawn; }
+            set { this._countSpawn = value; }
         }
         public int Time {
             get { return this._time; }
