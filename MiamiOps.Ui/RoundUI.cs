@@ -101,9 +101,9 @@ namespace MiamiOps
 
             }
 
-            playerBound.Position = new Vector2f(1000, 1000);
-            playerBound.Size = new Vector2f(32, 32);
-            playerBound.FillColor = Color.Red;
+            //playerBound.Position = new Vector2f(1000, 1000);
+            //playerBound.Size = new Vector2f(32, 32);
+            //playerBound.FillColor = Color.Red;
            
      
         }
@@ -117,8 +117,8 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
-            playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
-            playerBound.Draw(window, RenderStates.Default);
+            //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
+            //playerBound.Draw(window, RenderStates.Default);
         }
     }
 }

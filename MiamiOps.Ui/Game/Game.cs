@@ -49,10 +49,10 @@ namespace MiamiOps
             _round = new Round(100, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"),playerHauteur:0f,playerLargeur:0f);
             foreach (var item in _collide)
             {
-                Console.WriteLine("x: " + item[0]);
-                Console.WriteLine("y: " + item[1]);
-                Console.WriteLine("length: " + item[2]);
-                Console.WriteLine("hauteur: " + item[3]);
+                //Console.WriteLine("x: " + item[0]);
+                //Console.WriteLine("y: " + item[1]);
+                //Console.WriteLine("length: " + item[2]);
+                //Console.WriteLine("hauteur: " + item[3]);
 
                 _round.AddObstacle(item[0], item[1], item[2], item[3]);
             }
@@ -60,7 +60,7 @@ namespace MiamiOps
             _playerInput = new InputHandler(_roundUI);
             _view = new View(Window.GetView());
             _camera = new Camera();
-           // _view.Zoom(4f);
+           //_view.Zoom(4f);
         }
 
         public override void LoadContent()
