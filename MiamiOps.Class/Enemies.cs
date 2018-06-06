@@ -33,6 +33,8 @@ namespace MiamiOps
             this._isDead = true;
             // We put a new enemy in place of the old one
             this._context.Enemies[this._name] = new Enemies(this._context, this._name, new Vector(this._context.GetNextRandomFloat(), this._context.GetNextRandomFloat()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
+            _context.Player.Experience += _context.Player.Level * 10;
+            _context.Player.Points += 10;
         }
 
         // When a enemy is touched by the player, he loses some life point
@@ -54,7 +56,7 @@ namespace MiamiOps
                 this._place = CanMoveInformation.Item2;
             }
         }
-
+        
         private (bool, Vector) CanMove(Vector target)
         {
             bool canMove = true;

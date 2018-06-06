@@ -9,8 +9,8 @@ namespace MiamiOps
     {
         public static void Main(string[] args)
         {
-            Menu menu = new Menu(1200, 720);
-            RenderWindow window = new RenderWindow(new VideoMode(1200, 720), "Miami Ops");
+            Menu menu = new Menu(1280, 720);
+            RenderWindow window = new RenderWindow(new VideoMode(1280, 720), "Miami Ops");
             menu.PlaySoundMenu();
 
             while (window.IsOpen)
