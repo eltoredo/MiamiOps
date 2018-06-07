@@ -9,7 +9,8 @@ namespace MiamiOps
     {
         public static void Main(string[] args)
         {
-            OpenGame();
+            Game game = new Game(AppContext.BaseDirectory);
+            game.Run();
         }
 
         public static void OpenGame()

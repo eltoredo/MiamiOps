@@ -202,7 +202,6 @@ namespace MiamiOps
                         if (_roundCtx.Player.LifePlayer <= 0)
                         {
                             _roundCtx.GameState = true;
-                            window.Close();
                         }
                     }
                 
