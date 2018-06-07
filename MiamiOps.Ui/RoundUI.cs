@@ -95,7 +95,7 @@ namespace MiamiOps
                 Vector2f size = new Vector2f();
 
 
-                float xPixel = ((item[0]) * 32) / 0.02f;
+                float xPixel = ((item[0]+1) * 32) / 0.02f;
                 float yPixel = ((item[1]-1) * 32) / 0.02f;
 
                 position.X = xPixel;
@@ -112,7 +112,7 @@ namespace MiamiOps
                 lol.Size = size;
                 lol.FillColor = Color.Red;
 
-                _drawObstacles.Add(lol);
+                //_drawObstacles.Add(lol);
 
             }
 
@@ -134,6 +134,8 @@ namespace MiamiOps
             }
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
             //playerBound.Draw(window, RenderStates.Default);
+
+            //Dessine Tous les stuffs et construit un tableau de FloatRect qui comporte tous les BoundingBox des stuffs
             foreach (IStuff stuff in _roundCtx.StuffList)
             {
                 if (reset == false)
@@ -149,11 +151,14 @@ namespace MiamiOps
                 _boundingBoxPackage.Add(_stuffSprite.GetGlobalBounds());
                 _stuffSprite.Draw(window, RenderStates.Default);
             }
+
+
             _ath.Draw(window);
 
 
             reset = false;
 
+            //Verifie si les Bounding box des stuffs collisione avec le personnage
             int count = 0;
             foreach (var item in _boundingBoxPackage)
             {
@@ -168,7 +173,8 @@ namespace MiamiOps
                 }
 
             }
-
+            
+            // verifie que les tirs collisionne avec les ennemis
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
                 for (int a = 0; a < this._weaponUI.SpriteBulletList.Count; a++)
@@ -187,6 +193,8 @@ namespace MiamiOps
                     }
                 }
 
+
+                //verifie que le player colisione avec les ennemis
                     if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
                     {
                         _roundCtx.Player.LifePlayer -= 1;
