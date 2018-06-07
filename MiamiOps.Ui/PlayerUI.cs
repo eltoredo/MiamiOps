@@ -98,6 +98,13 @@ namespace MiamiOps
         }
 
         public FloatRect HitBoxPlayer => this._hitBoxPlayer;
-
+        public int AnimFrame {
+            get { return this._animFrames; }
+            set { this._animFrames = value; }
+        }
+        public int AnimStop {
+            get { return this._animStop; }
+            set { this._animStop = value; }
+        }
     }
 }

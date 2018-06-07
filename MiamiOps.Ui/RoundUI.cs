@@ -127,6 +127,7 @@ namespace MiamiOps
         {
             _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
+            
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
             foreach (var item in _drawObstacles)
             {
@@ -200,6 +201,7 @@ namespace MiamiOps
                         _roundCtx.Player.LifePlayer -= 1;
                         if (_roundCtx.Player.LifePlayer <= 0)
                         {
+                            _roundCtx.GameState = true;
                             window.Close();
                         }
                     }

@@ -48,6 +48,10 @@ namespace MiamiOps
                         Game game = new Game(AppContext.BaseDirectory);
                         game.Run();
                         window.Close();
+                        if (game.Round.GameState == false)
+                        {
+                            window.Close();
+                        }
                         EndGame();
                         break;
                     }
@@ -67,6 +71,7 @@ namespace MiamiOps
         }
         public static void EndGame()
         {
+            
             GameOver gameOver = new GameOver(1280, 720);
             RenderWindow window = new RenderWindow(new VideoMode(1280, 720), "End Game");
             gameOver.PlaySoundMenu();

@@ -16,6 +16,8 @@ namespace MiamiOps
         
         float deltaTime;
 
+        bool _pause;
+        int _pauseDraw;
         #endregion
 
         #region Properties
@@ -50,6 +52,7 @@ namespace MiamiOps
             Window.SetFramerateLimit(60);
 
             Window.KeyPressed += WindowEscaping;
+            Window.KeyPressed += GamePause;
         }
 
         public void Run() // Main method of the gameloop
@@ -66,24 +69,36 @@ namespace MiamiOps
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
-
-                totalTimeElapsed = _clock.ElapsedTime.AsSeconds();
-                deltaTime = totalTimeElapsed - previousTimeElapsed;
-                previousTimeElapsed = totalTimeElapsed;
-
-                totalTimeBeforeUpdate += deltaTime;
-
-                if (totalTimeBeforeUpdate >= TIME_UNTIL_UPDATE)
+                if (!Pause)
                 {
-                    GameTime.Update(totalTimeBeforeUpdate, totalTimeElapsed);
-                    totalTimeBeforeUpdate = 0f;
+                    totalTimeElapsed = _clock.ElapsedTime.AsSeconds();
+                    deltaTime = totalTimeElapsed - previousTimeElapsed;
+                    previousTimeElapsed = totalTimeElapsed;
 
-                    Update(GameTime);
+                    totalTimeBeforeUpdate += deltaTime;
 
+                    if (totalTimeBeforeUpdate >= TIME_UNTIL_UPDATE)
+                    {
+
+                        GameTime.Update(totalTimeBeforeUpdate, totalTimeElapsed);
+                        totalTimeBeforeUpdate = 0f;
+                        Update(GameTime);
+
+
+                        Window.Clear(WindowClearColor);
+
+                        Draw(GameTime);
+                        Window.Display();
+                    }
+                }
+                else if (_pauseDraw < 1)
+                {
                     Window.Clear(WindowClearColor);
 
                     Draw(GameTime);
                     Window.Display();
+                    _pauseDraw++;
+                    
                 }
             }
         }
@@ -103,6 +118,19 @@ namespace MiamiOps
             if (e.Code == Keyboard.Key.Escape) Window.Close();
         }
 
+        private void GamePause(object sender, KeyEventArgs e)
+        {
+            if (e.Code == Keyboard.Key.M)
+            {
+                _pause = !_pause;
+                if (!Pause)
+                {
+                    _pauseDraw = 0;
+                }
+            }
+        }
+
         public Window GameWindow => Window;
+        public bool Pause => _pause;
     }
 }
