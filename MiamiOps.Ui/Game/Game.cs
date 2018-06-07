@@ -26,7 +26,7 @@ namespace MiamiOps
         Camera _camera;
         Convert _convert = new Convert();
         HashSet<float[]> _collide;
-
+        Text pause = new Text();
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -35,9 +35,26 @@ namespace MiamiOps
 
         public override void Draw(GameTime gameTime)
         {
-            Window.SetView(_view);
-            Window.Draw(_map);
-            _roundUI.Draw(Window, _roundUI.MapWidth, _roundUI.MapHeight);
+                Window.SetView(_view);
+                Window.Draw(_map);
+                _roundUI.Draw(Window, _roundUI.MapWidth, _roundUI.MapHeight);
+
+            if(Pause)
+            {
+                pause.Dispose();
+                
+                pause = new Text();
+
+                pause.DisplayedString = "Jeu en pause";
+                pause.Font = new Font("../../../Menu/pricedown.ttf");
+                pause.Position = new Vector2f(_view.Center.X - 100, _view.Center.Y - 200);
+                pause.CharacterSize = 50;
+                pause.Color = Color.Black;
+
+                pause.Draw(Window, RenderStates.Default);
+               
+                
+            }
             
         }
 
@@ -81,6 +98,7 @@ namespace MiamiOps
 
         public InputHandler Input => _playerInput;
         public View MyView => _view;
+        public Round Round => _round;
          
     }
 }

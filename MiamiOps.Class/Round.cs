@@ -23,7 +23,7 @@ namespace MiamiOps
         private int _timeForWeaponSpawn = 299;
         private int _passOut = 0;
         int _countSpawn;
-
+        bool _gameState;
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
@@ -243,6 +243,11 @@ namespace MiamiOps
                 this._time = value;
             }
         }
-        
+        public bool GameState
+        {
+            get { return this._gameState; }
+            set { this._gameState = value; }
+        }
+
     }
 }
