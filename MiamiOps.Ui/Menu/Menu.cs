@@ -51,7 +51,7 @@ namespace MiamiOps
                 Position = new Vector2f(width / 2 - width / 18, height-height/6)
             };
             menuList[2] = menu3;
-         //  _backgroundSprite = new Sprite(_backgroundTexture);zzzzz
+         //_backgroundSprite = new Sprite(_backgroundTexture);zzzzz
 
         }
 
@@ -102,6 +102,9 @@ namespace MiamiOps
 
         public void OpenGame(RenderWindow window)
         {
+            window.Clear();
+            this.Draw(window);
+            window.Display();
             this.PlaySoundMenu();
 
             bool end = true;

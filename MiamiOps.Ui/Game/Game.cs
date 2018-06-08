@@ -64,6 +64,7 @@ namespace MiamiOps
         {
             if (gameOver.ReturnOrNot == false)
             {
+                gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
                 menu.OpenGame(Window);
             }
             _collide = _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
