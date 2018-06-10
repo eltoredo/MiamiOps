@@ -7,7 +7,7 @@ using SFML.Graphics;
 using SFML.Audio;
 using SFML.Window;
 using SFML.System;
-
+using System.Threading;
 
 namespace MiamiOps
 {
@@ -51,7 +51,7 @@ namespace MiamiOps
                 Position = new Vector2f(width / 2 - width / 18, height-height/6)
             };
             menuList[2] = menu3;
-         //  _backgroundSprite = new Sprite(_backgroundTexture);zzzzz
+         //_backgroundSprite = new Sprite(_backgroundTexture);zzzzz
 
         }
 
@@ -98,6 +98,58 @@ namespace MiamiOps
         public void StopSoundMenu()
         {
             music.Stop();
+        }
+
+        public void OpenGame(RenderWindow window)
+        {
+            window.Clear();
+            this.Draw(window);
+            window.Display();
+            this.PlaySoundMenu();
+
+            bool end = true;
+            bool KeyPressed = true;
+
+            while (end == true)
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                {
+                    this.StopSoundMenu();
+                    end = false;
+                    window.Close();
+                }
+
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
+                {
+                    this.Move(Keyboard.Key.Z);
+                    KeyPressed = false;
+                }
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+                {
+                    this.Move(Keyboard.Key.S);
+                    KeyPressed = false;
+                }
+
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.Return) && KeyPressed == false)
+                {
+                    if (this.SelectedItemIndex == 0)
+                    {
+                        this.StopSoundMenu();
+                        end = false;
+                        window.Clear();
+                    }
+                    else if (this.SelectedItemIndex == 2)
+                    {
+                        this.StopSoundMenu();
+                        end = false;
+                        window.Close();
+                    }
+                }
+
+                this.Draw(window);
+                window.Display();
+                Thread.Sleep(85);
+            }
         }
 
     }

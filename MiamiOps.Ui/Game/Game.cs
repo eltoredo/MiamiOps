@@ -27,6 +27,8 @@ namespace MiamiOps
         Convert _convert = new Convert();
         HashSet<float[]> _collide;
         Text pause = new Text();
+        Menu menu = new Menu(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        GameOver gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -60,6 +62,11 @@ namespace MiamiOps
 
         public override void Initialize()
         {
+            if (gameOver.ReturnOrNot == false)
+            {
+                gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+                menu.OpenGame(Window);
+            }
             _collide = _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
             _round = new Round(10, enemieSpawn: new Vector(), enemiesSpeed: 0f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"),playerHauteur:0f,playerLargeur:0f, playerLife: 100);
@@ -88,12 +95,16 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
+            if (Round.GameState == true)
+            {
+                Window.Clear();
+                gameOver.EndGame(Window, this,menu);
+            }
             _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3168, 3168, _view);
             _playerInput.Handle();
             _round.Update();
             _roundUI.Update();
-            Console.WriteLine(_round.Player.Place.X);
-            Console.WriteLine(_round.Player.Place.Y);
+
         }
 
         public InputHandler Input => _playerInput;

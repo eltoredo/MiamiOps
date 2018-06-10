@@ -57,6 +57,7 @@ namespace MiamiOps
 
         public void Run() // Main method of the gameloop
         {
+
             LoadContent();
             Initialize();
 

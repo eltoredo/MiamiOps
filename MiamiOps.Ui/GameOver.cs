@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MiamiOps
 {
-   public class GameOver
+    public class GameOver
     {
         private int selectedItemIndex;
         private Text[] GameOverList = new Text[2];
@@ -20,6 +21,7 @@ namespace MiamiOps
         static Sprite _backgroundSprite;
         Music music = new Music("../../../Menu/DarkSoulsDie.ogg");
         Text _continue;
+        bool _returnOrNot;
 
         public GameOver(float width, float height)
         {
@@ -30,7 +32,7 @@ namespace MiamiOps
                 Font = font,
                 Color = Color.White,
                 DisplayedString = "Yes",
-                Position = new Vector2f(300,600),
+                Position = new Vector2f(300, 600),
 
             };
             GameOverList[0] = GameOvermenu1;
@@ -53,7 +55,7 @@ namespace MiamiOps
 
             };
             _continue = Continue;
-             _backgroundSprite = new Sprite(_backgroundTexture);
+            _backgroundSprite = new Sprite(_backgroundTexture);
 
         }
 
@@ -102,6 +104,59 @@ namespace MiamiOps
             music.Stop();
         }
 
+        public void EndGame(RenderWindow window, Game game,Menu menu)
+        {
+            this.PlaySoundMenu();
+            bool end = true;
+            _returnOrNot = false;
+            game.Round.GameState = false;
+
+            while (end == true)
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                {
+                    end = false;
+                    window.Close();
+                }
+
+                if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+                {
+                    this.Move(Keyboard.Key.D);
+                }
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
+                {
+                    this.Move(Keyboard.Key.Q);
+                }
+
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
+                {
+
+                    if (this.SelectedItemIndex == 0)
+                    {
+                        window.Clear();
+                        this.StopSoundMenu();
+                        end = false;
+                        _returnOrNot = true;
+                        game.Run();
+                        
+                    }
+                    else if (this.SelectedItemIndex == 1)
+                    {
+                        window.Clear();
+                        this.StopSoundMenu();
+                        end = false;
+                        window.Close();
+                        game = new Game(AppContext.BaseDirectory);
+                        game.Run();
+                    }
+                }
+                    this.Draw(window);
+                    window.Display();
+                    Thread.Sleep(80);
+            }
+        }
+
+        public bool ReturnOrNot => this._returnOrNot;
     }
 }
 
