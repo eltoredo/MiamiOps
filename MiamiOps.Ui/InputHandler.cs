@@ -72,7 +72,7 @@ namespace MiamiOps
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
                               
-                if (i >= 20 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "baseball_bat")
+                if (i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "USP")
                 {
                     _bulletSound.Play();
                     _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());

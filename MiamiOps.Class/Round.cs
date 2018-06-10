@@ -24,10 +24,12 @@ namespace MiamiOps
         private int _passOut = 0;
         int _countSpawn;
         bool _gameState;
+    
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
         private List<IStuff> _stuffList;
+        private List<Package> _listPackageEffect;
 
         private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
         
@@ -45,8 +47,9 @@ namespace MiamiOps
             _random = new Random();
             _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
-            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromMinutes(2), 1)); // indice de rareté
-            _stuffFactories.Add(new WeaponFactory(this, "USP", 0.5f, 0.1f, 0.05f, 30));
+            _listPackageEffect = new List<Package>();
+            _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromMinutes(2), 1)); // indice de rareté
+            _stuffFactories.Add(new WeaponFactory(this, "baseball_bat", 0.5f, 0.1f, 0.05f, 30));
 
             Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
@@ -88,7 +91,7 @@ namespace MiamiOps
             Vector playerDir = playerDirection ?? new Vector(1, 0);
 
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
-            this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 60));
+            this._player.GetNewWeapon(new Weapon("USP", 0f, 0, 0f, 60));
           //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
@@ -206,6 +209,19 @@ namespace MiamiOps
                 }
             }
 
+            foreach(Package package in _listPackageEffect)
+            {
+                if (!package.IsAlive)
+                {
+                    if(package.Name == "speed")
+                    {
+                        this.Player.Speed -= 0.005f;
+                    }
+                    _listPackageEffect.Remove(package);
+                    break;
+                }
+            }
+
         }
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)
@@ -214,6 +230,7 @@ namespace MiamiOps
         }
 
         public List<IStuff> StuffList => _stuffList;
+        public List<Package> PackageEffectList => _listPackageEffect;
 
         public Enemies[] Enemies
         {
