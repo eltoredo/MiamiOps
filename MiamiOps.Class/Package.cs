@@ -35,7 +35,7 @@ namespace MiamiOps
             this._lifeSpan = lifeSpan;
             this._name = name;
             this._id = id;
-
+            this._creationDate = DateTime.UtcNow;
         }
 
         internal float GetNextRandomFloat()
