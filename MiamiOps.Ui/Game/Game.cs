@@ -92,8 +92,8 @@ namespace MiamiOps
             _playerInput.Handle();
             _round.Update();
             _roundUI.Update();
-            Console.WriteLine(_round.Player.Place.X);
-            Console.WriteLine(_round.Player.Place.Y);
+            //Console.WriteLine(_round.Player.Place.X);
+            //Console.WriteLine(_round.Player.Place.Y);
         }
 
         public InputHandler Input => _playerInput;
