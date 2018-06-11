@@ -232,8 +232,6 @@ namespace MiamiOps
             }
         }
 
-        
-        
         public Map MapCtx => _mapCtx;
     }
 }

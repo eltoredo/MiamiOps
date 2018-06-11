@@ -6,7 +6,8 @@
 
         string Name { get; }
         Vector Position { get; }
-    }
+        bool IsAlive { get; }
+    } 
 
     public interface IStuffFactory
     {

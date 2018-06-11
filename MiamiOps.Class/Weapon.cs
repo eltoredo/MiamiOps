@@ -40,11 +40,11 @@ namespace MiamiOps
             this._maxAmmo = _maxAmmo;
         }
 
-        public Weapon(string name, float attack, float radius, float range, uint _maxAmmo) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        public Weapon(string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
         {
             this._name = name;
             this._place = CreateRandomPosition();
-            this._lifeSpan = TimeSpan.MaxValue;
+            this._lifeSpan = lifeSpan;
             this._creationDate = DateTime.UtcNow;
         }
 
@@ -187,10 +187,12 @@ namespace MiamiOps
         readonly float _radius;
         readonly float _range;
         readonly uint _maxAmmo;
+        readonly TimeSpan _lifeSpan;
+        readonly DateTime _creationDate;
 
         Round _roundCtx;
 
-        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo)
+        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo, TimeSpan lifeSpan)
         {
             _roundCtx = roundCtx;
 
@@ -199,11 +201,14 @@ namespace MiamiOps
             _radius = radius;
             _range = range;
             _maxAmmo = maxAmmo;
+            _lifeSpan = lifeSpan;
         }
 
         public IStuff Create()
         {
-            return new Weapon(_name, _attack, _radius, _range, _maxAmmo);
+            return new Weapon(_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
         }
+
+
     }
 }
