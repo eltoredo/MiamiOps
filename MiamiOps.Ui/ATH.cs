@@ -128,7 +128,7 @@ namespace MiamiOps
             }
 
             _HPbar.Size = new Vector2f((this._ctx.Player.LifePlayer * 271 / this._ctx.Player.LifePlayerMax), 40);
-            _XPbar.Size = new Vector2f((this._ctx.Player.Experience * 271 / this._ctx.Player.ExperienceMax), 40);
+            _XPbar.Size = new Vector2f((this._ctx.Player.Experience * 271 / this._ctx.Player.ExperienceMax), 25);
 
 
             //  _HPbar.Size = new Vector2f((this._ctx.Player.CurrentWeapon.Ammo*275 /30), 40);
@@ -155,7 +155,7 @@ namespace MiamiOps
 
             _athLifeSprite.Position = new Vector2f(_athList[0].Position.X - 100, _athList[0].Position.Y - 100);
             _athGunSprite.Position = new Vector2f(_athLifeSprite.Position.X +170, _athLifeSprite.Position.Y - 10 );
-            _XPbar.Position = new Vector2f(_athList[0].Position.X - 85, _athList[0].Position.Y + 20);
+            _XPbar.Position = new Vector2f(_athList[0].Position.X - 87, _athList[0].Position.Y + 20);
             _HPbar.Position = new Vector2f(_athList[0].Position.X - 85, _athList[0].Position.Y - 20);
 
             _athList[0].Position = new Vector2f(_athList[0].Position.X +10, _athList[0].Position.Y -20);

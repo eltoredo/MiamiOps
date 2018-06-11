@@ -14,9 +14,11 @@ namespace MiamiOps
         Texture _bulletTexture;
         Music _bulletSound;
 
-        int i = 20;
+        int i = 0;
         int _timerNextWeapon = 4;
         int _timerPreviousWeapon = 4;
+        double x = 0.03f;
+        double y = 0.03f;
 
 
         public InputHandler(RoundUI roundUIContext)
@@ -31,11 +33,11 @@ namespace MiamiOps
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(0, -1));
+                _roundUIContext.RoundContext.Player.Move(new Vector(0, 1));
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.S))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(0, 1));
+                _roundUIContext.RoundContext.Player.Move(new Vector(0, -1));
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
             {
@@ -69,24 +71,70 @@ namespace MiamiOps
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
-                Vector2f viewPos = _roundUIContext.GameCtx.MyView.GetPosition();
-                Vector viewPosition = new Vector(viewPos.X, viewPos.Y);
-
-                Vector2i mouseVector2i = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
-                Vector mouseVector = new Vector(mouseVector2i.X, mouseVector2i.Y);
-
-                Vector mouseAim = new Vector(viewPosition.X + mouseVector.X, viewPosition.Y + mouseVector.Y);
-
-                Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth/2.0)) - 1.0, mouseAim.Y * (1.0 / (_roundUIContext.MapHeight/2.0)) - 1.0); // Vraie coordonnées de la souris en -1 / 1
-
-                if (i == 20)
+                              
+                if (i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "USP")
                 {
                     _bulletSound.Play();
-                    _roundUIContext.RoundContext.Player.Attack(finalMousePosition);
+                    _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
                     i = 0;
+                }else if(i >= 10 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "ak47")
+                {
+                    _bulletSound.Play();
+                    _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
+                    i = 0;
+
+                }else if(i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "shotgun") {
+                    _bulletSound.Play();
+                    Vector shotgun_shoot = CalculMouseVector();
+                    _roundUIContext.RoundContext.Player.Attack(shotgun_shoot);
+                    int count = 0;
+                    for (int i = 0; i < 4; i++)
+                    {
+                       
+                        Vector new_shotgun_shoot = new Vector(shotgun_shoot.X + x, shotgun_shoot.Y + y);
+                        _roundUIContext.RoundContext.Player.Attack(new_shotgun_shoot);
+                        if (count < 2)
+                        {
+                            x += 0.03f;
+                            y += 0.03f;
+                        }
+                        else
+                        {
+                            x -= 0.03f;
+                            y -= 0.03f;
+                        }
+
+                        count++;
+                        if(count == 2)
+                        {
+                            x = -0.01f;
+                            y = -0.01f;
+                        }
+                    }
+
+                    i = 0;
+                    x = 0.03f;
+                    y = 0.03f;
+
                 }
+
                 i++;
             }
+        }
+
+        public Vector CalculMouseVector()
+        {
+            Vector2f viewPos = _roundUIContext.GameCtx.MyView.GetPosition();
+            Vector viewPosition = new Vector(viewPos.X, viewPos.Y);
+
+            Vector2i mouseVector2i = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
+            Vector mouseVector = new Vector(mouseVector2i.X, mouseVector2i.Y);
+
+            Vector mouseAim = new Vector(viewPosition.X + mouseVector.X, viewPosition.Y + mouseVector.Y);
+
+            Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth / 2.0)) - 1.0, -(mouseAim.Y * (1.0 / (_roundUIContext.MapHeight / 2.0)) - 1.0)); // Vraie coordonnées de la souris en -1 / 1
+
+            return finalMousePosition;
         }
     }
 }

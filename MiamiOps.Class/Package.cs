@@ -35,7 +35,7 @@ namespace MiamiOps
             this._lifeSpan = lifeSpan;
             this._name = name;
             this._id = id;
-
+            this._creationDate = DateTime.UtcNow;
         }
 
         internal float GetNextRandomFloat()
@@ -48,8 +48,47 @@ namespace MiamiOps
             return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
         }
 
-        public void WalkOn()
+        public void WalkOn(Round Ctx)
         {
+            int count = -1;
+            bool lol = false;
+            foreach (var item in Ctx.PackageEffectList)
+            {
+                count++;
+                if (item.Name == this.Name)
+                {
+                    lol = true;
+                }
+            }
+            if (this.Name == "health")
+            {
+                Ctx.Player.LifePlayer += 20;
+                if (Ctx.Player.LifePlayer > Ctx.Player.LifePlayerMax) Ctx.Player.LifePlayer = Ctx.Player.LifePlayerMax;
+                Ctx.StuffList.Remove(this);
+            }
+
+            if(this.Name == "point")
+            {
+                Ctx.Player.Points += 200;
+                Ctx.StuffList.Remove(this);
+            }
+
+            if(this.Name == "speed")
+            {
+                if (lol == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Speed += 0.005f;
+                    this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+                Ctx.StuffList.Remove(this);
+            }
         }
 
         public TimeSpan LifeSpan
@@ -65,6 +104,11 @@ namespace MiamiOps
                 TimeSpan span = DateTime.UtcNow - _creationDate;
                 return span < _lifeSpan;
             }
+        }
+        public DateTime CreationDate
+        {
+            get { return _creationDate; }
+            set { _creationDate = value; }
         }
 
         public string Name => _name;

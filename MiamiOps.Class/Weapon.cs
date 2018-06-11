@@ -18,7 +18,9 @@ namespace MiamiOps
         float _range;    // la portée
         uint _ammo;    // le nombre de fois où tu peux attaquer
         uint _maxAmmo;    // le nombre maximum de munition
-
+        TimeSpan _lifeSpan;
+        DateTime _creationDate;
+        bool verifWeaponInList;
         int _time;
 
 
@@ -38,10 +40,12 @@ namespace MiamiOps
             this._maxAmmo = _maxAmmo;
         }
 
-        public Weapon(string name, float attack, float radius, float range, uint _maxAmmo) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        public Weapon(string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
         {
             this._name = name;
             this._place = CreateRandomPosition();
+            this._lifeSpan = lifeSpan;
+            this._creationDate = DateTime.UtcNow;
         }
 
         public void Shoot(Vector playerPosition, Vector mousePlace)
@@ -111,14 +115,39 @@ namespace MiamiOps
             foreach (Shoot s in _bullets)
             {
                 if (!s.IsAlive) toRemove.Add(s);
+                if(s.LifeBullet == false) toRemove.Add(s);
             }
 
             foreach (Shoot s in toRemove) _bullets.Remove(s);
 
         }
 
-        public void WalkOn()
+        public void WalkOn(Round Ctx)
         {
+            int count = 0;
+            foreach (var item in Ctx.Player.Weapons)
+            {
+                count++;
+                if(item.Name == this.Name)
+                {
+                    verifWeaponInList = true;
+                }
+            }
+
+            if (verifWeaponInList == false)
+            {
+                this.LifeSpan = TimeSpan.FromSeconds(5);
+                this.CreationDate = DateTime.UtcNow;
+                Ctx.Player.Weapons.Add(this);
+                Ctx.Player.CurrentWeapon = this;
+            }
+            else
+            {
+                Ctx.Player.Weapons[count-1].LifeSpan = TimeSpan.FromSeconds(5);
+                Ctx.Player.Weapons[count-1].CreationDate = DateTime.UtcNow;
+            }
+            Ctx.StuffList.Remove(this);
+
         }
 
         public List<Shoot> Bullets => _bullets;
@@ -129,7 +158,26 @@ namespace MiamiOps
 
         public uint Ammo => this._ammo;
         public uint MaxAmmo => this._maxAmmo;
+        public TimeSpan LifeSpan
+        {
+            get { return _lifeSpan; }
+            set { _lifeSpan = value; }
+        }
 
+        public bool IsAlive
+        {
+            get
+            {
+                TimeSpan span = DateTime.UtcNow - _creationDate;
+                return span < _lifeSpan;
+            }
+        }
+
+        public DateTime CreationDate
+        {
+            get { return _creationDate; }
+            set { _creationDate = value; }
+        }
     }
 
     public class WeaponFactory : IStuffFactory
@@ -139,10 +187,12 @@ namespace MiamiOps
         readonly float _radius;
         readonly float _range;
         readonly uint _maxAmmo;
+        readonly TimeSpan _lifeSpan;
+        readonly DateTime _creationDate;
 
         Round _roundCtx;
 
-        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo)
+        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo, TimeSpan lifeSpan)
         {
             _roundCtx = roundCtx;
 
@@ -151,11 +201,14 @@ namespace MiamiOps
             _radius = radius;
             _range = range;
             _maxAmmo = maxAmmo;
+            _lifeSpan = lifeSpan;
         }
 
         public IStuff Create()
         {
-            return new Weapon(_name, _attack, _radius, _range, _maxAmmo);
+            return new Weapon(_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
         }
+
+
     }
 }
