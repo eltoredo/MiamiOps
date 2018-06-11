@@ -125,7 +125,6 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            _playerUI.Draw(window, mapWidth, mapHeight);
             _weaponUI.Draw(window, mapWidth, mapHeight);
             
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
@@ -133,6 +132,8 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
+            _playerUI.Draw(window, mapWidth, mapHeight);
+
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
             //playerBound.Draw(window, RenderStates.Default);
 

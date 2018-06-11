@@ -69,18 +69,17 @@ namespace MiamiOps
         {
             _animStop = _spriteWidth;
             _direction = _spriteHeight * _nbDirection;
-            _hitBoxPlayer = _playerSprite.GetGlobalBounds();
 
             this._playerSprite.Position = UpdatePlace(mapWidth, mapHeight);
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-         
-            _playerSprite.Draw(window, RenderStates.Default);
+            _hitBoxPlayer = new FloatRect(_playerSprite.Position.X, _playerSprite.Position.Y,20,20);
 
+            _playerSprite.Draw(window, RenderStates.Default);
             //Console.WriteLine("x : " + _player.Place.X);
             //Console.WriteLine("y : " + _player.Place.Y);
-           
+
         }
 
         private int Conversion(Vector vector)
