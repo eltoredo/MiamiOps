@@ -6,6 +6,8 @@ namespace MiamiOps
 {
     public class Round
     {
+        GameHandler _gameHandlerCtx;
+
         private Player _player;
         private Enemies[] _enemies;
         private List<Weapon> _weapons = new List<Weapon>();
@@ -24,7 +26,6 @@ namespace MiamiOps
         private int _passOut = 0;
         int _countSpawn;
         bool _gameState;
-    
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
@@ -32,8 +33,13 @@ namespace MiamiOps
         private List<Package> _listPackageEffect;
 
         private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
+
+        int _level;
+        int _stage;
+        bool _isDoorOpened;
         
         public Round(
+            GameHandler gameHandlerCtx,
             int nb_enemies,
             Vector? playerSpawn = null, Vector? enemieSpawn = null,
             float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f,
@@ -43,6 +49,8 @@ namespace MiamiOps
             Dictionary<int, Vector> enemySpawn = null
         )
         {
+            _gameHandlerCtx = gameHandlerCtx;
+
             _countSpawn = 1 ;
             _random = new Random();
             _stuffFactories = new List<IStuffFactory>();
@@ -105,7 +113,8 @@ namespace MiamiOps
             }
             this._obstacles = new List<float[]>();
 
-         
+            _level = 1;
+            _stage = 1;
         }
 
         internal float GetNextRandomFloat()
@@ -135,6 +144,30 @@ namespace MiamiOps
             return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
         }
 
+        public void UpdateLevel()
+        {
+            //Si je rentre dans la porte
+            if (_stage == 10)
+            {
+                _stage++;
+                _player.Points = 0;
+                _player.Experience += _player.Points / 2;
+                _gameHandlerCtx.CreateNewRound();
+            }
+
+            if (_stage >= 6)
+            {
+                _level++;
+                _stage = 1;
+            }
+        }
+
+        public void OpenDoor()
+        {
+            if (_player.Points >= 500 * _stage) _isDoorOpened = true;
+            else _isDoorOpened = false;
+        }
+
         // Method to update the player and all the enemies
         public void Update()
         {
@@ -142,6 +175,8 @@ namespace MiamiOps
             _player.Update();
             UpdateList();
             UpdatePackage();
+            UpdateLevel();
+            OpenDoor();
 
             for (int i = 0 ; i < _count; i++)
             {
@@ -274,6 +309,7 @@ namespace MiamiOps
             get { return this._gameState; }
             set { this._gameState = value; }
         }
+        public bool IsDoorOpened => _isDoorOpened;
 
     }
 }

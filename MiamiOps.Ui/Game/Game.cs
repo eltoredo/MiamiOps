@@ -17,6 +17,7 @@ namespace MiamiOps
 
         public const string WINDOW_TITLE = "MiamiOps";
 
+        GameHandler _gameHandlerCtx;
         Round _round;
         RoundUI _roundUI;
         InputHandler _playerInput;
@@ -69,7 +70,7 @@ namespace MiamiOps
             }
             _collide = _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
-            _round = new Round(10, enemieSpawn: new Vector(), enemiesSpeed: 0f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"),playerHauteur:0f,playerLargeur:0f, playerLife: 100);
+            _round = new Round(_gameHandlerCtx, 10, enemieSpawn: new Vector(), enemiesSpeed: 0f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"),playerHauteur:0f,playerLargeur:0f, playerLife: 100);
             foreach (var item in _collide)
             {
                 //Console.WriteLine("x: " + item[0]);
