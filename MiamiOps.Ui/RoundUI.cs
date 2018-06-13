@@ -151,6 +151,7 @@ namespace MiamiOps
 
             _doorSprite.Position = new Vector2f(mapWidth / 2, mapHeight / 2);
             _doorSprite.Draw(window, RenderStates.Default);
+            FloatRect _hitBoxDoor = _doorSprite.GetGlobalBounds();
             
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
             foreach (var item in _drawObstacles)
@@ -230,6 +231,15 @@ namespace MiamiOps
                     }
                 
             }
+
+            if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == true)
+            {
+                this.RoundContext.LevelPass = true;
+            }
+            //else if(this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == false)
+            //{
+            //    Console.WriteLine("ZA WARUDO");
+            //}
         }
 
         public void Update()

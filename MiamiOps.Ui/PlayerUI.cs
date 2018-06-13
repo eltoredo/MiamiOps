@@ -78,7 +78,7 @@ namespace MiamiOps
          
             _playerSprite.Draw(window, RenderStates.Default);
 
-            //Console.WriteLine("x : " + _player.Place.X);
+           //Console.WriteLine("x : " + _player.Place.X);
             //Console.WriteLine("y : " + _player.Place.Y);
            
         }

@@ -140,7 +140,7 @@ namespace MiamiOps
 
 
             //  float LOL = _spawn.Values.ElementAt(0).ElementAt(0);
-            Console.WriteLine(_spawn.Count);
+            Console.WriteLine("_spawn"+_spawn.Count);
             return _spawn;
         
         }
