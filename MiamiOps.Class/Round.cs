@@ -56,6 +56,7 @@ namespace MiamiOps
             _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
+            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromSeconds(30), 1));
             _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1)); // indice de rareté
             _stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
 

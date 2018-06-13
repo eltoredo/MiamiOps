@@ -2,16 +2,18 @@
 {
     public class GameHandler
     {
-        Round _roundCtx;
+        Round _roundObject;
 
-        public GameHandler(Round roundCtx)
+        public GameHandler(Round roundObject)
         {
-            _roundCtx = roundCtx;
+            _roundObject = roundObject;
         }
 
         public void CreateNewRound()
         {
-            //Détruire l'objet puis le recréer avec d'autres paramètres
+            //_roundObject = new Round(this, 10, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f, enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"), playerHauteur: 0f, playerLargeur: 0f, playerLife: 100);
         }
+
+        public Round RoundObject => _roundObject;
     }
 }

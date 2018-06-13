@@ -55,8 +55,6 @@ namespace MiamiOps
                 pause.Color = Color.Black;
 
                 pause.Draw(Window, RenderStates.Default);
-               
-                
             }
             
         }
@@ -70,7 +68,7 @@ namespace MiamiOps
             }
             _collide = _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
-            _round = new Round(_gameHandlerCtx, 10, enemieSpawn: new Vector(), enemiesSpeed: 0f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"),playerHauteur:0f,playerLargeur:0f, playerLife: 100);
+            _round = new Round(_gameHandlerCtx, 10, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f,enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx"),playerHauteur:0f,playerLargeur:0f, playerLife: 100);
             foreach (var item in _collide)
             {
                 //Console.WriteLine("x: " + item[0]);
@@ -112,6 +110,7 @@ namespace MiamiOps
         public InputHandler Input => _playerInput;
         public View MyView => _view;
         public Round Round => _round;
+        public Convert ConvertMap => _convert;
          
     }
 }
