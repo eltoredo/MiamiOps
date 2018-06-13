@@ -33,6 +33,9 @@ namespace MiamiOps
         Texture _stuffTexture = new Texture("../../../../Images/monstersprite.png");
         Sprite _stuffSprite = new Sprite();
 
+        Texture _doorTexture;
+        Sprite _doorSprite;
+
         public Round RoundContext
         {
             get { return _roundCtx; }
@@ -69,6 +72,9 @@ namespace MiamiOps
 
             Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
+
+            _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
+            _doorSprite = new Sprite(_doorTexture);
 
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
@@ -126,6 +132,24 @@ namespace MiamiOps
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
             _weaponUI.Draw(window, mapWidth, mapHeight);
+
+            if (_roundCtx.IsDoorOpened == false)
+            {
+                _doorTexture.Dispose();
+                _doorSprite.Dispose();
+                _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
+                _doorSprite = new Sprite(_doorTexture);
+            }
+            else
+            {
+                _doorTexture.Dispose();
+                _doorSprite.Dispose();
+                _doorTexture = new Texture("../../../../Images/doortextureopened.png");
+                _doorSprite = new Sprite(_doorTexture);
+            }
+
+            _doorSprite.Position = new Vector2f(mapWidth / 2, mapHeight / 2);
+            _doorSprite.Draw(window, RenderStates.Default);
             
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
             foreach (var item in _drawObstacles)
