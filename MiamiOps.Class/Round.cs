@@ -153,7 +153,7 @@ namespace MiamiOps
                 _stage++;
                 _player.Points = 0;
                 _player.Experience += _player.Points / 2;
-                _gameHandlerCtx.CreateNewRound();
+                _gameHandlerCtx.OnLeaving();
             }
 
             if (_stage >= 6)
@@ -273,6 +273,9 @@ namespace MiamiOps
         {
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
         }
+
+        public int Level => _level;
+        public int Stage => _stage;
 
         public List<IStuff> StuffList => _stuffList;
         public List<Package> PackageEffectList => _listPackageEffect;
