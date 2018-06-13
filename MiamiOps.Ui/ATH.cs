@@ -144,7 +144,7 @@ namespace MiamiOps
             _athList[1].DisplayedString = this._ctx.Player.CurrentWeapon.Ammo.ToString() + "/" + this._ctx.Player.CurrentWeapon.MaxAmmo.ToString();
 
             //money
-            _athList[2].DisplayedString = "£ " + this._ctx.Player.Points.ToString();
+            _athList[2].DisplayedString = "Ω " + this._ctx.Player.Points.ToString();
 
             //current lvl
             _athList[3].DisplayedString = "Lvl: " + this._ctx.Player.Level.ToString();
