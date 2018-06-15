@@ -68,6 +68,7 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
+            EffectOnSprite();
             _animStop = _spriteWidth;
             _direction = _spriteHeight * _nbDirection;
 
@@ -75,8 +76,8 @@ namespace MiamiOps
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-            _hitBoxPlayer = new FloatRect(_playerSprite.Position.X, _playerSprite.Position.Y,32,32);
-            EffectOnSprite();
+            _hitBoxPlayer = _playerSprite.GetGlobalBounds();
+           
             _playerSprite.Draw(window, RenderStates.Default);
            //Console.WriteLine("x : " + _player.Place.X);
             //Console.WriteLine("y : " + _player.Place.Y);
@@ -88,18 +89,14 @@ namespace MiamiOps
             
             if (_player.Effect == "brute")
             {
-                if (_effectTime == 10)
+                if (_effectTime == 0)
                 {
-                    _playerSprite.Color = Color.Green;
-                    _effectTime = 0;
+                    this._playerTexture = new Texture("../../../../Images/player_brute.png");
+                    this._playerSprite = new Sprite(_playerTexture);
+                    _effectTime++;
                 }
-                else
-                {
-                    _playerSprite.Color = colorCharacters;
-                }
-                _effectTime++;
             }
-            if (_player.Effect == "pyro_fruit")
+            else if (_player.Effect == "pyro_fruit")
             {
                 if (_effectTime == 10)
                 {
@@ -114,7 +111,11 @@ namespace MiamiOps
             }
             else
             {
-                    _playerSprite.Color = colorCharacters;
+                this._playerTexture.Dispose();
+                this._playerSprite.Dispose();
+                this._playerTexture = new Texture("../../../../Images/sprite_panda_lv2.png");
+                this._playerSprite = new Sprite(_playerTexture);
+                _effectTime = 0;
             }
         }
 
