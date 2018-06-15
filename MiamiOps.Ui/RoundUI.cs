@@ -212,7 +212,7 @@ namespace MiamiOps
                         {
                             if (_roundCtx.Player.CurrentWeapon.Bullets.Count > 0)
                             {
-                                _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life);
+                                _roundCtx.Enemies[i].Hit((float)_roundCtx.Player.CurrentWeapon.Attack);
                                 _roundCtx.Player.CurrentWeapon.Bullets.RemoveAt(a);
                                 this._weaponUI.BoundingBoxBullet.RemoveAt(a);
                             }
@@ -232,7 +232,7 @@ namespace MiamiOps
                     }
                 
             }
-
+           
             if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == true)
             {
                 this.RoundContext.LevelPass = true;

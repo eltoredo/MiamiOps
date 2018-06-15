@@ -27,7 +27,7 @@ namespace MiamiOps
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
             float[] stats = new float[3]{attack, radius, range};
-            foreach (float nb in stats) {if (nb < 0 || nb > 1) {throw new ArgumentException("The parameters can't be lower than 0 or upper than 1.");}}
+         //   foreach (float nb in stats) {if (nb < 0 || nb > 1) {throw new ArgumentException("The parameters can't be lower than 0 or upper than 1.");}}
             if (_maxAmmo < 0) {throw new ArgumentException("The max ammo can't be lower than zero.");}
 
             _bullets = new List<Shoot>();
@@ -153,6 +153,7 @@ namespace MiamiOps
         public List<Shoot> Bullets => _bullets;
 
         public string Name => _name;
+        public float Attack => _attack;
 
         public Vector Position => _place;
 
