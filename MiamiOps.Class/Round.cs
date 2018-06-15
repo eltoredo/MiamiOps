@@ -148,7 +148,6 @@ namespace MiamiOps
 
         public void UpdateLevel()
         {
-            //Si je rentre dans la porte
             if (_levelPass == true && _isDoorOpened == true)
             {
                 _stage++;
