@@ -52,7 +52,7 @@ namespace MiamiOps
             _HPbar.FillColor = _couleur;
 
             _XPbar = new RectangleShape(new Vector2f(271, 30));
-            _XPbar.FillColor = Color.Yellow;
+            _XPbar.FillColor = Color.Blue;
 
 
             Text LifeBar = new Text
@@ -95,6 +95,7 @@ namespace MiamiOps
                 Font = _font,
                 Color = Color.White,
                 DisplayedString = "XP: " + _xp.ToString(),
+                CharacterSize = 25
 
             };
             _athList.Add(XPBar);
@@ -150,19 +151,22 @@ namespace MiamiOps
             _athList[3].DisplayedString = "Lvl: " + this._ctx.Player.Level.ToString();
 
             //current XP
-            _athList[4].DisplayedString = "XP: " + this._ctx.Player.Experience.ToString() + "/" + this._ctx.Player.ExperienceMax.ToString();
+            _athList[4].DisplayedString = this._ctx.Player.Experience.ToString() + "/" + this._ctx.Player.ExperienceMax.ToString();
 
 
             _athLifeSprite.Position = new Vector2f(_athList[0].Position.X - 100, _athList[0].Position.Y - 100);
             _athGunSprite.Position = new Vector2f(_athLifeSprite.Position.X +170, _athLifeSprite.Position.Y - 10 );
             _XPbar.Position = new Vector2f(_athList[0].Position.X - 87, _athList[0].Position.Y + 20);
             _HPbar.Position = new Vector2f(_athList[0].Position.X - 85, _athList[0].Position.Y - 20);
+            
 
             _athList[0].Position = new Vector2f(_athList[0].Position.X +10, _athList[0].Position.Y -20);
             _athList[1].Position = new Vector2f(_athGunSprite.Position.X - 80, _athGunSprite.Position.Y + 20);
-            _athList[2].Position = new Vector2f(_athList[0].Position.X +20 , _athList[0].Position.Y +70);
-                  
-                       
+            _athList[2].Position = new Vector2f(_athList[0].Position.X +70 , _athList[0].Position.Y +70);
+            _athList[3].Position = new Vector2f(_athList[0].Position.X - 70, _athList[0].Position.Y + 70);
+            _athList[4].Position = new Vector2f(_athList[0].Position.X + 10, _athList[0].Position.Y + 40);
+
+
         }
 
 
