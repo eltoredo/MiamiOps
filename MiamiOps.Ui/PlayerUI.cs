@@ -24,6 +24,7 @@ namespace MiamiOps
         int _animStop;
         FloatRect _hitBoxPlayer;
         Color colorCharacters = new Color(255, 255, 255, 255);
+        int _effectTime;
 
         public PlayerUI(
             RoundUI roundUIContext,
@@ -75,11 +76,33 @@ namespace MiamiOps
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
             _hitBoxPlayer = new FloatRect(_playerSprite.Position.X, _playerSprite.Position.Y,20,20);
-
+            EffectOnSprite();
             _playerSprite.Draw(window, RenderStates.Default);
            //Console.WriteLine("x : " + _player.Place.X);
             //Console.WriteLine("y : " + _player.Place.Y);
 
+        }
+
+        public void EffectOnSprite()
+        {
+            
+            if (_player.Effect == "brute")
+            {
+                if (_effectTime == 10)
+                {
+                    _playerSprite.Color = Color.Green;
+                    _effectTime = 0;
+                }
+                else
+                {
+                    _playerSprite.Color = colorCharacters;
+                }
+                _effectTime++;
+            }
+            else
+            {
+                _playerSprite.Color = colorCharacters;
+            }
         }
 
         private int Conversion(Vector vector)

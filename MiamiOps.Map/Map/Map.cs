@@ -29,7 +29,7 @@ namespace MiamiOps
         Round _ctxround;
         private uint firstX;
 
-        public Map(String XML, string tilesset)
+        public Map(string name, String XML, string tilesset)
         {
 
             using (FileStream fs = File.OpenRead(XML))
@@ -42,7 +42,7 @@ namespace MiamiOps
 
                 tilewidth = tileheight;
 
-
+                
                 height = int.Parse(xml.Attribute("height").Value);
                 width = int.Parse(xml.Attribute("width").Value);
 

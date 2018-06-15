@@ -1,7 +1,9 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace MiamiOps
@@ -19,12 +21,14 @@ namespace MiamiOps
         View _view;
         View _viewATH;
         bool reset;
+        bool _musicReset;
 
         List<FloatRect> _boundingBoxPackage;
 
         uint _mapWidth;
         uint _mapHeight;
         Round _roundCtx;
+        Music _effectMusic;
         private List<float[]> _obstacles;
         private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
 
@@ -67,7 +71,6 @@ namespace MiamiOps
             Texture _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
 
             Random _random = new Random();
-
             _roundCtx = roundCtx;
 
             Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
@@ -76,6 +79,8 @@ namespace MiamiOps
             _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
             _doorSprite = new Sprite(_doorTexture);
 
+            _musicReset = false;
+            _effectMusic = new Music("../../../../Images/brute.ogg");
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
             _view = viewPlayer;
@@ -194,12 +199,24 @@ namespace MiamiOps
                 {
                     if (_roundCtx.StuffList.Count != 0)
                     {
+                        string Music = "../../../../Images/" + _roundCtx.StuffList[count - 1].Name + ".ogg";
+                        if (File.Exists(Music))
+                        {
+                            this._effectMusic.Dispose();
+                            this._effectMusic= new Music("../../../../Images/" + _roundCtx.StuffList[count - 1].Name + ".ogg");
+                            _effectMusic.Play();
+                        }
+
+                        if (_roundCtx.StuffList[count - 1].Name == "brute") _musicReset = true;
+
                         _roundCtx.StuffList[count - 1].WalkOn(_roundCtx);
                         break;
+
                     }
                 }
 
             }
+            
             
             // verifie que les tirs collisionne avec les ennemis
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
@@ -225,8 +242,16 @@ namespace MiamiOps
                 //verifie que le player colisione avec les ennemis
                     if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
                     {
-                        _roundCtx.Player.LifePlayer -= 1;
-                        if (_roundCtx.Player.LifePlayer <= 0)
+                           if(_roundCtx.Player.Effect == "brute")
+                           {
+                               _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life) ;
+                           }
+                           else
+                           {
+                               _roundCtx.Player.LifePlayer -= 1;
+                           }
+
+                    if (_roundCtx.Player.LifePlayer <= 0)
                         {
                             _roundCtx.GameState = true;
                         }
@@ -248,6 +273,7 @@ namespace MiamiOps
         {
             _ath.UpdateATH(this._view,MapWidth,MapHeight);
             UpdateSpawnEnnemie();
+            UpdateMusic();
         }
 
         public void UpdateSpawnEnnemie()
@@ -266,6 +292,21 @@ namespace MiamiOps
                 }
                 this._roundCtx.Time = 0;
             }
+        }
+
+        public void UpdateMusic()
+        {
+           if(_roundCtx.Player.Effect == "brute")
+            {
+                GameCtx.MusicMain.Pause();
+            }
+            else if(_musicReset == true)
+            {
+                this._effectMusic.Stop();
+                GameCtx.MusicMain.Play();
+                _musicReset = false;
+            }
+
         }
 
         public Map MapCtx => _mapCtx;
