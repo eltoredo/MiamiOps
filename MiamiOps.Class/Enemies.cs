@@ -13,6 +13,8 @@ namespace MiamiOps
         float _width;
         float _height;
         bool _isDead;
+       
+
 
         public Enemies(Round context, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
         {
@@ -32,9 +34,36 @@ namespace MiamiOps
         {
             this._isDead = true;
             // We put a new enemy in place of the old one
-            this._context.Enemies[this._name] = new Enemies(this._context, this._name, new Vector(this._context.GetNextRandomFloat(), this._context.GetNextRandomFloat()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
-            _context.Player.Experience += _context.Player.Level * 10;
+            int oldCount = this._context.CountEnnemi;
+            this._context.CountEnnemi = this._context.CountSpawnDead;
+            this._context.CountSpawnDead++;
+            if (_context.CountSpawnDead > _context.SpawnCount) this._context.CountSpawnDead = 1;
+            //Enemies[] _enemies = new Enemies[this._context.Enemies.Length];
+            //for (int i = 0; i < this._context.Enemies.Length; i++)
+            //{
+            //    if(i >= this._name)
+            //    {
+            //        if (i == this._context.Enemies.Length - 1)
+            //        {
+            //            _enemies[i] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack); 
+            //        }
+            //        else
+            //        {
+            //            _enemies[i] = this._context.Enemies[i + 1];
+            //        }
+            //    }
+            //    else
+            //    {
+            //        _enemies[i] = this._context.Enemies[i];
+            //    }
+            //}
+
+            //  this._context.Enemies = _enemies;
+            this._context.Enemies[this._name] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack); ;
+            _context.Player.Experience += 500;
             _context.Player.Points += 10;
+            this._context.CountEnnemi = oldCount;
+
         }
 
         // When a enemy is touched by the player, he loses some life point

@@ -12,6 +12,7 @@ namespace MiamiOps
 
         Vector _playerPosition;
         Vector _mousePosition;
+        bool _live;
         Vector _bulletPosition;
         
         public Shoot(float timeShot, TimeSpan lifeSpan, float speed, Vector playerPosition, Vector mousePosition)
@@ -26,6 +27,8 @@ namespace MiamiOps
 
             _bulletPosition = new Vector();
             _count = 0;
+
+            _live = true;
         }
 
         public TimeSpan LifeSpan
@@ -55,6 +58,16 @@ namespace MiamiOps
         {
             get { return _count; }
             set { _count = value; }
+        }
+
+        public bool IsDead
+        {
+            get { return this._live = false; }
+        }
+
+        public bool LifeBullet {
+           get { return this._live; }
+           set { this._live = value; }
         }
     }
 }

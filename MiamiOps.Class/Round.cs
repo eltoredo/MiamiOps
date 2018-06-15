@@ -6,6 +6,8 @@ namespace MiamiOps
 {
     public class Round
     {
+        GameHandler _gameHandlerCtx;
+
         private Player _player;
         private Enemies[] _enemies;
         private List<Weapon> _weapons = new List<Weapon>();
@@ -20,16 +22,25 @@ namespace MiamiOps
         private Dictionary<int, Vector> _spawn;
         private Vector _enemiesSpawn;
         private int _time;
-        private int _timeForWeaponSpawn;
-
+        private int _timeForWeaponSpawn = 299;
+        private int _passOut = 0;
+        int _countSpawn;
+        bool _gameState;
+        bool _levelPass;
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
         private List<IStuff> _stuffList;
+        private List<Package> _listPackageEffect;
 
         private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
+
+        int _level;
+        int _stage;
+        bool _isDoorOpened;
         
         public Round(
+            GameHandler gameHandlerCtx,
             int nb_enemies,
             Vector? playerSpawn = null, Vector? enemieSpawn = null,
             float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f,
@@ -39,13 +50,18 @@ namespace MiamiOps
             Dictionary<int, Vector> enemySpawn = null
         )
         {
+            _gameHandlerCtx = gameHandlerCtx;
+
+            _countSpawn = 1 ;
             _random = new Random();
             _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
-            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromMinutes(2), 1)); // indice de rareté
-            _stuffFactories.Add(new WeaponFactory(this, "USP", 0.5f, 0.1f, 0.05f, 30));
+            _listPackageEffect = new List<Package>();
+            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromSeconds(30), 1));
+            _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1)); // indice de rareté
+            _stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
 
-            Vector player = playerSpawn ?? new Vector(-0.7, -0.7);
+            Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
             if (nb_enemies < 0) throw new ArgumentException("The number of enemies can't be null or negative.", nameof(nb_enemies));
             if (
@@ -80,16 +96,13 @@ namespace MiamiOps
             {
                 this._count = _spawn.Count;
             }
-            
-           
 
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
 
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
-            this._player.GetNewWeapon(new Weapon("baseball_bat", 0f, 0, 0f, 60));
-            this._player.GetNewWeapon(new Weapon("ak47", 0f, 0, 0f, 30));
-            this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
+            this._player.GetNewWeapon(new Weapon("USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+          //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
@@ -102,7 +115,8 @@ namespace MiamiOps
             }
             this._obstacles = new List<float[]>();
 
-         
+            _level = 1;
+            _stage = 1;
         }
 
         internal float GetNextRandomFloat()
@@ -110,7 +124,7 @@ namespace MiamiOps
             return ((float)this.random.NextDouble() * 2) -1;
         }
 
-        Vector CreatePositionOnSpawn(Vector enemieSpawn)
+      public  Vector CreatePositionOnSpawn(Vector enemieSpawn)
         {
             Vector Position;
             if (_spawn != null)
@@ -132,11 +146,39 @@ namespace MiamiOps
             return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
         }
 
+        public void UpdateLevel()
+        {
+            if (_levelPass == true && _isDoorOpened == true)
+            {
+                _stage++;
+                _player.Experience += _player.Points / 2;
+                _player.Points = 0;
+                _levelPass = false;
+                _gameHandlerCtx.OnLeaving();
+            }
+
+            if (_stage >= 6)
+            {
+                _level++;
+                _stage = 1;
+            }
+        }
+
+        public void OpenDoor()
+        {
+            if (_player.Points >= 500 * _stage) _isDoorOpened = true;
+            else _isDoorOpened = false;
+        }
+
         // Method to update the player and all the enemies
         public void Update()
         {
             _player.CurrentWeapon.Update();
             _player.Update();
+            UpdateList();
+            UpdatePackage();
+            UpdateLevel();
+            OpenDoor();
 
             for (int i = 0 ; i < _count; i++)
             {
@@ -155,7 +197,7 @@ namespace MiamiOps
                 }
             }
 
-            if (_timeForWeaponSpawn == 60)
+            if (_timeForWeaponSpawn == 300)
             {
                 int factoryIndex = _random.Next(0, _stuffFactories.Count);
                 IStuffFactory randomStuffFactory = _stuffFactories[factoryIndex];
@@ -165,8 +207,67 @@ namespace MiamiOps
                 _timeForWeaponSpawn = 0;
             }
 
+        }
 
+        public void UpdateList()
+        {
+          
+            if (this.Player.Level == 5&& _passOut == 0)
+            {
+                this._player.GetNewWeapon(new Weapon("ak47", 5, 0, 0, 30, TimeSpan.MaxValue));
+                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1));
+                _passOut++;
+            }else if(this.Player.Level == 10 && _passOut == 1)
+            {
+                this._player.GetNewWeapon(new Weapon("shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
+                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1));
+                this._stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30,TimeSpan.FromSeconds(30)));
+                _passOut++;
+            }
+            else if (this.Player.Level == 15 && _passOut == 2)
+            {
+                this._stuffFactories.Add(new PackageFactory(this, "point", TimeSpan.FromSeconds(30), 1));
+                this._stuffFactories.Add(new WeaponFactory(this, "soulcalibur", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+                _passOut++;
+            }
 
+        }
+
+        public void UpdatePackage()
+        {
+            
+            foreach (Weapon weapon in _weapons)
+            {
+                if (!weapon.IsAlive)
+                {
+                    if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._weapons[this._weapons.Count - 2];
+                    _weapons.Remove(weapon);
+                    break;
+                }
+            }
+
+            foreach(Package package in _listPackageEffect)
+            {
+                if (!package.IsAlive)
+                {
+                    if(package.Name == "speed")
+                    {
+                        this.Player.Speed -= 0.005f;
+                    }
+                    _listPackageEffect.Remove(package);
+                    break;
+                }
+            }
+
+            foreach (var item in _stuffList)
+            {
+                if (!item.IsAlive)
+                {
+                    _stuffList.Remove(item);
+                    break;
+                }
+
+            }
         }
 
         public void AddObstacle(float x, float y, float largeur, float hauteur)
@@ -174,16 +275,38 @@ namespace MiamiOps
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
         }
 
-        public List<IStuff> StuffList => _stuffList;
+        public int Level => _level;
+        public int Stage => _stage;
+        public bool LevelPass
+        {
+            get { return _levelPass; }
+            set { _levelPass = value; }
+        }
 
-        public Enemies[] Enemies => this._enemies;
+        public List<IStuff> StuffList => _stuffList;
+        public List<Package> PackageEffectList => _listPackageEffect;
+
+        public Enemies[] Enemies
+        {
+            get { return this._enemies; }
+            set { this._enemies = value; }
+        }
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;
         public float EnemiesAttack => _enemiesAttack;
         public Player Player => this._player;
         public List<float[]> Obstacles => this._obstacles;
         public int SpawnCount => this._spawn.Count;
-        public int CountEnnemi => this._count;
+        public int CountEnnemi
+        {
+            get { return this._count; }
+            set { this._count = value; }
+        }
+        public int CountSpawnDead
+        {
+            get { return this._countSpawn; }
+            set { this._countSpawn = value; }
+        }
         public int Time {
             get { return this._time; }
             set
@@ -191,5 +314,12 @@ namespace MiamiOps
                 this._time = value;
             }
         }
+        public bool GameState
+        {
+            get { return this._gameState; }
+            set { this._gameState = value; }
+        }
+        public bool IsDoorOpened => _isDoorOpened;
+
     }
 }

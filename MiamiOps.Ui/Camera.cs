@@ -15,22 +15,22 @@ namespace MiamiOps
         public View CameraPlayerUpdate(float Xplayer,float Yplayer, uint XSizeMap,uint YSizeMap, View view)
         {
 
-            if (Xplayer > XSizeMap - view.Size.X/2.1f)
+            if (Xplayer > XSizeMap - view.Size.X / 2.1f)
             {
-                Xplayer = XSizeMap - view.Size.X/2.1f;
+                Xplayer = XSizeMap - view.Size.X / 2.1f;
             }
-            if (Xplayer < view.Size.X/2f)
+            if (Xplayer < view.Size.X / 2f)
             {
                 Xplayer = view.Size.X / 2f;
             }
 
-            if (Yplayer > YSizeMap - view.Size.Y/2.23f)
+            if (Yplayer > YSizeMap - view.Size.Y / 2.23f)
             {
-                Yplayer = YSizeMap - view.Size.Y/2.23f;
+                Yplayer = YSizeMap - view.Size.Y / 2.23f;
             }
-            if (Yplayer < (view.Size.Y/2f))
+            if (Yplayer < (view.Size.Y / 2f))
             {
-                Yplayer = (view.Size.Y/2f);
+                Yplayer = (view.Size.Y / 2f);
             }
 
             //Console.WriteLine("Size X :" + view.Size.X);
