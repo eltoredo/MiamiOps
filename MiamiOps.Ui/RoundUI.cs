@@ -33,7 +33,6 @@ namespace MiamiOps
         private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
 
 
-        //EnemiesUI = _enemiesUI;
         Texture _stuffTexture = new Texture("../../../../Images/monstersprite.png");
         Sprite _stuffSprite = new Sprite();
 
@@ -91,7 +90,7 @@ namespace MiamiOps
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
 
-                _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
+                _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i], mapWidth, mapHeight, mapCtx);
             }
 
             _ath = new ATH(_roundCtx, screenWidth, screenHeight,_view);
@@ -156,7 +155,7 @@ namespace MiamiOps
             _doorSprite.Draw(window, RenderStates.Default);
             FloatRect _hitBoxDoor = _doorSprite.GetGlobalBounds();
             
-            for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i].Place);
+            for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i]);
             foreach (var item in _drawObstacles)
             {
                 item.Draw(window, RenderStates.Default);
@@ -187,6 +186,63 @@ namespace MiamiOps
 
             _ath.Draw(window);
 
+            CollideToPackage();
+
+            CollideToShootEnnemiesAndPlayerToEnnemies();
+           
+            if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == true)
+            {
+                this.RoundContext.LevelPass = true;
+            }
+            //else if(this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == false)
+            //{
+            //    Console.WriteLine("ZA WARUDO");
+            //}
+        }
+
+        public void Update()
+        {
+            _ath.UpdateATH(this._view,MapWidth,MapHeight);
+            UpdateSpawnEnnemie();
+            UpdateMusic();
+
+        }
+
+        public void UpdateSpawnEnnemie()
+        {
+            if (this._roundCtx.Time == 120)
+            {
+                int index = this._roundCtx.CountEnnemi - this._roundCtx.SpawnCount;
+                if(index < 0)
+                {
+                    index = 0;
+                }
+
+                for (int i = index; i < this._roundCtx.CountEnnemi; i++)
+                {
+                    _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i], MapWidth, MapHeight, MapCtx);
+                }
+                this._roundCtx.Time = 0;
+            }
+        }
+
+        public void UpdateMusic()
+        {
+           if(_roundCtx.Player.Effect == "brute")
+            {
+                GameCtx.MusicMain.Pause();
+            }
+            else if(_musicReset == true)
+            {
+                this._effectMusic.Stop();
+                GameCtx.MusicMain.Play();
+                _musicReset = false;
+            }
+
+        }
+
+        public void CollideToPackage()
+        {
 
             reset = false;
 
@@ -203,7 +259,7 @@ namespace MiamiOps
                         if (File.Exists(Music))
                         {
                             this._effectMusic.Dispose();
-                            this._effectMusic= new Music("../../../../Images/" + _roundCtx.StuffList[count - 1].Name + ".ogg");
+                            this._effectMusic = new Music("../../../../Images/" + _roundCtx.StuffList[count - 1].Name + ".ogg");
                             _effectMusic.Play();
                         }
 
@@ -216,8 +272,10 @@ namespace MiamiOps
                 }
 
             }
-            
-            
+        }
+
+        public void CollideToShootEnnemiesAndPlayerToEnnemies()
+        {
             // verifie que les tirs collisionne avec les ennemis
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
@@ -240,74 +298,35 @@ namespace MiamiOps
 
 
                 //verifie que le player colisione avec les ennemis
-                    if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
+                if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
+                {
+                    if (_roundCtx.Player.Effect == "brute")
                     {
-                           if(_roundCtx.Player.Effect == "brute")
-                           {
-                               _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life) ;
-                           }
-                           else
-                           {
-                               _roundCtx.Player.LifePlayer -= 1;
-                           }
+                        _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life);
+
+                    }
+                    else if(_roundCtx.Player.Effect == "pyro_fruit")
+                    {
+                        _roundCtx.Enemies[i].Effect = "pyro_fruit";
+                        _roundCtx.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                        _roundCtx.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
+
+                    }
+                    else
+                    {
+                        _roundCtx.Player.LifePlayer -= 1;
+                    }
 
                     if (_roundCtx.Player.LifePlayer <= 0)
-                        {
-                            _roundCtx.GameState = true;
-                        }
+                    {
+                        GameCtx.MusicMain.Stop();
+                        _roundCtx.GameState = true;
                     }
-                
-            }
-           
-            if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == true)
-            {
-                this.RoundContext.LevelPass = true;
-            }
-            //else if(this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == false)
-            //{
-            //    Console.WriteLine("ZA WARUDO");
-            //}
-        }
-
-        public void Update()
-        {
-            _ath.UpdateATH(this._view,MapWidth,MapHeight);
-            UpdateSpawnEnnemie();
-            UpdateMusic();
-        }
-
-        public void UpdateSpawnEnnemie()
-        {
-            if (this._roundCtx.Time == 120)
-            {
-                int index = this._roundCtx.CountEnnemi - this._roundCtx.SpawnCount;
-                if(index < 0)
-                {
-                    index = 0;
                 }
 
-                for (int i = index; i < this._roundCtx.CountEnnemi; i++)
-                {
-                    _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, MapWidth, MapHeight, MapCtx);
-                }
-                this._roundCtx.Time = 0;
             }
         }
 
-        public void UpdateMusic()
-        {
-           if(_roundCtx.Player.Effect == "brute")
-            {
-                GameCtx.MusicMain.Pause();
-            }
-            else if(_musicReset == true)
-            {
-                this._effectMusic.Stop();
-                GameCtx.MusicMain.Play();
-                _musicReset = false;
-            }
-
-        }
 
         public Map MapCtx => _mapCtx;
     }

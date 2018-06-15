@@ -105,6 +105,22 @@ namespace MiamiOps
                 }
                 Ctx.StuffList.Remove(this);
             }
+            if (this.Name == "pyro_fruit")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(15);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "pyro_fruit";
+                    this.LifeSpan = TimeSpan.FromSeconds(15);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+                Ctx.StuffList.Remove(this);
+            }
         }
 
         public TimeSpan LifeSpan
@@ -137,7 +153,6 @@ namespace MiamiOps
         Round _ctx;
         readonly string _name;
         readonly TimeSpan _lifeSpan;
-        readonly int _id;
 
         public PackageFactory(Round ctx, string name, TimeSpan lifeSpan)
         {

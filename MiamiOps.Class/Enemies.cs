@@ -13,7 +13,9 @@ namespace MiamiOps
         float _width;
         float _height;
         bool _isDead;
-       
+        string _effect;
+        TimeSpan _effectTiming;
+        DateTime _effectCreate;
 
 
         public Enemies(Round context, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
@@ -27,6 +29,11 @@ namespace MiamiOps
             this._isDead = false;
             this._height = height;
             this._width = width;
+            this._effect = "nothing";
+            this._effectCreate = DateTime.UtcNow;
+            this._effectTiming = TimeSpan.Zero;
+
+
         }
 
         // Method called when an enemy has less than 1 life point
@@ -38,28 +45,10 @@ namespace MiamiOps
             this._context.CountEnnemi = this._context.CountSpawnDead;
             this._context.CountSpawnDead++;
             if (_context.CountSpawnDead > _context.SpawnCount) this._context.CountSpawnDead = 1;
-            //Enemies[] _enemies = new Enemies[this._context.Enemies.Length];
-            //for (int i = 0; i < this._context.Enemies.Length; i++)
-            //{
-            //    if(i >= this._name)
-            //    {
-            //        if (i == this._context.Enemies.Length - 1)
-            //        {
-            //            _enemies[i] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack); 
-            //        }
-            //        else
-            //        {
-            //            _enemies[i] = this._context.Enemies[i + 1];
-            //        }
-            //    }
-            //    else
-            //    {
-            //        _enemies[i] = this._context.Enemies[i];
-            //    }
-            //}
-
-            //  this._context.Enemies = _enemies;
-            this._context.Enemies[this._name] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack); ;
+            this._context.Enemies[this._name] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
+            this._context.Enemies[this._name].Effect = "nothing";
+            this._context.Enemies[this._name].CreationDateEffect = DateTime.Now;
+            this._context.Enemies[this._name].LifeSpanEffect = TimeSpan.FromTicks(0);
             _context.Player.Experience += _context.Player.Level * 10;
             _context.Player.Points += 10;
             this._context.CountEnnemi = oldCount;
@@ -133,5 +122,29 @@ namespace MiamiOps
         public double Life => this._life;
         public bool IsDead => this._isDead;
         public Vector Place => this._place;
+        public string Effect
+        {
+            get { return this._effect; }
+            set { this._effect = value; }
+        }
+        public TimeSpan LifeSpanEffect
+        {
+            get { return _effectTiming; }
+            set { _effectTiming = value; }
+        }
+
+        public bool IsEffectAlive
+        {
+            get
+            {
+                TimeSpan span = DateTime.UtcNow - _effectCreate;
+                return span < _effectTiming;
+            }
+        }
+        public DateTime CreationDateEffect
+        {
+            get { return _effectCreate; }
+            set { _effectCreate = value; }
+        }
     }
 }

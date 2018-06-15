@@ -57,9 +57,9 @@ namespace MiamiOps
             _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
-            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromSeconds(30)));
+            //_stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromSeconds(30)));
            // _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1)); 
-            _stuffFactories.Add(new PackageFactory(this, "brute", TimeSpan.FromSeconds(30))); // indice de rareté
+            _stuffFactories.Add(new PackageFactory(this, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
 
             Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
@@ -182,8 +182,8 @@ namespace MiamiOps
             for (int i = 0 ; i < _count; i++)
             {
                 this._enemies[i].Move(this._player.Place);
-                
             }
+            UpdateEffect(_enemies);
 
             _time++;
             _timeForWeaponSpawn++;
@@ -231,6 +231,22 @@ namespace MiamiOps
 
         }
 
+        public void UpdateEffect(Enemies[] ennemie)
+        {
+            for (int i = 0; i < _count; i++)
+            {
+                if (_enemies[i].Effect == "pyro_fruit")
+                {
+                    _enemies[i].Hit(0.1f);
+                }
+
+                if(_enemies[i].IsEffectAlive == false)
+                {
+                    _enemies[i].Effect = "nothing";
+                }
+            }
+        }
+
         public void UpdatePackage()
         {
             
@@ -253,6 +269,10 @@ namespace MiamiOps
                         this.Player.Speed -= 0.005f;
                     }
                     if(package.Name == "brute")
+                    {
+                        this.Player.Effect = "nothing";
+                    }
+                    if (package.Name == "pyro_fruit")
                     {
                         this.Player.Effect = "nothing";
                     }

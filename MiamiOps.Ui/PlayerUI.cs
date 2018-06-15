@@ -75,7 +75,7 @@ namespace MiamiOps
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-            _hitBoxPlayer = new FloatRect(_playerSprite.Position.X, _playerSprite.Position.Y,20,20);
+            _hitBoxPlayer = new FloatRect(_playerSprite.Position.X, _playerSprite.Position.Y,32,32);
             EffectOnSprite();
             _playerSprite.Draw(window, RenderStates.Default);
            //Console.WriteLine("x : " + _player.Place.X);
@@ -99,9 +99,22 @@ namespace MiamiOps
                 }
                 _effectTime++;
             }
+            if (_player.Effect == "pyro_fruit")
+            {
+                if (_effectTime == 10)
+                {
+                    _playerSprite.Color = Color.Red;
+                    _effectTime = 0;
+                }
+                else
+                {
+                    _playerSprite.Color = colorCharacters;
+                }
+                _effectTime++;
+            }
             else
             {
-                _playerSprite.Color = colorCharacters;
+                    _playerSprite.Color = colorCharacters;
             }
         }
 
