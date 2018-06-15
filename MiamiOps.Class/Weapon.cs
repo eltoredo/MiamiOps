@@ -114,7 +114,6 @@ namespace MiamiOps
             }
 
             foreach (Shoot s in toRemove) _bullets.Remove(s);
-
         }
 
         public void WalkOn(IStuff stuff,Round Ctx)
