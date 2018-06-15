@@ -131,7 +131,6 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            _weaponUI.Draw(window, mapWidth, mapHeight);
 
             if (_roundCtx.IsDoorOpened == false)
             {
@@ -157,6 +156,7 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
+            _weaponUI.Draw(window, mapWidth, mapHeight);
             _playerUI.Draw(window, mapWidth, mapHeight);
 
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
@@ -204,17 +204,17 @@ namespace MiamiOps
             // verifie que les tirs collisionne avec les ennemis
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
-                for (int a = 0; a < this._weaponUI.SpriteBulletList.Count; a++)
+                for (int a = 0; a < this._weaponUI.BoundingBoxBullet.Count; a++)
                 {
-                    if (this._weaponUI.SpriteBulletList.Count > 0)
+                    if (this._weaponUI.BoundingBoxBullet.Count > 0)
                     {
-                        if (this._weaponUI.SpriteBulletList[a].GetGlobalBounds().Intersects(_enemies[i].HitBoxEnnemies))
+                        if (this._weaponUI.BoundingBoxBullet[a].Intersects(_enemies[i].HitBoxEnnemies))
                         {
                             if (_roundCtx.Player.CurrentWeapon.Bullets.Count > 0)
                             {
                                 _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life);
-                                _roundCtx.Player.CurrentWeapon.Bullets[a].LifeBullet = false;
-                                this._weaponUI.SpriteBulletList.RemoveAt(a);
+                                _roundCtx.Player.CurrentWeapon.Bullets.RemoveAt(a);
+                                this._weaponUI.BoundingBoxBullet.RemoveAt(a);
                             }
                         }
                     }

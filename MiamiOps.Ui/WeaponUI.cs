@@ -15,7 +15,7 @@ namespace MiamiOps
         Texture _bulletTexture;
         Sprite _bulletSprite;
 
-        List<Sprite> _bulletSpriteList;
+        List<FloatRect> _bulletBoundingBox;
         bool reset;
 
         public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Texture bulletTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
@@ -29,7 +29,7 @@ namespace MiamiOps
             _bulletSprite = new Sprite(_bulletTexture);
 
             _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundContext.Player.Place.Y * (mapHeight / 2));
-            _bulletSpriteList = new List<Sprite>();
+            _bulletBoundingBox = new List<FloatRect>();
         }
 
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
@@ -55,12 +55,12 @@ namespace MiamiOps
             {
                 if(reset == false)
                 {
-                    this._bulletSpriteList.Clear();
+                    this._bulletBoundingBox.Clear();
                      reset = true;
                 }
 
                 this._bulletSprite.Position = UpdatePlaceBullet(bullet, mapWidth, mapHeight);
-                this._bulletSpriteList.Add(_bulletSprite);
+                this._bulletBoundingBox.Add(_bulletSprite.GetGlobalBounds());
                 _bulletSprite.Draw(window, RenderStates.Default);
                 
             }
@@ -73,6 +73,6 @@ namespace MiamiOps
             get { return _weaponSprite.Position; }
         }
 
-        public List<Sprite> SpriteBulletList => this._bulletSpriteList;
+        public List<FloatRect> BoundingBoxBullet => this._bulletBoundingBox;
     }
 }

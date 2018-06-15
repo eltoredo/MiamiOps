@@ -60,7 +60,7 @@ namespace MiamiOps
 
             //  this._context.Enemies = _enemies;
             this._context.Enemies[this._name] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack); ;
-            _context.Player.Experience += _context.Player.Level * 10;
+            _context.Player.Experience += 500;
             _context.Player.Points += 10;
             this._context.CountEnnemi = oldCount;
 
