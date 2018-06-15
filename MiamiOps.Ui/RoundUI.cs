@@ -131,8 +131,6 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            _playerUI.Draw(window, mapWidth, mapHeight);
-            _weaponUI.Draw(window, mapWidth, mapHeight);
 
             if (_roundCtx.IsDoorOpened == false)
             {
@@ -158,6 +156,9 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
+            _weaponUI.Draw(window, mapWidth, mapHeight);
+            _playerUI.Draw(window, mapWidth, mapHeight);
+
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
             //playerBound.Draw(window, RenderStates.Default);
 
@@ -203,17 +204,18 @@ namespace MiamiOps
             // verifie que les tirs collisionne avec les ennemis
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
-                for (int a = 0; a < this._weaponUI.SpriteBulletList.Count; a++)
+                for (int a = 0; a < this._weaponUI.BoundingBoxBullet.Count; a++)
                 {
-                    if (this._weaponUI.SpriteBulletList.Count > 0)
+                    if (this._weaponUI.BoundingBoxBullet.Count > 0)
                     {
-                        if (this._weaponUI.SpriteBulletList[a].GetGlobalBounds().Intersects(_enemies[i].HitBoxEnnemies))
+                        if (this._weaponUI.BoundingBoxBullet[a].Intersects(_enemies[i].HitBoxEnnemies))
                         {
                             if (_roundCtx.Player.CurrentWeapon.Bullets.Count > 0)
                             {
-                                _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life);
+                                _roundCtx.Enemies[i].Hit((float)_roundCtx.Player.CurrentWeapon.Attack);
                                 _roundCtx.Player.CurrentWeapon.Bullets[a].LifeBullet = false;
-                                this._weaponUI.SpriteBulletList.RemoveAt(a);
+                                this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                                break;
                             }
                         }
                     }
@@ -231,7 +233,7 @@ namespace MiamiOps
                     }
                 
             }
-
+           
             if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == true)
             {
                 this.RoundContext.LevelPass = true;

@@ -21,11 +21,15 @@ namespace MiamiOps
         static Sprite _backgroundSprite;
         Music music = new Music("../../../Menu/DarkSoulsDie.ogg");
         Text _continue;
+        Text _score;
         bool _returnOrNot;
+        float _width;
+        float _height;
 
         public GameOver(float width, float height)
         {
-
+            _width = width;
+            _height = height;
             selectedItemIndex = 0;
             Text GameOvermenu1 = new Text
             {
@@ -54,9 +58,15 @@ namespace MiamiOps
                 Position = new Vector2f(width / 2 - width / 10 + 50, height - height / 4)
 
             };
+            Text Score = new Text
+            {
+                Font = font,
+                Color = Color.Red
+
+            };
+            _score = Score;
             _continue = Continue;
             _backgroundSprite = new Sprite(_backgroundTexture);
-
         }
 
         public void Draw(RenderWindow window)
@@ -67,6 +77,7 @@ namespace MiamiOps
                 window.Draw(GameOverList[i]);
             }
             window.Draw(this._continue);
+            window.Draw(this._score);
         }
 
         public void Move(Keyboard.Key key)
@@ -110,7 +121,13 @@ namespace MiamiOps
             bool end = true;
             _returnOrNot = false;
             game.Round.GameState = false;
-
+            _backgroundSprite.Position = new Vector2f(game.MyView.Center.X - this._width/2, game.MyView.Center.Y - this._height / 2);
+            GameOverList[0].Position = new Vector2f(game.MyView.Center.X - this._width/3, game.MyView.Center.Y   + this._height/3);
+            GameOverList[1].Position = new Vector2f(game.MyView.Center.X + this._width/3 - 200, game.MyView.Center.Y   + this._height/3);
+            _continue.Position = new Vector2f(game.MyView.Center.X - 100, game.MyView.Center.Y + 200);
+            _score.DisplayedString = "Your Score : " + game.Round.Player.Points.ToString();
+            _score.Position = new Vector2f(game.MyView.Center.X - 150, game.MyView.Center.Y + 100);
+        
             while (end == true)
             {
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))

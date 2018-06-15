@@ -74,15 +74,15 @@ namespace MiamiOps
             _round = _gameHandlerCtx.RoundObject; 
 
             foreach (var item in _collide)
-            {
-                //Console.WriteLine("x: " + item[0]);
-                //Console.WriteLine("y: " + item[1]);
-                //Console.WriteLine("length: " + item[2]);
-                //Console.WriteLine("hauteur: " + item[3]);
+            //{
+            //    Console.WriteLine("x: " + item[0]);
+            //    Console.WriteLine("y: " + item[1]);
+            //    Console.WriteLine("length: " + item[2]);
+            //    Console.WriteLine("hauteur: " + item[3]);
 
-                //_round.AddObstacle(item[0], item[1], item[2], item[3]);
-            }
-           // _round.AddObstacle(-0.94f, 1,0.48f, 0.02f);
+            //    _round.AddObstacle(item[0], item[1], item[2], item[3]);
+            //}
+            // _round.AddObstacle(-0.94f, 1,0.48f, 0.02f);
             _view = new View(new FloatRect(0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
             _viewATH = new View(Window.GetView());
             _roundUI = new RoundUI(_round, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);

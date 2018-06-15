@@ -101,7 +101,7 @@ namespace MiamiOps
             Vector playerDir = playerDirection ?? new Vector(1, 0);
 
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
-            this._player.GetNewWeapon(new Weapon("USP", 0f, 0, 0f, 60, TimeSpan.MaxValue));
+            this._player.GetNewWeapon(new Weapon("USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
           //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
@@ -214,12 +214,12 @@ namespace MiamiOps
           
             if (this.Player.Level == 5&& _passOut == 0)
             {
-                this._player.GetNewWeapon(new Weapon("ak47", 0, 0, 0, 30, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon("ak47", 5, 0, 0, 30, TimeSpan.MaxValue));
                 this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1));
                 _passOut++;
             }else if(this.Player.Level == 10 && _passOut == 1)
             {
-                this._player.GetNewWeapon(new Weapon("shotgun", 0, 0, 0, 10, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon("shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
                 this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1));
                 this._stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30,TimeSpan.FromSeconds(30)));
                 _passOut++;

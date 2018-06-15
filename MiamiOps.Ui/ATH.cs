@@ -17,14 +17,16 @@ namespace MiamiOps
         float _xp;
 
         private List<Text> _athList = new List<Text>();
+        public List<Text> AthList => _athList;
+
         private Font _font = new Font("../../../Menu/pricedown.ttf");
         Texture _athLifeBar;
         Sprite _athLifeSprite;
         Texture _athGun;
         Sprite _athGunSprite;
+        RectangleShape _HPbar;
+        RectangleShape _XPbar;
 
-        Vector2f _barPlace = new Vector2f(20, 50);
-        RectangleShape _athBar;
         Color _couleur = new Color(255, 0, 0);
 
         Round _ctx;
@@ -46,16 +48,18 @@ namespace MiamiOps
             _athGun = new Texture("../../../../Images/HUD/" + this._ctx.Player.CurrentWeapon.Name + ".png");
             _athGunSprite = new Sprite(_athGun);
 
-            _athBar = new RectangleShape(_barPlace);
-            _athBar.Size = new Vector2f(272, 40);
-            _athBar.Position = new Vector2f(-1f, -0.5f);
+            _HPbar = new RectangleShape(new Vector2f(271, 40));
+            _HPbar.FillColor = _couleur;
+
+            _XPbar = new RectangleShape(new Vector2f(271, 30));
+            _XPbar.FillColor = Color.Blue;
+
 
             Text LifeBar = new Text
             {
                 Font = _font,
                 Color = Color.White,
-                DisplayedString = "PV: "+_life.ToString() + "/100",
-                
+                             
             };
             _athList.Add(LifeBar);
 
@@ -63,8 +67,7 @@ namespace MiamiOps
             {
                 Font = _font,
                 Color = Color.White,
-                DisplayedString = "Ammo: " + _ammo.ToString(),
-
+             
             };
             _athList.Add(AmmoBar);
 
@@ -72,8 +75,8 @@ namespace MiamiOps
             Text GalaxCoinBar = new Text
             {
                 Font = _font,
-                Color = Color.White,
-                DisplayedString = "Points: " + _galaxCoin.ToString(),
+                Color = Color.Green,
+                DisplayedString = "Points:" + _galaxCoin.ToString(),
 
             };
             _athList.Add(GalaxCoinBar);
@@ -92,29 +95,15 @@ namespace MiamiOps
                 Font = _font,
                 Color = Color.White,
                 DisplayedString = "XP: " + _xp.ToString(),
+                CharacterSize = 25
 
             };
             _athList.Add(XPBar);
         }
 
 
-        public void Draw(RenderWindow window)
-        {
-            
-            _athBar.Draw(window, RenderStates.Default);
 
-            for (int i = 0; i < _athList.Count; i++)
-            {
-                window.Draw(_athList[i]);
-            }
-                      
-            _athLifeSprite.Draw(window, RenderStates.Default);
-            _athGunSprite.Draw(window, RenderStates.Default);
-            //Console.WriteLine(_athBar.Position);
-            //Console.WriteLine(_athGunSprite.Scale.Y);           
-        }
-
-        public void UpdateATH(View view,uint mapWidth, uint mapHeigth)
+        public void UpdateATH(View view, uint mapWidth, uint mapHeigth)
         {
 
             int b = 3;
@@ -127,42 +116,78 @@ namespace MiamiOps
                     {
                         b = 2;
                     }
-                    _athList[i].Position = new Vector2f(view.Center.X  - view.Size.X /b, view.Center.Y - view.Size.Y/2);
+                    _athList[i].Position = new Vector2f(view.Center.X - view.Size.X / b, view.Center.Y - view.Size.Y / 2);
                     a = false;
                 }
                 else
                 {
-                    _athList[i].Position = new Vector2f(view.Center.X + view.Size.X / 3, view.Center.Y - view.Size.Y / b);
+                    _athList[i].Position = new Vector2f(view.Center.X + view.Size.X / 3, (view.Center.Y - view.Size.Y / b));
                 }
 
                 b++;
-                
+
             }
 
-              _athBar.Size = new Vector2f((this._ctx.Player.LifePlayer*275 / this._ctx.Player.LifePlayerMax),40);
+            _HPbar.Size = new Vector2f((this._ctx.Player.LifePlayer * 271 / this._ctx.Player.LifePlayerMax), 40);
+            _XPbar.Size = new Vector2f((this._ctx.Player.Experience * 271 / this._ctx.Player.ExperienceMax), 25);
 
-          //  _athBar.Size = new Vector2f((this._ctx.Player.CurrentWeapon.Ammo*275 /30), 40);
+
+            //  _HPbar.Size = new Vector2f((this._ctx.Player.CurrentWeapon.Ammo*275 /30), 40);
             _athGun.Dispose();
             _athGunSprite.Dispose();
             _athGun = new Texture("../../../../Images/HUD/" + this._ctx.Player.CurrentWeapon.Name + ".png");
             _athGunSprite = new Sprite(_athGun);
 
-            
+            //player life
             _athList[0].DisplayedString = this._ctx.Player.LifePlayer.ToString() + "/" + this._ctx.Player.LifePlayerMax.ToString();
-            _athList[1].DisplayedString = this._ctx.Player.CurrentWeapon.Ammo.ToString() +"/"+ this._ctx.Player.CurrentWeapon.MaxAmmo.ToString();
-            _athList[2].DisplayedString = "Points: " + this._ctx.Player.Points.ToString();
+
+            //bullet count
+            _athList[1].DisplayedString = this._ctx.Player.CurrentWeapon.Ammo.ToString() + "/" + this._ctx.Player.CurrentWeapon.MaxAmmo.ToString();
+
+            //money
+            _athList[2].DisplayedString = "Ω " + this._ctx.Player.Points.ToString();
+
+            //current lvl
             _athList[3].DisplayedString = "Lvl: " + this._ctx.Player.Level.ToString();
-            _athList[4].DisplayedString = "XP: " + this._ctx.Player.Experience.ToString()+"/"+this._ctx.Player.ExperienceMax.ToString();
-            _athList[1].Position = new Vector2f(_athList[1].Position.X + 40, _athList[1].Position.Y);
-            _athLifeSprite.Position = new Vector2f((float)_athList[0].Position.X - 100 , (float)_athList[0].Position.Y - 80);
-            _athGunSprite.Position = new Vector2f((float)_athList[1].Position.X -100, (float)_athList[1].Position.Y);
-            _athBar.FillColor = _couleur;
-            _athBar.Position = new Vector2f((float)_athList[0].Position.X - 85, (float)_athList[0].Position.Y);
+
+            //current XP
+            _athList[4].DisplayedString = this._ctx.Player.Experience.ToString() + "/" + this._ctx.Player.ExperienceMax.ToString();
+
+
+            _athLifeSprite.Position = new Vector2f(_athList[0].Position.X - 100, _athList[0].Position.Y - 100);
+            _athGunSprite.Position = new Vector2f(_athLifeSprite.Position.X +170, _athLifeSprite.Position.Y - 10 );
+            _XPbar.Position = new Vector2f(_athList[0].Position.X - 87, _athList[0].Position.Y + 20);
+            _HPbar.Position = new Vector2f(_athList[0].Position.X - 85, _athList[0].Position.Y - 20);
+            
+
+            _athList[0].Position = new Vector2f(_athList[0].Position.X +10, _athList[0].Position.Y -20);
+            _athList[1].Position = new Vector2f(_athGunSprite.Position.X - 80, _athGunSprite.Position.Y + 20);
+            _athList[2].Position = new Vector2f(_athList[0].Position.X +70 , _athList[0].Position.Y +70);
+            _athList[3].Position = new Vector2f(_athList[0].Position.X - 70, _athList[0].Position.Y + 70);
+            _athList[4].Position = new Vector2f(_athList[0].Position.X + 10, _athList[0].Position.Y + 40);
 
 
         }
 
-        public List<Text> AthList => _athList;
+
+        public void Draw(RenderWindow window)
+        {
+
+            _HPbar.Draw(window, RenderStates.Default);
+            _XPbar.Draw(window, RenderStates.Default);
+
+
+            for (int i = 0; i < _athList.Count; i++)
+            {
+                window.Draw(_athList[i]);
+            }
+
+            _athLifeSprite.Draw(window, RenderStates.Default);
+            _athGunSprite.Draw(window, RenderStates.Default);
+
+        }
+
+
 
     }
 }
