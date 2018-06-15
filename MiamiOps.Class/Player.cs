@@ -53,8 +53,9 @@ namespace MiamiOps
         // Method to handle the player's movements
         public void Move(Vector direction)
         {
-            (bool, Vector) CanMoveInformation = CanMove(direction);
+            (bool, Vector) CanMoveInformation = CanMove(direction, this._speed);
             if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
+            else {this._place = findNextPlace(direction, this._speed);}
         }
 
         // When the player attacks the enemies
@@ -91,11 +92,11 @@ namespace MiamiOps
             else return false;
         }
 
-        private (bool, Vector) CanMove(Vector direction)
+        private (bool, Vector) CanMove(Vector direction, float speed)
         {
             bool canMove = true;
 
-            Vector nextPlace = SimulationMove(direction);
+            Vector nextPlace = SimulationMove(direction, speed);
 
             // Checks if the player doesn't go out of the map
             if (Math.Round(nextPlace.X + this._width, 2) > 1 || Math.Round(nextPlace.Y, 2) > 1 || Math.Round(nextPlace.X, 2) < -1 || Math.Round(nextPlace.Y - this._height, 2) < -1)
@@ -194,14 +195,33 @@ namespace MiamiOps
             return (canMove, nextPlace);
         }
 
-        private Vector SimulationMove(Vector direction)
+        private Vector SimulationMove(Vector direction, float speed)
         {
             double diviseur = direction.Magnitude;
             if (direction.Magnitude == 0) diviseur = 1;
             Vector unit_vector = direction * (1.0 / diviseur);
-            Vector move = unit_vector * this._speed;
+            Vector move = unit_vector * speed;
             Vector playerPlace = this._place + move;
             return playerPlace;
+        }
+
+        private Vector findNextPlace(Vector direction, double speed)
+        {
+            double begin = 0;
+            double end = speed;
+            Vector place = new Vector(0, 0);
+
+            while (Math.Round(end, 10) != Math.Round(begin, 10) && begin < end)
+            {
+                speed = (begin + end) / 2;
+                (bool, Vector) moveInfo = CanMove(direction, (float)speed);
+                if (moveInfo.Item1) {begin = speed;}
+                else {end = speed;}
+                place = moveInfo.Item2;
+                Console.WriteLine(speed);
+            }
+
+            return place;
         }
 
         public void Update()

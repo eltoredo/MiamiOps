@@ -50,7 +50,6 @@ namespace MiamiOps.Tests
 
         [TestCase(1, -1, 0, 2f, 2f, -1, .2f)]
         [TestCase(-.6f, -1, 1, 2f, 1f, 1, 0f)]
-        [Explicit("Player.Move() must be fixed.")]
         public void The_player_can_not_go_in_a_wall_verticaly(float spawn_y, float x_obstacle, float y_obstacle, float largeur_obstacle, float hauteur_obstacle, float direction_y, float arrive_y)
         {
             Round play = new Round(0, new Vector(0, spawn_y), playerLargeur : 0.1f, playerHauteur : 0.2f);
@@ -61,7 +60,6 @@ namespace MiamiOps.Tests
 
         [TestCase(-1f, 0, 1, 1, 2, 1, -.1f)]
         [TestCase(1f, -1, 1, 1, 2, -1f, 0f)]
-        [Explicit("Player.Move() must be fixed.")]
         public void The_player_can_not_go_in_a_wall_horizontaly(float spawn_x, float x_obstacle, float y_obstacle, float largeur_obstacle, float hauteur_obstacle, float direction_x, float arrive_x)
         {
              Round play = new Round(0, new Vector(spawn_x, 0), playerLargeur : 0.1f, playerHauteur : 0.2f);
