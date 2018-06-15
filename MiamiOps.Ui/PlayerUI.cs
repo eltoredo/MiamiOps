@@ -77,7 +77,7 @@ namespace MiamiOps
             _hitBoxPlayer = new FloatRect(_playerSprite.Position.X, _playerSprite.Position.Y,20,20);
 
             _playerSprite.Draw(window, RenderStates.Default);
-            //Console.WriteLine("x : " + _player.Place.X);
+           //Console.WriteLine("x : " + _player.Place.X);
             //Console.WriteLine("y : " + _player.Place.Y);
 
         }

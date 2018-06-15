@@ -26,6 +26,7 @@ namespace MiamiOps
         private int _passOut = 0;
         int _countSpawn;
         bool _gameState;
+        bool _levelPass;
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
@@ -147,13 +148,13 @@ namespace MiamiOps
 
         public void UpdateLevel()
         {
-            //Si je rentre dans la porte
-            if (_stage == 10)
+            if (_levelPass == true && _isDoorOpened == true)
             {
                 _stage++;
-                _player.Points = 0;
                 _player.Experience += _player.Points / 2;
-                _gameHandlerCtx.CreateNewRound();
+                _player.Points = 0;
+                _levelPass = false;
+                _gameHandlerCtx.OnLeaving();
             }
 
             if (_stage >= 6)
@@ -272,6 +273,14 @@ namespace MiamiOps
         public void AddObstacle(float x, float y, float largeur, float hauteur)
         {
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
+        }
+
+        public int Level => _level;
+        public int Stage => _stage;
+        public bool LevelPass
+        {
+            get { return _levelPass; }
+            set { _levelPass = value; }
         }
 
         public List<IStuff> StuffList => _stuffList;
