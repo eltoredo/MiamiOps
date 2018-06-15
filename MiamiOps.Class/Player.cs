@@ -23,7 +23,7 @@ namespace MiamiOps
         Vector _direction;
         Weapon _currentWeapon;
         string _effect;
-
+        bool _LegendaryWeaponBlock;
         public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._context = context;
@@ -253,6 +253,11 @@ namespace MiamiOps
         {
             get { return this._effect; }
             set { this._effect = value; }
+        }
+        public bool BlockWeapon
+        {
+            get { return this._LegendaryWeaponBlock; }
+            set { this._LegendaryWeaponBlock = value; }
         }
 
         public float ExperienceMax => this._experienceMax;

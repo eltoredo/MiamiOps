@@ -136,16 +136,17 @@ namespace MiamiOps
 
             if (verifWeaponInList == false)
             {
-                this.LifeSpan = TimeSpan.FromSeconds(5);
+                this.LifeSpan = TimeSpan.FromSeconds(30);
                 this.CreationDate = DateTime.UtcNow;
                 Ctx.Player.Weapons.Add(this);
                 Ctx.Player.CurrentWeapon = this;
             }
             else
             {
-                Ctx.Player.Weapons[count-1].LifeSpan = TimeSpan.FromSeconds(5);
+                Ctx.Player.Weapons[count-1].LifeSpan = TimeSpan.FromSeconds(30);
                 Ctx.Player.Weapons[count-1].CreationDate = DateTime.UtcNow;
             }
+            Ctx.Player.BlockWeapon = true;
             Ctx.StuffList.Remove(this);
 
         }

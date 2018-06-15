@@ -48,7 +48,7 @@ namespace MiamiOps
                 _roundUIContext.RoundContext.Player.Move(new Vector(1, 0));
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.P))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.P)&&_roundUIContext.RoundContext.Player.BlockWeapon == false)
             {
                 if (_timerNextWeapon == 5)
                 {
@@ -58,7 +58,7 @@ namespace MiamiOps
                 _timerNextWeapon++;
                
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.O))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.O)&&_roundUIContext.RoundContext.Player.BlockWeapon == false)
             {
                 if (_timerPreviousWeapon == 4)
                 {

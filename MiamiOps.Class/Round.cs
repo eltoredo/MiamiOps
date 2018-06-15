@@ -57,8 +57,9 @@ namespace MiamiOps
             _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
-            _stuffFactories.Add(new PackageFactory(this, "brute", TimeSpan.FromSeconds(30)));
-           // _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1)); 
+            //_stuffFactories.Add(new PackageFactory(this, "brute", TimeSpan.FromSeconds(30)));
+            _stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+            // _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1)); 
             //_stuffFactories.Add(new PackageFactory(this, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
 
             Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
@@ -256,6 +257,7 @@ namespace MiamiOps
                 {
                     if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._weapons[this._weapons.Count - 2];
                     _weapons.Remove(weapon);
+                    this.Player.BlockWeapon = false;
                     break;
                 }
             }

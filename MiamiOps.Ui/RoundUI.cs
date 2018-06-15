@@ -228,7 +228,11 @@ namespace MiamiOps
 
         public void UpdateMusic()
         {
-           if(_roundCtx.Player.Effect == "brute")
+           if(_roundCtx.Player.Effect == "brute" )
+            {
+                GameCtx.MusicMain.Pause();
+            }
+            else if(_roundCtx.Player.CurrentWeapon.Name=="chaos_blade")
             {
                 GameCtx.MusicMain.Pause();
             }
@@ -263,7 +267,10 @@ namespace MiamiOps
                             _effectMusic.Play();
                         }
 
-                        if (_roundCtx.StuffList[count - 1].Name == "brute") _musicReset = true;
+                        if (_roundCtx.StuffList[count - 1].Name != "speed"||
+                            _roundCtx.StuffList[count - 1].Name != "health"||
+                            _roundCtx.StuffList[count - 1].Name != "point"
+                            ) _musicReset = true;
 
                         _roundCtx.StuffList[count - 1].WalkOn(_roundCtx);
                         break;
