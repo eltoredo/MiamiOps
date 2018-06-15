@@ -213,8 +213,9 @@ namespace MiamiOps
                             if (_roundCtx.Player.CurrentWeapon.Bullets.Count > 0)
                             {
                                 _roundCtx.Enemies[i].Hit((float)_roundCtx.Player.CurrentWeapon.Attack);
-                                _roundCtx.Player.CurrentWeapon.Bullets.RemoveAt(a);
+                                _roundCtx.Player.CurrentWeapon.Bullets[a].LifeBullet = false;
                                 this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                                break;
                             }
                         }
                     }
