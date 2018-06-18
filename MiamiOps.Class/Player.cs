@@ -94,14 +94,12 @@ namespace MiamiOps
 
         private (bool, Vector) CanMove(Vector direction, float speed)
         {
-            bool canMove = true;
-
             Vector nextPlace = SimulationMove(direction, speed);
 
             // Checks if the player doesn't go out of the map
             if (Math.Round(nextPlace.X + this._width, 2) > 1 || Math.Round(nextPlace.Y, 2) > 1 || Math.Round(nextPlace.X, 2) < -1 || Math.Round(nextPlace.Y - this._height, 2) < -1)
             {
-                canMove = false;
+                return(false, this._place);
             }
 
             // Checks if the player don't go in a wall
@@ -191,8 +189,7 @@ namespace MiamiOps
                     if(colision) {break;}
                 }
             }
-            canMove = canMove && !colision;
-            return (canMove, nextPlace);
+            return (!colision, nextPlace);
         }
 
         private Vector SimulationMove(Vector direction, float speed)
