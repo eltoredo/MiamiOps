@@ -267,8 +267,8 @@ namespace MiamiOps
                             _effectMusic.Play();
                         }
 
-                        if (_roundCtx.StuffList[count - 1].Name != "speed"||
-                            _roundCtx.StuffList[count - 1].Name != "health"||
+                        if (_roundCtx.StuffList[count - 1].Name != "speed"&&
+                            _roundCtx.StuffList[count - 1].Name != "health"&&
                             _roundCtx.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
 
