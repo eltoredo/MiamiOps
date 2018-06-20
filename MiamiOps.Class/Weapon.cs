@@ -9,9 +9,11 @@ namespace MiamiOps
 
         private List<Shoot> _bullets;
         private List<Shoot> toRemove = new List<Shoot>();
+        List<int> _listCount = new List<int>();
 
         private Random random = new Random();
         Vector _place;
+        bool _life;
         string _name;
         float _attack;
         float _radius;    // rayon d'action
@@ -20,9 +22,10 @@ namespace MiamiOps
         uint _maxAmmo;    // le nombre maximum de munition
         TimeSpan _lifeSpan;
         DateTime _creationDate;
+        Round _context;
         bool verifWeaponInList;
         int _time;
-
+        int count;
 
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
@@ -38,14 +41,17 @@ namespace MiamiOps
             this._range = range;
             this._ammo = _maxAmmo;
             this._maxAmmo = _maxAmmo;
+            _life = true;
         }
 
-        public Weapon(string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        public Weapon(Round context, string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
         {
+            this._context = context;
             this._name = name;
             this._place = CreateRandomPosition();
             this._lifeSpan = lifeSpan;
             this._creationDate = DateTime.UtcNow;
+            _life = true;
         }
 
         public void Shoot(Vector playerPosition, Vector mousePlace)
@@ -55,8 +61,8 @@ namespace MiamiOps
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
 
-            Shoot shoot = new Shoot(1f, TimeSpan.FromMilliseconds(5000), 0.005f, playerPosition, mousePlace);
-            _bullets.Add(shoot);
+            Shoot shoot = new Shoot(1f, TimeSpan.FromSeconds(5), 0.005f, playerPosition, mousePlace);
+            _context.ListBullet.Add(shoot);
 
             _ammo -= 1;
             if (_ammo <= 0) Reload();
@@ -104,20 +110,29 @@ namespace MiamiOps
 
         public void Update()
         {
-            if (_bullets.Count > 0)
+            if (_context.ListBullet.Count > 0)
             {
-                foreach (Shoot s in _bullets)
+                foreach (Shoot s in _context.ListBullet)
                 {
                     BulletMove(s, s.SpeedBullet);
                 }
             }
-
-            foreach (Shoot s in _bullets)
+            count = 0;
+            foreach (Shoot s in _context.ListBullet)
             {
-                if (!s.IsAlive) toRemove.Add(s);
-                if(s.LifeBullet == false) toRemove.Add(s);
+                count++;
+                if (!s.IsAlive || s.LifeBullet == false)
+                {
+                    toRemove.Add(s);
+                    _listCount.Add(count);
+                }
             }
 
+            foreach(int count in _listCount)
+            {
+               _context.ListBullet.RemoveAt(count-1);
+            }
+            _listCount.Clear();
             foreach (Shoot s in toRemove) _bullets.Remove(s);
 
         }
@@ -173,12 +188,22 @@ namespace MiamiOps
                 TimeSpan span = DateTime.UtcNow - _creationDate;
                 return span < _lifeSpan;
             }
+
+            set
+            {
+                _life = false;
+            }
         }
 
         public DateTime CreationDate
         {
             get { return _creationDate; }
             set { _creationDate = value; }
+        }
+        public bool Life
+        {
+            get { return this._life ; }
+            set { this._life = value ; }
         }
     }
 
@@ -208,7 +233,7 @@ namespace MiamiOps
 
         public IStuff Create()
         {
-            return new Weapon(_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
+            return new Weapon(_roundCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
         }
 
 

@@ -51,7 +51,7 @@ namespace MiamiOps
             this._weaponSprite.Position = UpdatePlaceWeapon(mapWidth, mapHeight);
             _weaponSprite.Draw(window, RenderStates.Default);
 
-            foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets)
+            foreach (Shoot bullet in _roundUIContext.RoundContext.ListBullet)
             {
                 if(reset == false)
                 {

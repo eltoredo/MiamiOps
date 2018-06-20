@@ -72,7 +72,7 @@ namespace MiamiOps
             Random _random = new Random();
             _roundCtx = roundCtx;
 
-            Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
+            Texture _weaponTexture = new Texture("../../../../Images/soulcalibur.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
 
             _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
@@ -292,13 +292,10 @@ namespace MiamiOps
                     {
                         if (this._weaponUI.BoundingBoxBullet[a].Intersects(_enemies[i].HitBoxEnnemies))
                         {
-                            if (_roundCtx.Player.CurrentWeapon.Bullets.Count > 0)
-                            {
                                 _roundCtx.Enemies[i].Hit((float)_roundCtx.Player.CurrentWeapon.Attack);
-                                _roundCtx.Player.CurrentWeapon.Bullets[a].LifeBullet = false;
+                                _roundCtx.ListBullet.RemoveAt(a);
                                 this._weaponUI.BoundingBoxBullet.RemoveAt(a);
                                 break;
-                            }
                         }
                     }
                 }
