@@ -111,5 +111,14 @@ namespace MiamiOps.Tests
             colide = ColideHelpers.areColide(new(double, double)[3] { (-1, 0),(-.8, 0),(-1, -0.2) },new(double, double)[3] { (0, 1),(1, 1),(0, -1) });
             Assert.That(colide,Is.False);
         }
+
+        [Test]
+        public void Go_in_a_wall_diagonaly()
+        {
+            Round play = new Round(0, new Vector(0, 0.5), playerLargeur: 0.1f, playerHauteur: .2f);
+            play.AddObstacle(-1, 0, 2, 1);
+            for (int idx = 0; idx < 15; idx += 1) {play.Player.Move(new Vector (1, 3));}
+            Assert.That(Math.Round(play.Player.Place.Y, 2), Is.GreaterThanOrEqualTo(0));
+        }
     }
 }
