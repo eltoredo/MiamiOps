@@ -83,7 +83,7 @@ namespace MiamiOps
 
             //    _round.AddObstacle(item[0], item[1], item[2], item[3]);
             //}
-            // _round.AddObstacle(-0.94f, 1,0.48f, 0.02f);
+           // _round.AddObstacle(-0.94f, 1,0.48f, -0.02f);
             _view = new View(new FloatRect(0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
             _viewATH = new View(Window.GetView());
             _roundUI = new RoundUI(_round, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);

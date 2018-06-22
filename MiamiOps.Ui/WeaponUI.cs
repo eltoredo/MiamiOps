@@ -53,7 +53,11 @@ namespace MiamiOps
 
             foreach (Shoot bullet in _roundUIContext.RoundContext.ListBullet)
             {
-                if(reset == false)
+                _bulletSprite.Dispose();
+                _bulletTexture.Dispose();
+                _bulletTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundContext.Player.CurrentWeapon.Name + "Bullet.png");
+                _bulletSprite = new Sprite(_bulletTexture);
+                if (reset == false)
                 {
                     this._bulletBoundingBox.Clear();
                      reset = true;

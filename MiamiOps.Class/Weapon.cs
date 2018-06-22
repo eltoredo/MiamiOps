@@ -117,23 +117,31 @@ namespace MiamiOps
                     BulletMove(s, s.SpeedBullet);
                 }
             }
-            count = 0;
+
             foreach (Shoot s in _context.ListBullet)
             {
-                count++;
                 if (!s.IsAlive || s.LifeBullet == false)
                 {
                     toRemove.Add(s);
-                    _listCount.Add(count);
                 }
+
             }
 
-            foreach(int count in _listCount)
-            {
-               _context.ListBullet.RemoveAt(count-1);
-            }
-            _listCount.Clear();
-            foreach (Shoot s in toRemove) _bullets.Remove(s);
+            //foreach (int Count in _listCount)
+            //{
+            //    int index = Count;
+            //    if(index <= 0)
+            //    {
+            //        _context.ListBullet.RemoveAt(0);
+
+            //    }
+            //    else
+            //    {
+            //        _context.ListBullet.RemoveAt(index - 1);
+            //    }
+            //}
+            //_listCount.Clear();
+            foreach (Shoot s in toRemove) _context.ListBullet.Remove(s);
 
         }
 

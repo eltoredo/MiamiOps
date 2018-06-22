@@ -127,6 +127,11 @@ namespace MiamiOps
             get { return this._effect; }
             set { this._effect = value; }
         }
+        public float Speed
+        {
+            get { return this._speed; }
+            set { this._speed = value; }
+        }
         public TimeSpan LifeSpanEffect
         {
             get { return _effectTiming; }

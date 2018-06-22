@@ -228,11 +228,12 @@ namespace MiamiOps
 
         public void UpdateMusic()
         {
-           if(_roundCtx.Player.Effect == "brute" )
-            {
-                GameCtx.MusicMain.Pause();
-            }
-            else if(_roundCtx.Player.CurrentWeapon.Name=="chaos_blade")
+           if(_roundCtx.Player.Effect == "brute"||
+             _roundCtx.Player.CurrentWeapon.Name == "chaos_blade"||
+             _roundCtx.Player.CurrentWeapon.Name == "soulcalibur"||
+             _roundCtx.Player.Effect == "pyro_fruit"||
+             _roundCtx.Player.CurrentWeapon.Name == "FreezeGun"
+              )
             {
                 GameCtx.MusicMain.Pause();
             }
@@ -267,8 +268,8 @@ namespace MiamiOps
                             _effectMusic.Play();
                         }
 
-                        if (_roundCtx.StuffList[count - 1].Name != "speed"&&
-                            _roundCtx.StuffList[count - 1].Name != "health"&&
+                        if (_roundCtx.StuffList[count - 1].Name != "speed"||
+                            _roundCtx.StuffList[count - 1].Name != "health"||
                             _roundCtx.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
 
@@ -292,6 +293,12 @@ namespace MiamiOps
                     {
                         if (this._weaponUI.BoundingBoxBullet[a].Intersects(_enemies[i].HitBoxEnnemies))
                         {
+                            if(this.RoundContext.Player.CurrentWeapon.Name == "FreezeGun")
+                            {
+                                _roundCtx.Enemies[i].Effect = "FreezeGun";
+                                _roundCtx.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                                _roundCtx.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
+                            }
                                 _roundCtx.Enemies[i].Hit((float)_roundCtx.Player.CurrentWeapon.Attack);
                                 _roundCtx.ListBullet.RemoveAt(a);
                                 this._weaponUI.BoundingBoxBullet.RemoveAt(a);
@@ -333,5 +340,10 @@ namespace MiamiOps
 
 
         public Map MapCtx => _mapCtx;
+        public Music EffectMusic
+        {
+            get { return _effectMusic; }
+            set { _effectMusic = value; }
+        }
     }
 }

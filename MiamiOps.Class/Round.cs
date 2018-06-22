@@ -63,7 +63,7 @@ namespace MiamiOps
             //_stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
             // _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30))); 
             //_stuffFactories.Add(new PackageFactory(this, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
-            _stuffFactories.Add(new WeaponFactory(this, "soulcalibur", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+            _stuffFactories.Add(new WeaponFactory(this, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
 
             Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
@@ -105,7 +105,7 @@ namespace MiamiOps
             Vector playerDir = playerDirection ?? new Vector(1, 0);
 
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
-            this._player.GetNewWeapon(new Weapon(this,"ak47", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+            this._player.GetNewWeapon(new Weapon(this,"shotgun", 2f, 0, 0f, 60, TimeSpan.MaxValue));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
@@ -244,9 +244,15 @@ namespace MiamiOps
                     _enemies[i].Hit(0.1f);
                 }
 
-                if(_enemies[i].IsEffectAlive == false)
+                if (_enemies[i].Effect == "FreezeGun")
+                {
+                    _enemies[i].Speed = 0.00020f;
+                }
+
+                if (_enemies[i].IsEffectAlive == false)
                 {
                     _enemies[i].Effect = "nothing";
+                    _enemies[i].Speed = 0.0005f;
                 }
             }
         }

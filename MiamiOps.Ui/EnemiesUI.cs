@@ -80,11 +80,17 @@ namespace MiamiOps
 
         public void EffectOnSprite()
         {
-            if (_enemy.Effect == "pyro_fruit")
+            if (_enemy.Effect == "pyro_fruit"||_enemy.Effect == "FreezeGun")
             {
                 if (_effectTime == 10)
                 {
-                    _enemySprite.Color = Color.Red;
+                    if (_enemy.Effect == "pyro_fruit")
+                    {
+                        _enemySprite.Color = Color.Red;
+                    }else if(_enemy.Effect == "FreezeGun")
+                    {
+                        _enemySprite.Color = Color.Blue;
+                    }
                     _effectTime = 0;
                 }
                 else

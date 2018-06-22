@@ -86,7 +86,7 @@ namespace MiamiOps
                     _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
                     i = 0;
 
-                }else if(i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "shotgun") {
+                }else if(i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "shotgun"|| i>=10&& _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "FreezeGun") {
                     _bulletSound.Play();
                     Vector shotgun_shoot = CalculMouseVector();
                     _roundUIContext.RoundContext.Player.Attack(shotgun_shoot);
@@ -125,17 +125,20 @@ namespace MiamiOps
                     DateTime DateBegin = DateTime.UtcNow;
                     TimeSpan span = TimeSpan.FromSeconds(0);
                     _roundUIContext.GameCtx.MusicMain.Pause();
+                    _roundUIContext.EffectMusic.Pause();
                     _zawarudo.Play();
                     while (span < TimeBegin && Keyboard.IsKeyPressed(Keyboard.Key.Space)) {
                          span = DateTime.UtcNow - DateBegin;
                         _bulletSound.Play();
                         _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
                     }
+                    _roundUIContext.EffectMusic.Play();
                     _roundUIContext.RoundContext.Player.CurrentWeapon.LifeSpan = TimeSpan.FromSeconds(0);
                     _roundUIContext.RoundContext.Player.CurrentWeapon.CreationDate = DateTime.UtcNow;
                     _roundUIContext.GameCtx.MusicMain.Play();
                     i = 0;
                 }
+             
 
                 i++;
             }
