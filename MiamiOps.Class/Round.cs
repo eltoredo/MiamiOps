@@ -16,6 +16,7 @@ namespace MiamiOps
         private float _enemiesAttack;
         private Random random = new Random();
         private List<float[]> _obstacles;
+        private List<Shoot> _bullets;
         private float _enemiesLargeur;
         private float _enemiesHauteur;
         private int _count;
@@ -57,9 +58,12 @@ namespace MiamiOps
             _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
-            _stuffFactories.Add(new PackageFactory(this, "health", TimeSpan.FromSeconds(30), 1));
-            _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1)); // indice de rareté
-            _stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+            _bullets = new List<Shoot>();
+            //_stuffFactories.Add(new PackageFactory(this, "brute", TimeSpan.FromSeconds(30)));
+            //_stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+            // _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30))); 
+            //_stuffFactories.Add(new PackageFactory(this, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
+            _stuffFactories.Add(new WeaponFactory(this, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
 
             Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
@@ -101,8 +105,7 @@ namespace MiamiOps
             Vector playerDir = playerDirection ?? new Vector(1, 0);
 
             this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
-            this._player.GetNewWeapon(new Weapon("USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
-          //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
+            this._player.GetNewWeapon(new Weapon(this,"shotgun", 2f, 0, 0f, 60, TimeSpan.MaxValue));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
@@ -183,8 +186,8 @@ namespace MiamiOps
             for (int i = 0 ; i < _count; i++)
             {
                 this._enemies[i].Move(this._player.Place);
-                
             }
+            UpdateEffect(_enemies);
 
             _time++;
             _timeForWeaponSpawn++;
@@ -214,23 +217,44 @@ namespace MiamiOps
           
             if (this.Player.Level == 5&& _passOut == 0)
             {
-                this._player.GetNewWeapon(new Weapon("ak47", 5, 0, 0, 30, TimeSpan.MaxValue));
-                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1));
+                this._player.GetNewWeapon(new Weapon(this, "USP", 5, 0, 0, 30, TimeSpan.MaxValue));
+                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30)));
                 _passOut++;
             }else if(this.Player.Level == 10 && _passOut == 1)
             {
-                this._player.GetNewWeapon(new Weapon("shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
-                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30), 1));
-                this._stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30,TimeSpan.FromSeconds(30)));
+                this._player.GetNewWeapon(new Weapon(this, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
+                //this._stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30,TimeSpan.FromSeconds(30)));
                 _passOut++;
             }
             else if (this.Player.Level == 15 && _passOut == 2)
             {
-                this._stuffFactories.Add(new PackageFactory(this, "point", TimeSpan.FromSeconds(30), 1));
-                this._stuffFactories.Add(new WeaponFactory(this, "soulcalibur", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+                this._stuffFactories.Add(new PackageFactory(this, "point", TimeSpan.FromSeconds(30)));
+                //this._stuffFactories.Add(new WeaponFactory(this, "soulcalibur", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
                 _passOut++;
             }
 
+        }
+
+        public void UpdateEffect(Enemies[] ennemie)
+        {
+            for (int i = 0; i < _count; i++)
+            {
+                if (_enemies[i].Effect == "pyro_fruit")
+                {
+                    _enemies[i].Hit(0.1f);
+                }
+
+                if (_enemies[i].Effect == "FreezeGun")
+                {
+                    _enemies[i].Speed = 0.00020f;
+                }
+
+                if (_enemies[i].IsEffectAlive == false)
+                {
+                    _enemies[i].Effect = "nothing";
+                    _enemies[i].Speed = 0.0005f;
+                }
+            }
         }
 
         public void UpdatePackage()
@@ -238,10 +262,11 @@ namespace MiamiOps
             
             foreach (Weapon weapon in _weapons)
             {
-                if (!weapon.IsAlive)
+                if (!weapon.IsAlive || weapon.Life == false)
                 {
                     if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._weapons[this._weapons.Count - 2];
                     _weapons.Remove(weapon);
+                    this.Player.BlockWeapon = false;
                     break;
                 }
             }
@@ -253,6 +278,14 @@ namespace MiamiOps
                     if(package.Name == "speed")
                     {
                         this.Player.Speed -= 0.005f;
+                    }
+                    if(package.Name == "brute")
+                    {
+                        this.Player.Effect = "nothing";
+                    }
+                    if (package.Name == "pyro_fruit")
+                    {
+                        this.Player.Effect = "nothing";
                     }
                     _listPackageEffect.Remove(package);
                     break;
@@ -318,6 +351,11 @@ namespace MiamiOps
         {
             get { return this._gameState; }
             set { this._gameState = value; }
+        }
+        public List<Shoot> ListBullet
+        {
+            get { return this._bullets; }
+            set { this._bullets = value; }
         }
         public bool IsDoorOpened => _isDoorOpened;
 

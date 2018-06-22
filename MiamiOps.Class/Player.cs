@@ -22,7 +22,8 @@ namespace MiamiOps
         float _experienceMax;
         Vector _direction;
         Weapon _currentWeapon;
-
+        string _effect;
+        bool _LegendaryWeaponBlock;
         public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._context = context;
@@ -41,6 +42,8 @@ namespace MiamiOps
             this._points = 0;
             this._experience = 0;
             this._experienceMax = 100;
+            this._effect = "nothing";
+            
         }
 
         public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
@@ -245,6 +248,16 @@ namespace MiamiOps
         public float LifePlayerMax {
             get { return this._lifeMax; }
             set { this._lifeMax = value; }
+        }
+        public string Effect
+        {
+            get { return this._effect; }
+            set { this._effect = value; }
+        }
+        public bool BlockWeapon
+        {
+            get { return this._LegendaryWeaponBlock; }
+            set { this._LegendaryWeaponBlock = value; }
         }
 
         public float ExperienceMax => this._experienceMax;
