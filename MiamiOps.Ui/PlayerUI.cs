@@ -123,8 +123,8 @@ namespace MiamiOps
         {
             if (vector.X > 0) return 2;
             if (vector.X < 0) return 1;
-            if (vector.Y > 0) return 0;
-            if (vector.Y < 0) return 3;
+            if (vector.Y < 0) return 0;
+            if (vector.Y > 0) return 3;
             return 1;
         }
 

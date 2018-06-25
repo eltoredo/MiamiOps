@@ -160,8 +160,8 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
-            _weaponUI.Draw(window, mapWidth, mapHeight);
             _playerUI.Draw(window, mapWidth, mapHeight);
+            _weaponUI.Draw(window, mapWidth, mapHeight);
 
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
             //playerBound.Draw(window, RenderStates.Default);
