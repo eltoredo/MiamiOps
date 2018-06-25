@@ -16,6 +16,8 @@ namespace MiamiOps
         string _effect;
         TimeSpan _effectTiming;
         DateTime _effectCreate;
+        Vector _oldVector;
+        Vector _direction;
 
 
         public Enemies(Round context, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
@@ -32,8 +34,8 @@ namespace MiamiOps
             this._effect = "nothing";
             this._effectCreate = DateTime.UtcNow;
             this._effectTiming = TimeSpan.Zero;
-
-
+            this._oldVector = new Vector();
+            this._direction = new Vector();
         }
 
         // Method called when an enemy has less than 1 life point
@@ -68,11 +70,13 @@ namespace MiamiOps
         // The movements of the enemy
         public void Move(Vector target)
         {
+
             (bool, Vector) CanMoveInformation = CanMove(target);
             if (CanMoveInformation.Item1)
             {
                 this._place = CanMoveInformation.Item2;
             }
+            ChangeDirection(this._place);
         }
         
         private (bool, Vector) CanMove(Vector target)
@@ -101,6 +105,48 @@ namespace MiamiOps
             return (canMove, nextPlace);
         }
 
+        private void ChangeDirection(Vector place)
+        {
+            Vector test = new Vector();
+            if(_oldVector.X != test.X)
+            {
+                if(place.X > _oldVector.X)
+                {
+                    if(_oldVector.X - place.X < _oldVector.Y - _place.Y)
+                    {
+                        _direction = new Vector(1, 0);
+                    }
+                    
+                }
+
+                else//(place.X < _oldVector.X)
+                {
+                    if (_oldVector.X + place.X < _oldVector.Y + _place.Y)
+                    {
+                        _direction = new Vector(-1, 0);
+                    }
+                }
+
+                if (place.Y > _oldVector.Y)
+                {
+                    if (_oldVector.X + place.X > _oldVector.Y + _place.Y)
+                    {
+                        _direction = new Vector(0, 1);
+                    }
+                }
+
+                else//(place.Y < _oldVector.Y)
+                {
+                    if (_oldVector.X - place.X < _oldVector.Y - _place.Y)
+                    {
+                        _direction = new Vector(0, -1);
+                    }
+                }
+            }
+
+            _oldVector = place;
+        }
+
         private Vector SimulateMove(Vector target)
         {
             // Builds a vector in the direction of the enemie
@@ -121,6 +167,7 @@ namespace MiamiOps
 
         public double Life => this._life;
         public bool IsDead => this._isDead;
+        public Vector Direction => this._direction;
         public Vector Place => this._place;
         public string Effect
         {
