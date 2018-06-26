@@ -19,6 +19,7 @@ namespace MiamiOps
         Map _ctxMap;
         FloatRect _hitBoxEnnemi;
         int _effectTime;
+        int _nbDirection;
 
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
         int _direction;    // Direction in which the player is looking
@@ -68,6 +69,10 @@ namespace MiamiOps
             this._enemy = enemies;
             this._enemySprite.Position = UpdatePlace(enemies.Place, mapWidth, mapHeight);
             _hitBoxEnnemi = _enemySprite.GetGlobalBounds();
+            _nbDirection = Conversion(this._enemy.Direction);
+
+            _animStop = _spriteWidth;
+            _direction = _spriteHeight * _nbDirection;
 
             if (_animFrames == _nbSprite) _animFrames = 0;
             _enemySprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
@@ -105,6 +110,14 @@ namespace MiamiOps
             }
         }
 
+        private int Conversion(Vector vector)
+        {
+            if (vector.X > 0) return 2;
+            if (vector.X < 0) return 1;
+            if (vector.Y < 0) return 0;
+            if (vector.Y > 0) return 3;
+            return 1;
+        }
         public Vector2f EnemyPosition
         {
             get { return _enemySprite.Position; }

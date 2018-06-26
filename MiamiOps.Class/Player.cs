@@ -54,6 +54,7 @@ namespace MiamiOps
         // Method to handle the player's movements
         public void Move(Vector direction)
         {
+            this._direction = direction;
             (bool, Vector) CanMoveInformation = CanMove(direction);
             if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
         }

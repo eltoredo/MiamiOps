@@ -16,7 +16,7 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         RectangleShape playerBound = new RectangleShape();
-        Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
+        Texture _monsterTexture = new Texture("../../../../Images/player_brute.png");
         ATH _ath;
         View _view;
         View _viewATH;
@@ -90,7 +90,7 @@ namespace MiamiOps
             for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
             {
 
-                _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i], mapWidth, mapHeight, mapCtx);
+                _enemies[i] = new EnemiesUI(this, _monsterTexture, 3, 32, 32, _roundCtx.Enemies[i], mapWidth, mapHeight, mapCtx);
             }
 
             _ath = new ATH(_roundCtx, screenWidth, screenHeight,_view);
@@ -160,8 +160,8 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
-            _weaponUI.Draw(window, mapWidth, mapHeight);
             _playerUI.Draw(window, mapWidth, mapHeight);
+            _weaponUI.Draw(window, mapWidth, mapHeight);
 
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
             //playerBound.Draw(window, RenderStates.Default);
@@ -220,7 +220,7 @@ namespace MiamiOps
 
                 for (int i = index; i < this._roundCtx.CountEnnemi; i++)
                 {
-                    _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i], MapWidth, MapHeight, MapCtx);
+                    _enemies[i] = new EnemiesUI(this, _monsterTexture, 3, 32, 32, _roundCtx.Enemies[i], MapWidth, MapHeight, MapCtx);
                 }
                 this._roundCtx.Time = 0;
             }
