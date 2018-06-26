@@ -18,7 +18,6 @@ namespace MiamiOps
         public const string WINDOW_TITLE = "MiamiOps";
 
         GameHandler _gameHandlerCtx;
-        Round _round;
         RoundUI _roundUI;
         InputHandler _playerInput;
         View _view;
@@ -34,6 +33,7 @@ namespace MiamiOps
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
             _rootPath = rootPath;
+            _gameHandlerCtx = new GameHandler(_convert);
         }
 
         public override void Draw(GameTime gameTime)
@@ -61,8 +61,6 @@ namespace MiamiOps
 
         public override void Initialize()
         {
-            _gameHandlerCtx = new GameHandler(_round, _convert);
-
             if (gameOver.ReturnOrNot == false)
             {
                 gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
@@ -70,8 +68,6 @@ namespace MiamiOps
             }
             _collide = _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
             _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
-
-            _round = _gameHandlerCtx.RoundObject; 
 
             foreach (var item in _collide)
             //{
@@ -85,7 +81,7 @@ namespace MiamiOps
             // _round.AddObstacle(-0.94f, 1,0.48f, 0.02f);
             _view = new View(new FloatRect(0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
             _viewATH = new View(Window.GetView());
-            _roundUI = new RoundUI(_round, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
+            _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
             _playerInput = new InputHandler(_roundUI);
             _camera = new Camera();
             //_view.Zoom(4f);
@@ -98,14 +94,21 @@ namespace MiamiOps
 
         public override void Update(GameTime gameTime)
         {
-            if (Round.GameState == true)
+            if (_gameHandlerCtx.RoundObject.GameState == true)
             {
                 Window.Clear();
                 gameOver.EndGame(Window, this,menu);
             }
+
+            _gameHandlerCtx.RoundObject.Update();
+            if (_gameHandlerCtx.HasLeft == true)
+            {
+                _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
+                _gameHandlerCtx.HasLeft = false;
+            }
+
             _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3168, 3168, _view);
             _playerInput.Handle();
-            _round.Update();
             _roundUI.Update();
             //Console.WriteLine(_round.Player.Place.X);
             //Console.WriteLine(_round.Player.Place.Y);
@@ -113,7 +116,7 @@ namespace MiamiOps
 
         public InputHandler Input => _playerInput;
         public View MyView => _view;
-        public Round Round => _round;
+        public Round Round => _gameHandlerCtx.RoundObject;
         public Convert ConvertMap => _convert;
          
     }

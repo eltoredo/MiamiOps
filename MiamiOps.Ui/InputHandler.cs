@@ -33,26 +33,26 @@ namespace MiamiOps
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(0, 1));
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, 1));
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.S))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(0, -1));
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, -1));
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(-1, 0));
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(-1, 0));
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.D))
             {
-                _roundUIContext.RoundContext.Player.Move(new Vector(1, 0));
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(1, 0));
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.P))
             {
                 if (_timerNextWeapon == 5)
                 {
-                    _roundUIContext.RoundContext.Player.ChangeWeapon(1);
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.ChangeWeapon(1);
                     _timerNextWeapon = 0;
                 }
                 _timerNextWeapon++;
@@ -62,7 +62,7 @@ namespace MiamiOps
             {
                 if (_timerPreviousWeapon == 4)
                 {
-                    _roundUIContext.RoundContext.Player.ChangeWeapon(-1);
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.ChangeWeapon(-1);
                     _timerPreviousWeapon = 0;
                 }
                 _timerPreviousWeapon++;
@@ -72,27 +72,27 @@ namespace MiamiOps
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
                               
-                if (i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "USP")
+                if (i >= 30 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "USP")
                 {
                     _bulletSound.Play();
-                    _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
-                }else if(i >= 10 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "ak47")
+                }else if(i >= 10 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "ak47")
                 {
                     _bulletSound.Play();
-                    _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
 
-                }else if(i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "shotgun") {
+                }else if(i >= 30 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "shotgun") {
                     _bulletSound.Play();
                     Vector shotgun_shoot = CalculMouseVector();
-                    _roundUIContext.RoundContext.Player.Attack(shotgun_shoot);
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(shotgun_shoot);
                     int count = 0;
                     for (int i = 0; i < 4; i++)
                     {
                        
                         Vector new_shotgun_shoot = new Vector(shotgun_shoot.X + x, shotgun_shoot.Y + y);
-                        _roundUIContext.RoundContext.Player.Attack(new_shotgun_shoot);
+                        _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(new_shotgun_shoot);
                         if (count < 2)
                         {
                             x += 0.03f;

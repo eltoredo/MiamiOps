@@ -191,11 +191,11 @@ namespace MiamiOps
         readonly TimeSpan _lifeSpan;
         readonly DateTime _creationDate;
 
-        Round _roundCtx;
+        GameHandler _gameHandlerCtx;
 
-        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo, TimeSpan lifeSpan)
+        public WeaponFactory(GameHandler gameHandlerCtx, string name, float attack, float radius, float range, uint maxAmmo, TimeSpan lifeSpan)
         {
-            _roundCtx = roundCtx;
+            _gameHandlerCtx = gameHandlerCtx;
 
             _name = name;
             _attack = attack;

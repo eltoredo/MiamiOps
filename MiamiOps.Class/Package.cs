@@ -15,7 +15,7 @@ namespace MiamiOps
         TimeSpan _lifeSpan;
         DateTime _creationDate;
         private Random random = new Random();
-        Round _ctx;
+        GameHandler _gameHandlerCtx;
         string _name;
         int _id;
 
@@ -24,9 +24,9 @@ namespace MiamiOps
            
         }
 
-        public Package(Round ctx, string name, TimeSpan lifeSpan, int id,float width=0, float height=0)
+        public Package(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan, int id,float width=0, float height=0)
         {
-            _ctx = ctx;
+            _gameHandlerCtx = gameHandlerCtx;
 
             this._name = name;
             this._place = CreateRandomPosition();
@@ -118,14 +118,14 @@ namespace MiamiOps
 
     public class PackageFactory : IStuffFactory
     {
-        Round _ctx;
+        GameHandler _gameHandlerCtx;
         readonly string _name;
         readonly TimeSpan _lifeSpan;
         readonly int _id;
 
-        public PackageFactory(Round ctx, string name, TimeSpan lifeSpan, int id)
+        public PackageFactory(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan, int id)
         {
-            _ctx = ctx;
+            _gameHandlerCtx = gameHandlerCtx;
             _name = name;
             _lifeSpan = lifeSpan;
             _id = id;
@@ -133,7 +133,7 @@ namespace MiamiOps
 
         public IStuff Create()
         {
-            return new Package(_ctx, _name, _lifeSpan, _id);
+            return new Package(_gameHandlerCtx, _name, _lifeSpan, _id);
         }
     }
 }

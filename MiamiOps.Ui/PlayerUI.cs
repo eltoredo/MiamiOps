@@ -38,7 +38,7 @@ namespace MiamiOps
         )
         {
             _roundUIContext = roundUIContext;
-            _player = _roundUIContext.RoundContext.Player;
+            _player = _roundUIContext.RoundHandlerContext.RoundObject.Player;
 
             this._playerTexture = new Texture("../../../../Images/sprite_panda_lv" + levelTexture.ToString() + ".png");
             this._playerSprite = new Sprite(_playerTexture);
@@ -59,7 +59,7 @@ namespace MiamiOps
 
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
         {
-            _nbDirection = Conversion(_roundUIContext.RoundContext.Player.Direction);
+            _nbDirection = Conversion(_roundUIContext.RoundHandlerContext.RoundObject.Player.Direction);
             Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), (((float)_player.Place.Y - 1) * (mapHeight / 2))*-1);
             
             return newPlayerPlace;

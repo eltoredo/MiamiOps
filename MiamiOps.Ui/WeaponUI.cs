@@ -22,19 +22,19 @@ namespace MiamiOps
         {
             _roundUIContext = roundUIContext;
 
-            _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundContext.Player.CurrentWeapon.Name + ".png");
+            _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + ".png");
             _weaponSprite = new Sprite(_weaponTexture);
 
             _bulletTexture = bulletTexture;
             _bulletSprite = new Sprite(_bulletTexture);
 
-            _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundContext.Player.Place.Y * (mapHeight / 2));
+            _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.Y * (mapHeight / 2));
             _bulletBoundingBox = new List<FloatRect>();
         }
 
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
         {
-            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X +(float)1.01) * (mapWidth / 2), (((float)_roundUIContext.RoundContext.Player.Place.Y - (float)1.01) * (mapHeight / 2))*-1);
+            return new Vector2f(((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.X +(float)1.01) * (mapWidth / 2), (((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.Y - (float)1.01) * (mapHeight / 2))*-1);
         }
 
         private Vector2f UpdatePlaceBullet(Shoot bullet, uint mapWidth, uint mapHeight)
@@ -46,12 +46,12 @@ namespace MiamiOps
         {
             this._weaponTexture.Dispose();
             this._weaponSprite.Dispose();
-            _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundContext.Player.CurrentWeapon.Name + ".png");
+            _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + ".png");
             _weaponSprite = new Sprite(_weaponTexture);
             this._weaponSprite.Position = UpdatePlaceWeapon(mapWidth, mapHeight);
             _weaponSprite.Draw(window, RenderStates.Default);
 
-            foreach (Shoot bullet in _roundUIContext.RoundContext.Player.CurrentWeapon.Bullets)
+            foreach (Shoot bullet in _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Bullets)
             {
                 if(reset == false)
                 {

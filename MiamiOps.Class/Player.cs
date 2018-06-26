@@ -8,7 +8,7 @@ namespace MiamiOps
         SkillsTree _skillsTree;
 
         List<Weapon> _weapons;
-        Round _context;
+        GameHandler _gameHandlerCtx;
         Vector _place;
         Vector _oldPlace;
         float _life;
@@ -23,11 +23,11 @@ namespace MiamiOps
         Vector _direction;
         Weapon _currentWeapon;
 
-        public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
+        public Player(GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
-            this._context = context;
+            this._gameHandlerCtx = gameHandlerCtx;
 
-            _skillsTree = new SkillsTree(context);
+            _skillsTree = new SkillsTree(gameHandlerCtx);
 
             this._place = place;
             this._life = life;
@@ -43,7 +43,7 @@ namespace MiamiOps
             this._experienceMax = 100;
         }
 
-        public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
+        public Player(List<Weapon> weapons, GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(gameHandlerCtx, place, life, speed, direction,width,height)
         {
             this._weapons = weapons;
         }
@@ -177,7 +177,7 @@ namespace MiamiOps
             {
                 // We cut the hexagone in triangles, below, one of the triangle
                 (double, double)[] triangle = new (double, double)[3]{hexagone[idx], hexagone[idx + 1], hexagone[hexagone.Count-1]};    // Le découpage en triangle est bon !
-                foreach(float[] wall in this._context.Obstacles)
+                foreach(float[] wall in this._gameHandlerCtx.RoundObject.Obstacles)
                 {
                     // The wall is cut in two triangle
                     (double, double)[] part1 = new(double, double)[3] {(wall[0], wall[1]),(wall[0] + wall[2], wall[1]),(wall[0], wall[1] - wall[3])};
