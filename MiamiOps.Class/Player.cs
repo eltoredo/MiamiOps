@@ -215,7 +215,6 @@ namespace MiamiOps
                 if (moveInfo.Item1) {begin = speed;}
                 else {end = speed;}
                 place = moveInfo.Item2;
-                Console.WriteLine(speed);
             }
 
             return place;
