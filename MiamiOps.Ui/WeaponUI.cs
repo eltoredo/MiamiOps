@@ -48,7 +48,23 @@ namespace MiamiOps
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
         {
             _nbDirection = Conversion(_roundUIContext.RoundContext.Player.Direction);
-            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X +(float)1.01) * (mapWidth / 2), (((float)_roundUIContext.RoundContext.Player.Place.Y - (float)1.01) * (mapHeight / 2))*-1);
+
+            if(_nbDirection == 1)
+            {
+                _weaponSprite.Scale = new Vector2f(-1f, 1f);
+            }
+            else if(_nbDirection == 0)
+            {
+                _weaponSprite.Rotation = 90f;
+                _weaponSprite.Scale = new Vector2f(1f, -1f);
+            }
+            else if(_nbDirection == 3)
+            {
+                _weaponSprite.Rotation = -90f;
+            }
+            
+            return new Vector2f(((float)_roundUIContext.RoundContext.Player.Place.X + (float)1.01) * (mapWidth / 2), (((float)_roundUIContext.RoundContext.Player.Place.Y - (float)1.01) * (mapHeight / 2)) * -1);
+
         }
 
         private Vector2f UpdatePlaceBullet(Shoot bullet, uint mapWidth, uint mapHeight)
@@ -64,15 +80,9 @@ namespace MiamiOps
             _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundContext.Player.CurrentWeapon.Name + ".png");
             _weaponSprite = new Sprite(_weaponTexture);
 
-            this._spriteWidth = 32;
-            this._spriteHeight = 32;
-            _animStop = _spriteWidth;
-            _direction = _spriteHeight * _nbDirection;
+        
 
             this._weaponSprite.Position = UpdatePlaceWeapon(mapWidth, mapHeight);
-            if (_animFrames == _nbSprite) _animFrames = 0;
-            _weaponSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
-            ++_animFrames;
             _weaponSprite.Draw(window, RenderStates.Default);
 
             foreach (Shoot bullet in _roundUIContext.RoundContext.ListBullet)
