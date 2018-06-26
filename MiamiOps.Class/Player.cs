@@ -55,7 +55,9 @@ namespace MiamiOps
         {
             (bool, Vector) CanMoveInformation = CanMove(direction, this._speed);
             if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
-            else {this._place = findNextPlace(direction, this._speed);}
+            else {this._place = FindNextPlace(direction, this._speed);}
+
+            Console.WriteLine(CanMoveInformation.Item1);
         }
 
         // When the player attacks the enemies
@@ -202,7 +204,7 @@ namespace MiamiOps
             return playerPlace;
         }
 
-        private Vector findNextPlace(Vector direction, double speed)
+        private Vector FindNextPlace(Vector direction, double speed)
         {
             double begin = 0;
             double end = speed;
@@ -215,7 +217,6 @@ namespace MiamiOps
                 if (moveInfo.Item1) {begin = speed;}
                 else {end = speed;}
                 place = moveInfo.Item2;
-                Console.WriteLine(speed);
             }
 
             return place;
