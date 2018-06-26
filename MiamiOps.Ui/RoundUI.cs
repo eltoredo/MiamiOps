@@ -15,6 +15,8 @@ namespace MiamiOps
         Map _mapCtx;
         RectangleShape playerBound = new RectangleShape();
         Texture _monsterTexture = new Texture("../../../../Images/monstersprite.png");
+        Texture _bossTexture = new Texture("../../../../Images/chtulu.png");
+        EnemiesUI _bossUI;
         ATH _ath;
         View _view;
         View _viewATH;
@@ -73,6 +75,7 @@ namespace MiamiOps
             Texture _weaponTexture = new Texture("../../../../Images/weaponsprite.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
 
+
             _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
             _doorSprite = new Sprite(_doorTexture);
 
@@ -88,6 +91,10 @@ namespace MiamiOps
 
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 4, 54, 48, _roundCtx.Enemies[i].Place, mapWidth, mapHeight, mapCtx);
             }
+
+            //create a boss if boss obj isset 
+            if (this._roundCtx._boss != null) _bossUI = new EnemiesUI(this, _bossTexture, 4, 54, 48, _roundCtx._boss.Place, mapWidth, mapHeight, mapCtx);
+
 
             _ath = new ATH(_roundCtx, screenWidth, screenHeight,_view);
             _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
@@ -156,8 +163,15 @@ namespace MiamiOps
             {
                 item.Draw(window, RenderStates.Default);
             }
+
+            if (_bossUI != null)
+            {
+                _bossUI.Draw(window, mapWidth, mapHeight, _roundCtx._boss.Place);
+            }
+
             _weaponUI.Draw(window, mapWidth, mapHeight);
             _playerUI.Draw(window, mapWidth, mapHeight);
+            
 
             //playerBound.Position = new Vector2f(_playerUI.PlayerPosition.X, _playerUI.PlayerPosition.Y);
             //playerBound.Draw(window, RenderStates.Default);
@@ -248,6 +262,7 @@ namespace MiamiOps
         {
             _ath.UpdateATH(this._view,MapWidth,MapHeight);
             UpdateSpawnEnnemie();
+
         }
 
         public void UpdateSpawnEnnemie()
@@ -259,6 +274,7 @@ namespace MiamiOps
                 {
                     index = 0;
                 }
+
 
                 for (int i = index; i < this._roundCtx.CountEnnemi; i++)
                 {

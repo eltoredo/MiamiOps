@@ -11,7 +11,7 @@ namespace MiamiOps
         private Player _player;
         private Enemies[] _enemies;
         private List<Weapon> _weapons = new List<Weapon>();
-        private float _enemiesLife;
+        private float _enemiesLife; 
         private float _enemiesSpeed;
         private float _enemiesAttack;
         private Random random = new Random();
@@ -24,6 +24,7 @@ namespace MiamiOps
         private int _time;
         private int _timeForWeaponSpawn = 299;
         private int _passOut = 0;
+        public  Boss _boss;
         int _countSpawn;
         bool _gameState;
         bool _levelPass;
@@ -109,16 +110,25 @@ namespace MiamiOps
             if (enemieSpawn == null) createPosition = CreateRandomPosition;
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
+
+            this._boss = new Boss(this, 999, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
+
+            Console.WriteLine(Level);
+
+            foreach (var item in _enemies)
+            {
+                Console.WriteLine(item);
+            }
+
             if (this._count > this._enemies.Length)
             {
                 this._count = this._enemies.Length;
             }
             this._obstacles = new List<float[]>();
 
-            _level = 1;
-            _stage = 1;
+          
         }
-
+        
         internal float GetNextRandomFloat()
         {
             return ((float)this.random.NextDouble() * 2) -1;
@@ -180,11 +190,19 @@ namespace MiamiOps
             UpdateLevel();
             OpenDoor();
 
-            for (int i = 0 ; i < _count; i++)
-            {
-                this._enemies[i].Move(this._player.Place);
+            //for (int i = 0 ; i < _count; i++)
+            //{
+            //    this._enemies[i].Move(this._player.Place);
                 
-            }
+            //}
+
+            this._boss.Move(this._player.Place);
+            Console.WriteLine("x" + this._boss.Place.X);
+            Console.WriteLine("y"+ this._boss.Place.Y);
+
+
+
+
 
             _time++;
             _timeForWeaponSpawn++;

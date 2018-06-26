@@ -7,16 +7,17 @@ namespace MiamiOps
         Round _context;
         readonly int _name;
         Vector _place;
-        float _life;
-        float _speed;
-        float _attack;
+        protected float _life;
+        protected float _speed;
+        protected float _attack;
         float _width;
         float _height;
         bool _isDead;
-       
+        protected float _maxLife;
 
 
-        public Enemies(Round context, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
+
+        public Enemies(Round context, int name, Vector place, float life, float speed, float attack, float width = 0, float height = 0)
         {
             this._context = context;
             this._name = name;
@@ -27,6 +28,7 @@ namespace MiamiOps
             this._isDead = false;
             this._height = height;
             this._width = width;
+            this._maxLife = life;
         }
 
         // Method called when an enemy has less than 1 life point
@@ -124,13 +126,14 @@ namespace MiamiOps
             Vector enemiePlace = this._place + move;
             return enemiePlace;
         }
-
+        
         public void Attack(float attack, float distance)
         {
             throw new NotImplementedException();
         }
 
         public double Life => this._life;
+        public double maxLife => this._maxLife;
         public bool IsDead => this._isDead;
         public Vector Place => this._place;
     }
