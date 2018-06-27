@@ -115,7 +115,7 @@ namespace MiamiOps
             music.Stop();
         }
 
-        public void EndGame(RenderWindow window, Game game,Menu menu)
+        public void EndGame(RenderWindow window, Game game,Menu menu, GameHandler gameHandler)
         {
             this.PlaySoundMenu();
             bool end = true;
@@ -154,8 +154,7 @@ namespace MiamiOps
                         this.StopSoundMenu();
                         end = false;
                         _returnOrNot = true;
-                        game.Run();
-                        
+                        gameHandler.GameOver();
                     }
                     else if (this.SelectedItemIndex == 1)
                     {
@@ -167,9 +166,12 @@ namespace MiamiOps
                         game.Run();
                     }
                 }
+                if (end == true)
+                {
                     this.Draw(window);
                     window.Display();
                     Thread.Sleep(80);
+                }
             }
         }
 

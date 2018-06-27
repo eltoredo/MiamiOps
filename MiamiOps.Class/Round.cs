@@ -55,7 +55,6 @@ namespace MiamiOps
         )
         {
             _gameHandlerCtx = gameHandlerCtx;
-
             _stage = stage;
             _level = level;
 
@@ -117,6 +116,7 @@ namespace MiamiOps
             else
             {
                 _player = actualPlayer;
+                _player.LifePlayer = _player.LifePlayerMax;
                 _stuffFactories = stuffFactories;
             }
 
@@ -337,6 +337,7 @@ namespace MiamiOps
             get { return this._gameState; }
             set { this._gameState = value; }
         }
+
         public bool IsDoorOpened => _isDoorOpened;
 
     }

@@ -83,7 +83,8 @@ namespace MiamiOps
             if (_gameHandlerCtx.RoundObject.GameState == true)
             {
                 Window.Clear();
-                gameOver.EndGame(Window, this,menu);
+                gameOver.EndGame(Window, this,menu, _gameHandlerCtx);
+                Window.Clear();
             }
 
             _gameHandlerCtx.RoundObject.Update();

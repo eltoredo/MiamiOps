@@ -34,6 +34,7 @@ namespace MiamiOps
 
             float x = 0;
             float y = 0;
+            _collision.Clear();
 
             for (uint i = 0; i < level_array_collide.Length; i++)
             {
@@ -103,6 +104,8 @@ namespace MiamiOps
 
             float x = 0;
             float y = 0;
+            _spawn.Clear();
+            count = 0;
 
             for (uint i = 0; i < level_array_spawn.Length; i++)
             {
