@@ -24,7 +24,7 @@ namespace MiamiOps
            
         }
 
-        public Package(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan, int id,float width=0, float height=0)
+        public Package(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan,float width=0, float height=0)
         {
             _gameHandlerCtx = gameHandlerCtx;
 
@@ -34,7 +34,6 @@ namespace MiamiOps
             this._height = height;
             this._lifeSpan = lifeSpan;
             this._name = name;
-            this._id = id;
             this._creationDate = DateTime.UtcNow;
         }
 
@@ -51,13 +50,13 @@ namespace MiamiOps
         public void WalkOn(Round Ctx)
         {
             int count = -1;
-            bool lol = false;
+            bool exist = false;
             foreach (var item in Ctx.PackageEffectList)
             {
                 count++;
                 if (item.Name == this.Name)
                 {
-                    lol = true;
+                    exist = true;
                 }
             }
             if (this.Name == "health")
@@ -75,7 +74,7 @@ namespace MiamiOps
 
             if(this.Name == "speed")
             {
-                if (lol == true)
+                if (exist == true)
                 {
                     Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
                     Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
@@ -84,6 +83,39 @@ namespace MiamiOps
                 {
                     Ctx.Player.Speed += 0.005f;
                     this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+                Ctx.StuffList.Remove(this);
+            }
+
+            if(this.Name == "brute")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(10);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "brute";
+                    this.LifeSpan = TimeSpan.FromSeconds(10);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+                Ctx.StuffList.Remove(this);
+            }
+            if (this.Name == "pyro_fruit")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(15);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "pyro_fruit";
+                    this.LifeSpan = TimeSpan.FromSeconds(15);
                     this.CreationDate = DateTime.UtcNow;
                     Ctx.PackageEffectList.Add(this);
                 }
@@ -121,19 +153,17 @@ namespace MiamiOps
         GameHandler _gameHandlerCtx;
         readonly string _name;
         readonly TimeSpan _lifeSpan;
-        readonly int _id;
 
-        public PackageFactory(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan, int id)
+        public PackageFactory(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan)
         {
             _gameHandlerCtx = gameHandlerCtx;
             _name = name;
             _lifeSpan = lifeSpan;
-            _id = id;
         }
 
         public IStuff Create()
         {
-            return new Package(_gameHandlerCtx, _name, _lifeSpan, _id);
+            return new Package(_gameHandlerCtx, _name, _lifeSpan);
         }
     }
 }

@@ -22,7 +22,8 @@ namespace MiamiOps
         float _experienceMax;
         Vector _direction;
         Weapon _currentWeapon;
-
+        string _effect;
+        bool _LegendaryWeaponBlock;
         public Player(GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._gameHandlerCtx = gameHandlerCtx;
@@ -40,6 +41,8 @@ namespace MiamiOps
             this._points = 0;
             this._experience = 0;
             this._experienceMax = 100;
+            this._effect = "nothing";
+            
         }
 
         public Player(List<Weapon> weapons, GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(gameHandlerCtx, place, life, speed, direction,width,height)
@@ -50,6 +53,7 @@ namespace MiamiOps
         // Method to handle the player's movements
         public void Move(Vector direction)
         {
+            this._direction = direction;
             (bool, Vector) CanMoveInformation = CanMove(direction);
             if (CanMoveInformation.Item1) {this._place = CanMoveInformation.Item2;}
         }
@@ -63,7 +67,10 @@ namespace MiamiOps
         public void GetNewWeapon(Weapon weapon)
         {
             this._weapons.Add(weapon);
-            this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+            if (this.BlockWeapon == false)
+            {
+                this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+            }
         }
 
         public void ChangeWeapon(int shift)
@@ -255,6 +262,16 @@ namespace MiamiOps
         {
             get { return this._lifeMax; }
             set { this._lifeMax = value; }
+        }
+        public string Effect
+        {
+            get { return this._effect; }
+            set { this._effect = value; }
+        }
+        public bool BlockWeapon
+        {
+            get { return this._LegendaryWeaponBlock; }
+            set { this._LegendaryWeaponBlock = value; }
         }
 
         public float ExperienceMax => this._experienceMax;

@@ -10,27 +10,33 @@ namespace MiamiOps
     public class InputHandler
     {
         RoundUI _roundUIContext;
+       
 
         Texture _bulletTexture;
         Music _bulletSound;
+        Music _zawarudo;
 
         int i = 0;
         int _timerNextWeapon = 4;
         int _timerPreviousWeapon = 4;
         double x = 0.03f;
         double y = 0.03f;
-
+        bool _shoot;
 
         public InputHandler(RoundUI roundUIContext)
         {
             _roundUIContext = roundUIContext;
 
             _bulletTexture = new Texture("../../../../Images/fireball.png");
-            _bulletSound = new Music("../../../Menu/bullet_sound.ogg");
+            _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "bullet.ogg");
+            _zawarudo = new Music("../../../../Images/ZA WARUDO.ogg");
+            _shoot = false;
+
         }
 
         public void Handle()
         {
+
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, 1));
@@ -48,7 +54,7 @@ namespace MiamiOps
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(1, 0));
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.P))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.P)&&_roundUIContext.RoundHandlerContext.RoundObject.Player.BlockWeapon == false)
             {
                 if (_timerNextWeapon == 5)
                 {
@@ -58,7 +64,7 @@ namespace MiamiOps
                 _timerNextWeapon++;
                
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.O))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.O)&& _roundUIContext.RoundHandlerContext.RoundObject.Player.BlockWeapon == false)
             {
                 if (_timerPreviousWeapon == 4)
                 {
@@ -74,16 +80,21 @@ namespace MiamiOps
                               
                 if (i >= 30 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "USP")
                 {
+                    ChangeSound();
                     _bulletSound.Play();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
                 }else if(i >= 10 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "ak47")
                 {
+                    ChangeSound();
                     _bulletSound.Play();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
+                }
 
-                }else if(i >= 30 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "shotgun") {
+            else if (i >= 50 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "shotgun" || i >= 10 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "FreezeGun")
+            {
+                    ChangeSound();
                     _bulletSound.Play();
                     Vector shotgun_shoot = CalculMouseVector();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(shotgun_shoot);
@@ -117,8 +128,30 @@ namespace MiamiOps
                     y = 0.03f;
 
                 }
+                else if(_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "soulcalibur")
+                {
+                    TimeSpan TimeBegin = TimeSpan.FromSeconds(5);
+                    DateTime DateBegin = DateTime.UtcNow;
+                    TimeSpan span = TimeSpan.FromSeconds(0);
+                    _roundUIContext.GameCtx.MusicMain.Pause();
+                    _roundUIContext.EffectMusic.Pause();
+                    _zawarudo.Play();
+                    while (span < TimeBegin && Keyboard.IsKeyPressed(Keyboard.Key.Space)) {
+                         span = DateTime.UtcNow - DateBegin;
+                        ChangeSound();
+                        _bulletSound.Play();
+                        _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
+                    }
+                    _roundUIContext.EffectMusic.Play();
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.LifeSpan = TimeSpan.FromSeconds(0);
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.CreationDate = DateTime.UtcNow;
+                    _roundUIContext.GameCtx.MusicMain.Play();
+                    i = 0;
+                }
+
 
                 i++;
+
             }
         }
 
@@ -135,6 +168,13 @@ namespace MiamiOps
             Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth / 2.0)) - 1.0, -(mouseAim.Y * (1.0 / (_roundUIContext.MapHeight / 2.0)) - 1.0)); // Vraie coordonnées de la souris en -1 / 1
 
             return finalMousePosition;
+        }
+
+        public void ChangeSound()
+        {
+            _bulletSound.Dispose();
+            _bulletSound = new Music("../../../../Images/" +_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "bullet.ogg");
+            _bulletSound.Volume = 150f;
         }
     }
 }

@@ -13,7 +13,11 @@ namespace MiamiOps
         float _width;
         float _height;
         bool _isDead;
-       
+        string _effect;
+        TimeSpan _effectTiming;
+        DateTime _effectCreate;
+        Vector _oldVector;
+        Vector _direction;
 
 
         public Enemies(GameHandler gameHandlerCtx, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
@@ -27,6 +31,11 @@ namespace MiamiOps
             this._isDead = false;
             this._height = height;
             this._width = width;
+            this._effect = "nothing";
+            this._effectCreate = DateTime.UtcNow;
+            this._effectTiming = TimeSpan.Zero;
+            this._oldVector = new Vector();
+            this._direction = new Vector();
         }
 
         // Method called when an enemy has less than 1 life point
@@ -38,30 +47,12 @@ namespace MiamiOps
             this._gameHandlerCtx.RoundObject.CountEnnemi = this._gameHandlerCtx.RoundObject.CountSpawnDead;
             this._gameHandlerCtx.RoundObject.CountSpawnDead++;
             if (_gameHandlerCtx.RoundObject.CountSpawnDead > _gameHandlerCtx.RoundObject.SpawnCount) this._gameHandlerCtx.RoundObject.CountSpawnDead = 1;
-            //Enemies[] _enemies = new Enemies[this._context.Enemies.Length];
-            //for (int i = 0; i < this._context.Enemies.Length; i++)
-            //{
-            //    if(i >= this._name)
-            //    {
-            //        if (i == this._context.Enemies.Length - 1)
-            //        {
-            //            _enemies[i] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack); 
-            //        }
-            //        else
-            //        {
-            //            _enemies[i] = this._context.Enemies[i + 1];
-            //        }
-            //    }
-            //    else
-            //    {
-            //        _enemies[i] = this._context.Enemies[i];
-            //    }
-            //}
-
-            //  this._context.Enemies = _enemies;
-            this._gameHandlerCtx.RoundObject.Enemies[this._name] = new Enemies(this._gameHandlerCtx, this._name, this._gameHandlerCtx.RoundObject.CreatePositionOnSpawn(new Vector()), _gameHandlerCtx.RoundObject.EnemiesLife, _gameHandlerCtx.RoundObject.EnemiesSpeed, _gameHandlerCtx.RoundObject.EnemiesAttack); ;
-            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 100;
-            _gameHandlerCtx.RoundObject.Player.Points += 500;
+            this._gameHandlerCtx.RoundObject.Enemies[this._name] = new Enemies(this._gameHandlerCtx, this._name, this._gameHandlerCtx.RoundObject.CreatePositionOnSpawn(new Vector()), _gameHandlerCtx.RoundObject.EnemiesLife, _gameHandlerCtx.RoundObject.EnemiesSpeed, _gameHandlerCtx.RoundObject.EnemiesAttack);
+            this._gameHandlerCtx.RoundObject.Enemies[this._name].Effect = "nothing";
+            this._gameHandlerCtx.RoundObject.Enemies[this._name].CreationDateEffect = DateTime.Now;
+            this._gameHandlerCtx.RoundObject.Enemies[this._name].LifeSpanEffect = TimeSpan.FromTicks(0);
+            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 1000;
+            _gameHandlerCtx.RoundObject.Player.Points += 100;
             this._gameHandlerCtx.RoundObject.CountEnnemi = oldCount;
 
         }
@@ -79,11 +70,13 @@ namespace MiamiOps
         // The movements of the enemy
         public void Move(Vector target)
         {
+
             (bool, Vector) CanMoveInformation = CanMove(target);
             if (CanMoveInformation.Item1)
             {
                 this._place = CanMoveInformation.Item2;
             }
+            ChangeDirection(this._place);
         }
         
         private (bool, Vector) CanMove(Vector target)
@@ -112,6 +105,48 @@ namespace MiamiOps
             return (canMove, nextPlace);
         }
 
+        private void ChangeDirection(Vector place)
+        {
+            Vector test = new Vector();
+            if(_oldVector.X != test.X)
+            {
+                if(place.X > _oldVector.X)
+                {
+                    if(_oldVector.X - place.X < _oldVector.Y - _place.Y)
+                    {
+                        _direction = new Vector(1, 0);
+                    }
+                    
+                }
+
+                else//(place.X < _oldVector.X)
+                {
+                    if (_oldVector.X + place.X < _oldVector.Y + _place.Y)
+                    {
+                        _direction = new Vector(-1, 0);
+                    }
+                }
+
+                if (place.Y > _oldVector.Y)
+                {
+                    if (_oldVector.X + place.X > _oldVector.Y + _place.Y)
+                    {
+                        _direction = new Vector(0, 1);
+                    }
+                }
+
+                else//(place.Y < _oldVector.Y)
+                {
+                    if (_oldVector.X - place.X < _oldVector.Y - _place.Y)
+                    {
+                        _direction = new Vector(0, -1);
+                    }
+                }
+            }
+
+            _oldVector = place;
+        }
+
         private Vector SimulateMove(Vector target)
         {
             // Builds a vector in the direction of the enemie
@@ -132,6 +167,36 @@ namespace MiamiOps
 
         public double Life => this._life;
         public bool IsDead => this._isDead;
+        public Vector Direction => this._direction;
         public Vector Place => this._place;
+        public string Effect
+        {
+            get { return this._effect; }
+            set { this._effect = value; }
+        }
+        public float Speed
+        {
+            get { return this._speed; }
+            set { this._speed = value; }
+        }
+        public TimeSpan LifeSpanEffect
+        {
+            get { return _effectTiming; }
+            set { _effectTiming = value; }
+        }
+
+        public bool IsEffectAlive
+        {
+            get
+            {
+                TimeSpan span = DateTime.UtcNow - _effectCreate;
+                return span < _effectTiming;
+            }
+        }
+        public DateTime CreationDateEffect
+        {
+            get { return _effectCreate; }
+            set { _effectCreate = value; }
+        }
     }
 }

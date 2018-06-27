@@ -27,6 +27,7 @@ namespace MiamiOps
         Text pause = new Text();
         Menu menu = new Menu(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         GameOver gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        Music _mainMusic = new Music("../../../../Images/JojoOP1.ogg");
 
         public Game(string rootPath) : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black)
         {
@@ -71,6 +72,8 @@ namespace MiamiOps
             _playerInput = new InputHandler(_roundUI);
             _camera = new Camera();
             //_view.Zoom(4f);
+            _mainMusic.Play();
+            _mainMusic.Loop = true;
         }
 
         public override void LoadContent()
@@ -90,6 +93,7 @@ namespace MiamiOps
             _gameHandlerCtx.RoundObject.Update();
             if (_gameHandlerCtx.HasLeft == true)
             {
+                _roundUI.EffectMusic.Stop();
                 _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _gameHandlerCtx.Map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
                 _gameHandlerCtx.HasLeft = false;
             }
@@ -105,6 +109,10 @@ namespace MiamiOps
         public View MyView => _view;
         public Round Round => _gameHandlerCtx.RoundObject;
         public Convert ConvertMap => _convert;
+        public Music MusicMain {
+           get { return _mainMusic; }
+           set { _mainMusic = value; }
+        }
          
     }
 }

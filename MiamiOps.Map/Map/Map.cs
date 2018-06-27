@@ -41,7 +41,7 @@ namespace MiamiOps
 
                 tilewidth = tileheight;
 
-
+                
                 height = int.Parse(xml.Attribute("height").Value);
                 width = int.Parse(xml.Attribute("width").Value);
 
