@@ -20,19 +20,22 @@ namespace MiamiOps
         int _timerPreviousWeapon = 4;
         double x = 0.03f;
         double y = 0.03f;
+        bool _shoot;
 
         public InputHandler(RoundUI roundUIContext)
         {
             _roundUIContext = roundUIContext;
 
             _bulletTexture = new Texture("../../../../Images/fireball.png");
-            _bulletSound = new Music("../../../Menu/bullet_sound.ogg");
+            _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundContext.Player.CurrentWeapon.Name + "bullet.ogg");
             _zawarudo = new Music("../../../../Images/ZA WARUDO.ogg");
+            _shoot = false;
 
         }
 
         public void Handle()
         {
+
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
             {
                 _roundUIContext.RoundContext.Player.Move(new Vector(0, 1));
@@ -73,20 +76,24 @@ namespace MiamiOps
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
-                              
                 if (i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "USP")
                 {
-                        _bulletSound.Play();
-                        _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
+                    ChangeSound();
+                    _bulletSound.Play();
+                    _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
                     
                     i = 0;
-                }else if(i >= 10 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "ak47")
+                }
+                else if(i >= 10 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "ak47")
                 {
+                    ChangeSound();
                     _bulletSound.Play();
                     _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
                     i = 0;
+                }
+                else if(i >= 50 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "shotgun"|| i>=10&& _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "FreezeGun") {
 
-                }else if(i >= 30 && _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "shotgun"|| i>=10&& _roundUIContext.RoundContext.Player.CurrentWeapon.Name == "FreezeGun") {
+                    ChangeSound();
                     _bulletSound.Play();
                     Vector shotgun_shoot = CalculMouseVector();
                     _roundUIContext.RoundContext.Player.Attack(shotgun_shoot);
@@ -119,7 +126,8 @@ namespace MiamiOps
                     x = 0.03f;
                     y = 0.03f;
 
-                }else if(_roundUIContext.RoundContext.Player.CurrentWeapon.Name == "soulcalibur")
+                }
+                else if(_roundUIContext.RoundContext.Player.CurrentWeapon.Name == "soulcalibur")
                 {
                     TimeSpan TimeBegin = TimeSpan.FromSeconds(5);
                     DateTime DateBegin = DateTime.UtcNow;
@@ -129,6 +137,7 @@ namespace MiamiOps
                     _zawarudo.Play();
                     while (span < TimeBegin && Keyboard.IsKeyPressed(Keyboard.Key.Space)) {
                          span = DateTime.UtcNow - DateBegin;
+                        ChangeSound();
                         _bulletSound.Play();
                         _roundUIContext.RoundContext.Player.Attack(CalculMouseVector());
                     }
@@ -138,9 +147,10 @@ namespace MiamiOps
                     _roundUIContext.GameCtx.MusicMain.Play();
                     i = 0;
                 }
-             
+
 
                 i++;
+
             }
         }
 
@@ -157,6 +167,13 @@ namespace MiamiOps
             Vector finalMousePosition = new Vector(mouseAim.X * (1.0 / (_roundUIContext.MapWidth / 2.0)) - 1.0, -(mouseAim.Y * (1.0 / (_roundUIContext.MapHeight / 2.0)) - 1.0)); // Vraie coordonnées de la souris en -1 / 1
 
             return finalMousePosition;
+        }
+
+        public void ChangeSound()
+        {
+            _bulletSound.Dispose();
+            _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundContext.Player.CurrentWeapon.Name + "bullet.ogg");
+            _bulletSound.Volume = 150f;
         }
     }
 }
