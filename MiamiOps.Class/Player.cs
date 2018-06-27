@@ -239,6 +239,7 @@ namespace MiamiOps
         public Vector Place
         {
             get { return this._place; }
+            set { this._place = value; }
         }
 
         public float Hauteur => this._height;

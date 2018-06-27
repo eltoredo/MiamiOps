@@ -60,7 +60,7 @@ namespace MiamiOps
 
             //  this._context.Enemies = _enemies;
             this._gameHandlerCtx.RoundObject.Enemies[this._name] = new Enemies(this._gameHandlerCtx, this._name, this._gameHandlerCtx.RoundObject.CreatePositionOnSpawn(new Vector()), _gameHandlerCtx.RoundObject.EnemiesLife, _gameHandlerCtx.RoundObject.EnemiesSpeed, _gameHandlerCtx.RoundObject.EnemiesAttack); ;
-            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Player.Level * 1000;
+            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 100;
             _gameHandlerCtx.RoundObject.Player.Points += 500;
             this._gameHandlerCtx.RoundObject.CountEnnemi = oldCount;
 

@@ -117,6 +117,7 @@ namespace MiamiOps
             {
                 _player = actualPlayer;
                 _player.LifePlayer = _player.LifePlayerMax;
+                _player.Place = new Vector(-0.7, 0.7);
                 _stuffFactories = stuffFactories;
             }
 
