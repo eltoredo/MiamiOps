@@ -16,7 +16,7 @@ namespace MiamiOps
         float _speed;
         float _width;
         float _height;
-        int _level;
+        int _level = 1;
         float _points;
         float _experience;
         float _experienceMax;
@@ -37,7 +37,6 @@ namespace MiamiOps
             this._weapons = new List<Weapon>();
             this._height = height;
             this._width = width;
-            this._level = 1;
             this._points = 0;
             this._experience = 0;
             this._experienceMax = 100;
@@ -213,7 +212,13 @@ namespace MiamiOps
             get { return _points; }
             set { _points = value; }
         }
-        public int Level => _level;
+
+        public int Level
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
+
         public float Experience
         {
             get { return _experience; }
@@ -230,10 +235,12 @@ namespace MiamiOps
             get { return this._currentWeapon; }
             set { this._currentWeapon = value; }
         }
+
         public Vector Place
         {
             get { return this._place; }
         }
+
         public float Hauteur => this._height;
         public float Longueur => this._width;
 
@@ -242,7 +249,9 @@ namespace MiamiOps
             get { return this._life; }
             set { this._life = value; }
         }
-        public float LifePlayerMax {
+
+        public float LifePlayerMax
+        {
             get { return this._lifeMax; }
             set { this._lifeMax = value; }
         }

@@ -21,11 +21,9 @@ namespace MiamiOps
         RoundUI _roundUI;
         InputHandler _playerInput;
         View _view;
-        Map _map;
         View _viewATH;
         Camera _camera;
         Convert _convert = new Convert();
-        HashSet<float[]> _collide;
         Text pause = new Text();
         Menu menu = new Menu(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         GameOver gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
@@ -39,7 +37,7 @@ namespace MiamiOps
         public override void Draw(GameTime gameTime)
         {
                 Window.SetView(_view);
-                Window.Draw(_map);
+                Window.Draw(_gameHandlerCtx.Map);
                 _roundUI.Draw(Window, _roundUI.MapWidth, _roundUI.MapHeight);
 
             if(Pause)
@@ -66,22 +64,10 @@ namespace MiamiOps
                 gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
                 menu.OpenGame(Window);
             }
-            _collide = _convert.ConvertXMLCollide(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx");
-            _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\tilemap.tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset2.png");
 
-            foreach (var item in _collide)
-            //{
-            //    Console.WriteLine("x: " + item[0]);
-            //    Console.WriteLine("y: " + item[1]);
-            //    Console.WriteLine("length: " + item[2]);
-            //    Console.WriteLine("hauteur: " + item[3]);
-
-            //    _round.AddObstacle(item[0], item[1], item[2], item[3]);
-            //}
-            // _round.AddObstacle(-0.94f, 1,0.48f, 0.02f);
             _view = new View(new FloatRect(0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
             _viewATH = new View(Window.GetView());
-            _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
+            _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _gameHandlerCtx.Map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
             _playerInput = new InputHandler(_roundUI);
             _camera = new Camera();
             //_view.Zoom(4f);
@@ -103,7 +89,7 @@ namespace MiamiOps
             _gameHandlerCtx.RoundObject.Update();
             if (_gameHandlerCtx.HasLeft == true)
             {
-                _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
+                _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _gameHandlerCtx.Map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
                 _gameHandlerCtx.HasLeft = false;
             }
 

@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MiamiOps.Class\MiamiOps.Class.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="sfmlnet-graphics-2">
       <HintPath>..\lib\sfmlnet\sfmlnet-graphics-2.dll</HintPath>
     </Reference>

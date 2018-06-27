@@ -38,10 +38,14 @@ namespace MiamiOps
         int _level = 1;
         int _stage = 1;
         bool _isDoorOpened;
-        
+
         public Round(
             GameHandler gameHandlerCtx,
             int nb_enemies,
+            int stage,
+            int level,
+            List<IStuffFactory> stuffFactories = null,
+            Player actualPlayer = null,
             Vector? playerSpawn = null, Vector? enemieSpawn = null,
             float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f,
             float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null,
@@ -52,14 +56,14 @@ namespace MiamiOps
         {
             _gameHandlerCtx = gameHandlerCtx;
 
-            _countSpawn = 1 ;
-            _random = new Random();
-            _stuffFactories = new List<IStuffFactory>();
+            _stage = stage;
+            _level = level;
+
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
-            _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30), 1));
-            _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30), 1)); // indice de rareté
-            _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+
+            _countSpawn = 1 ;
+            _random = new Random();
 
             Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
@@ -100,8 +104,22 @@ namespace MiamiOps
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
 
-            this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
-            this._player.GetNewWeapon(new Weapon("USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+            if (actualPlayer == null)
+            {
+                this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
+                this._player.GetNewWeapon(new Weapon("USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+
+                _stuffFactories = new List<IStuffFactory>();
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30), 1));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30), 1)); // indice de rareté
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+            }
+            else
+            {
+                _player = actualPlayer;
+                _stuffFactories = stuffFactories;
+            }
+
           //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
@@ -170,6 +188,8 @@ namespace MiamiOps
         // Method to update the player and all the enemies
         public void Update()
         {
+            Console.WriteLine("Stage: " + _stage);
+            Console.WriteLine("Level: " + _level);
             _player.CurrentWeapon.Update();
             _player.Update();
             UpdateList();
@@ -280,6 +300,7 @@ namespace MiamiOps
             set { _levelPass = value; }
         }
 
+        public List<IStuffFactory> StuffFactories => _stuffFactories;
         public List<IStuff> StuffList => _stuffList;
         public List<Package> PackageEffectList => _listPackageEffect;
 
