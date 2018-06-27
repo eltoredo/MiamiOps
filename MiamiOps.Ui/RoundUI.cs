@@ -78,7 +78,7 @@ namespace MiamiOps
             _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
             _doorSprite = new Sprite(_doorTexture);
 
-            _musicReset = true;
+            _musicReset = false;
             _effectMusic = new Music("../../../../Images/brute.ogg");
             _gameCtx = gameCtx;
             _mapCtx = mapCtx;
@@ -266,8 +266,8 @@ namespace MiamiOps
                             }
                         }
 
-                        if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed" ||
-                            _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health" ||
+                        if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed"&&
+                            _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health"&&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
 
