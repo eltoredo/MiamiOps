@@ -8,7 +8,7 @@ namespace MiamiOps
         SkillsTree _skillsTree;
 
         List<Weapon> _weapons;
-        Round _context;
+        GameHandler _gameHandlerCtx;
         Vector _place;
         Vector _oldPlace;
         float _life;
@@ -16,19 +16,20 @@ namespace MiamiOps
         float _speed;
         float _width;
         float _height;
-        int _level;
+        int _level = 1;
         float _points;
+        float _pointsSave;
         float _experience;
         float _experienceMax;
         Vector _direction;
         Weapon _currentWeapon;
         string _effect;
         bool _LegendaryWeaponBlock;
-        public Player(Round context, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
+        public Player(GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
-            this._context = context;
+            this._gameHandlerCtx = gameHandlerCtx;
 
-            _skillsTree = new SkillsTree(context);
+            _skillsTree = new SkillsTree(gameHandlerCtx);
 
             this._place = place;
             this._life = life;
@@ -38,15 +39,15 @@ namespace MiamiOps
             this._weapons = new List<Weapon>();
             this._height = height;
             this._width = width;
-            this._level = 1;
             this._points = 0;
             this._experience = 0;
             this._experienceMax = 100;
             this._effect = "nothing";
+            this._pointsSave = 0;
             
         }
 
-        public Player(List<Weapon> weapons, Round context, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(context, place, life, speed, direction,width,height)
+        public Player(List<Weapon> weapons, GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(gameHandlerCtx, place, life, speed, direction,width,height)
         {
             this._weapons = weapons;
         }
@@ -68,7 +69,10 @@ namespace MiamiOps
         public void GetNewWeapon(Weapon weapon)
         {
             this._weapons.Add(weapon);
-            this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+            if (this.BlockWeapon == false)
+            {
+                this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+            }
         }
 
         public void ChangeWeapon(int shift)
@@ -181,7 +185,7 @@ namespace MiamiOps
             {
                 // We cut the hexagone in triangles, below, one of the triangle
                 (double, double)[] triangle = new (double, double)[3]{hexagone[idx], hexagone[idx + 1], hexagone[hexagone.Count-1]};    // Le découpage en triangle est bon !
-                foreach(float[] wall in this._context.Obstacles)
+                foreach(float[] wall in this._gameHandlerCtx.RoundObject.Obstacles)
                 {
                     // The wall is cut in two triangle
                     (double, double)[] part1 = new(double, double)[3] {(wall[0], wall[1]),(wall[0] + wall[2], wall[1]),(wall[0], wall[1] - wall[3])};
@@ -217,7 +221,19 @@ namespace MiamiOps
             get { return _points; }
             set { _points = value; }
         }
-        public int Level => _level;
+
+        public float SavePoints
+        {
+            get { return _pointsSave; }
+            set { _pointsSave = value; }
+        }
+
+        public int Level
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
+
         public float Experience
         {
             get { return _experience; }
@@ -234,10 +250,13 @@ namespace MiamiOps
             get { return this._currentWeapon; }
             set { this._currentWeapon = value; }
         }
+
         public Vector Place
         {
             get { return this._place; }
+            set { this._place = value; }
         }
+
         public float Hauteur => this._height;
         public float Longueur => this._width;
 
@@ -246,7 +265,9 @@ namespace MiamiOps
             get { return this._life; }
             set { this._life = value; }
         }
-        public float LifePlayerMax {
+
+        public float LifePlayerMax
+        {
             get { return this._lifeMax; }
             set { this._lifeMax = value; }
         }

@@ -22,7 +22,7 @@ namespace MiamiOps
         uint _maxAmmo;    // le nombre maximum de munition
         TimeSpan _lifeSpan;
         DateTime _creationDate;
-        Round _context;
+        GameHandler _gameHandler;
         bool verifWeaponInList;
         int _time;
         int count;
@@ -44,9 +44,9 @@ namespace MiamiOps
             _life = true;
         }
 
-        public Weapon(Round context, string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
         {
-            this._context = context;
+            this._gameHandler = context;
             this._name = name;
             this._place = CreateRandomPosition();
             this._lifeSpan = lifeSpan;
@@ -62,7 +62,7 @@ namespace MiamiOps
             // Supprimer la balle après un certain temps
 
             Shoot shoot = new Shoot(1f, TimeSpan.FromSeconds(5), 0.005f, playerPosition, mousePlace);
-            _context.ListBullet.Add(shoot);
+            _gameHandler.RoundObject.ListBullet.Add(shoot);
 
             _ammo -= 1;
             if (_ammo <= 0) Reload();
@@ -110,15 +110,15 @@ namespace MiamiOps
 
         public void Update()
         {
-            if (_context.ListBullet.Count > 0)
+            if (_gameHandler.RoundObject.ListBullet.Count > 0)
             {
-                foreach (Shoot s in _context.ListBullet)
+                foreach (Shoot s in _gameHandler.RoundObject.ListBullet)
                 {
                     BulletMove(s, s.SpeedBullet);
                 }
             }
 
-            foreach (Shoot s in _context.ListBullet)
+            foreach (Shoot s in _gameHandler.RoundObject.ListBullet)
             {
                 if (!s.IsAlive || s.LifeBullet == false)
                 {
@@ -141,7 +141,7 @@ namespace MiamiOps
             //    }
             //}
             //_listCount.Clear();
-            foreach (Shoot s in toRemove) _context.ListBullet.Remove(s);
+            foreach (Shoot s in toRemove) _gameHandler.RoundObject.ListBullet.Remove(s);
 
         }
 
@@ -225,11 +225,11 @@ namespace MiamiOps
         readonly TimeSpan _lifeSpan;
         readonly DateTime _creationDate;
 
-        Round _roundCtx;
+        GameHandler _gameHandlerCtx;
 
-        public WeaponFactory(Round roundCtx, string name, float attack, float radius, float range, uint maxAmmo, TimeSpan lifeSpan)
+        public WeaponFactory(GameHandler gameHandlerCtx, string name, float attack, float radius, float range, uint maxAmmo, TimeSpan lifeSpan)
         {
-            _roundCtx = roundCtx;
+            _gameHandlerCtx = gameHandlerCtx;
 
             _name = name;
             _attack = attack;
@@ -241,7 +241,7 @@ namespace MiamiOps
 
         public IStuff Create()
         {
-            return new Weapon(_roundCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
+            return new Weapon(this._gameHandlerCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
         }
 
 

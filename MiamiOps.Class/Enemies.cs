@@ -4,7 +4,7 @@ namespace MiamiOps
 {
     public class Enemies
     {
-        Round _context;
+        GameHandler _gameHandlerCtx;
         readonly int _name;
         Vector _place;
         float _life;
@@ -20,9 +20,9 @@ namespace MiamiOps
         Vector _direction;
 
 
-        public Enemies(Round context, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
+        public Enemies(GameHandler gameHandlerCtx, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
         {
-            this._context = context;
+            this._gameHandlerCtx = gameHandlerCtx;
             this._name = name;
             this._place = place;
             this._life = life;
@@ -43,17 +43,17 @@ namespace MiamiOps
         {
             this._isDead = true;
             // We put a new enemy in place of the old one
-            int oldCount = this._context.CountEnnemi;
-            this._context.CountEnnemi = this._context.CountSpawnDead;
-            this._context.CountSpawnDead++;
-            if (_context.CountSpawnDead > _context.SpawnCount) this._context.CountSpawnDead = 1;
-            this._context.Enemies[this._name] = new Enemies(this._context, this._name, this._context.CreatePositionOnSpawn(new Vector()), _context.EnemiesLife, _context.EnemiesSpeed, _context.EnemiesAttack);
-            this._context.Enemies[this._name].Effect = "nothing";
-            this._context.Enemies[this._name].CreationDateEffect = DateTime.Now;
-            this._context.Enemies[this._name].LifeSpanEffect = TimeSpan.FromTicks(0);
-            _context.Player.Experience += _context.Player.Level * 10;
-            _context.Player.Points += 10;
-            this._context.CountEnnemi = oldCount;
+            int oldCount = this._gameHandlerCtx.RoundObject.CountEnnemi;
+            this._gameHandlerCtx.RoundObject.CountEnnemi = this._gameHandlerCtx.RoundObject.CountSpawnDead;
+            this._gameHandlerCtx.RoundObject.CountSpawnDead++;
+            if (_gameHandlerCtx.RoundObject.CountSpawnDead > _gameHandlerCtx.RoundObject.SpawnCount) this._gameHandlerCtx.RoundObject.CountSpawnDead = 1;
+            this._gameHandlerCtx.RoundObject.Enemies[this._name] = new Enemies(this._gameHandlerCtx, this._name, this._gameHandlerCtx.RoundObject.CreatePositionOnSpawn(new Vector()), _gameHandlerCtx.RoundObject.EnemiesLife, _gameHandlerCtx.RoundObject.EnemiesSpeed, _gameHandlerCtx.RoundObject.EnemiesAttack);
+            this._gameHandlerCtx.RoundObject.Enemies[this._name].Effect = "nothing";
+            this._gameHandlerCtx.RoundObject.Enemies[this._name].CreationDateEffect = DateTime.Now;
+            this._gameHandlerCtx.RoundObject.Enemies[this._name].LifeSpanEffect = TimeSpan.FromTicks(0);
+            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 1000;
+            _gameHandlerCtx.RoundObject.Player.Points += 100;
+            this._gameHandlerCtx.RoundObject.CountEnnemi = oldCount;
 
         }
 
@@ -91,7 +91,7 @@ namespace MiamiOps
                 canMove = false;
             }
 
-            foreach (float[] wall in this._context.Obstacles)
+            foreach (float[] wall in this._gameHandlerCtx.RoundObject.Obstacles)
             {
                 if (
                     Math.Round(nextPlace.Y - this._height, 2) < wall[1] && wall[1] - wall[3] < Math.Round(nextPlace.Y, 2) && 

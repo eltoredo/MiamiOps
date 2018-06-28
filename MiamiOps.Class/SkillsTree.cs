@@ -2,20 +2,20 @@
 {
     public class SkillsTree
     {
-        Round _roundContext;
+        GameHandler _gameHandlerCtx;
 
-        public SkillsTree(Round RoundContext)
+        public SkillsTree(GameHandler gameHandlerCtx)
         {
-            _roundContext = RoundContext;
+            _gameHandlerCtx = gameHandlerCtx;
         }
 
         public void Update()
         {
-            if (_roundContext.Player.LevelUp())
+            if (_gameHandlerCtx.RoundObject.Player.LevelUp())
             {
-                _roundContext.Player.LifePlayerMax += 10;
-                _roundContext.Player.LifePlayer = _roundContext.Player.LifePlayerMax;
-                _roundContext.Player.Speed += 0.005f;
+                _gameHandlerCtx.RoundObject.Player.LifePlayerMax += 10;
+                _gameHandlerCtx.RoundObject.Player.LifePlayer = _gameHandlerCtx.RoundObject.Player.LifePlayerMax;
+                _gameHandlerCtx.RoundObject.Player.Speed += 0.005f;
             }
         }
     }

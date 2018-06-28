@@ -36,13 +36,17 @@ namespace MiamiOps
 
         private Dictionary<int, WeaponFactory> _listWeaponFactory = new Dictionary<int, WeaponFactory>();
 
-        int _level;
-        int _stage;
+        int _level = 1;
+        int _stage = 1;
         bool _isDoorOpened;
-        
+
         public Round(
             GameHandler gameHandlerCtx,
             int nb_enemies,
+            int stage,
+            int level,
+            List<IStuffFactory> stuffFactories = null,
+            Player actualPlayer = null,
             Vector? playerSpawn = null, Vector? enemieSpawn = null,
             float enemiesLife = .1f, float enemiesSpeed = .05f, float enemiesAttack = .75f,
             float playerLife = 1, float playerSpeed = .1f, Vector? playerDirection = null,
@@ -52,18 +56,16 @@ namespace MiamiOps
         )
         {
             _gameHandlerCtx = gameHandlerCtx;
+            _stage = stage;
+            _level = level;
 
-            _countSpawn = 1 ;
-            _random = new Random();
-            _stuffFactories = new List<IStuffFactory>();
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
             _bullets = new List<Shoot>();
-            //_stuffFactories.Add(new PackageFactory(this, "brute", TimeSpan.FromSeconds(30)));
-            //_stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
-            // _stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30))); 
-            //_stuffFactories.Add(new PackageFactory(this, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
-            _stuffFactories.Add(new WeaponFactory(this, "soulcalibur", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+      
+
+            _countSpawn = 1 ;
+            _random = new Random();
 
             Vector player = playerSpawn ?? new Vector(-0.7, 0.7);
 
@@ -104,23 +106,39 @@ namespace MiamiOps
             // Create the player and the array of enemies
             Vector playerDir = playerDirection ?? new Vector(1, 0);
 
-            this._player = new Player(_weapons, this, player, playerLife, playerSpeed, playerDir,playerLargeur,playerHauteur);
-            this._player.GetNewWeapon(new Weapon(this,"ak47", 2f, 0, 0f, 60, TimeSpan.MaxValue));
-          //  this._player.GetNewWeapon(new Weapon(this,"USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+            if (actualPlayer == null)
+            {
+                this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+
+                _stuffFactories = new List<IStuffFactory>();
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
+                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
+               // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
+                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
+                //_stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+            }
+            else
+            {
+                _player = actualPlayer;
+                _player.LifePlayer = _player.LifePlayerMax;
+                _player.Effect = "nothing";
+                _player.Place = new Vector(-0.7, 0.7);
+                _stuffFactories = stuffFactories;
+            }
+
+          //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
             this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
             if (enemieSpawn == null) createPosition = CreateRandomPosition;
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
-            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(this, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
+            for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(_gameHandlerCtx, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
             if (this._count > this._enemies.Length)
             {
                 this._count = this._enemies.Length;
             }
             this._obstacles = new List<float[]>();
-
-            _level = 1;
-            _stage = 1;
         }
 
         internal float GetNextRandomFloat()
@@ -156,6 +174,8 @@ namespace MiamiOps
             {
                 _stage++;
                 _player.Experience += _player.Points / 2;
+                _player.SavePoints = _player.Points + this._stage * 10000;
+                if (_stage >= 6) _player.SavePoints += this._level * 40000;
                 _player.Points = 0;
                 _levelPass = false;
                 _gameHandlerCtx.OnLeaving();
@@ -177,6 +197,8 @@ namespace MiamiOps
         // Method to update the player and all the enemies
         public void Update()
         {
+            //Console.WriteLine("Stage: " + _stage);
+            //Console.WriteLine("Level: " + _level);
             _player.CurrentWeapon.Update();
             _player.Update();
             UpdateList();
@@ -218,19 +240,18 @@ namespace MiamiOps
           
             if (this.Player.Level == 5&& _passOut == 0)
             {
-                this._player.GetNewWeapon(new Weapon(this, "USP", 5, 0, 0, 30, TimeSpan.MaxValue));
-                this._stuffFactories.Add(new PackageFactory(this, "speed", TimeSpan.FromSeconds(30)));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5, 0, 0, 30, TimeSpan.MaxValue));
+                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30)));
                 _passOut++;
             }else if(this.Player.Level == 10 && _passOut == 1)
             {
-                this._player.GetNewWeapon(new Weapon(this, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
-                //this._stuffFactories.Add(new WeaponFactory(this, "chaos_blade", 0.5f, 0.1f, 0.05f, 30,TimeSpan.FromSeconds(30)));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
                 _passOut++;
             }
             else if (this.Player.Level == 15 && _passOut == 2)
             {
-                this._stuffFactories.Add(new PackageFactory(this, "point", TimeSpan.FromSeconds(30)));
-                //this._stuffFactories.Add(new WeaponFactory(this, "soulcalibur", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
+                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "point", TimeSpan.FromSeconds(30)));
+                this._stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
                 _passOut++;
             }
 
@@ -317,6 +338,7 @@ namespace MiamiOps
             set { _levelPass = value; }
         }
 
+        public List<IStuffFactory> StuffFactories => _stuffFactories;
         public List<IStuff> StuffList => _stuffList;
         public List<Package> PackageEffectList => _listPackageEffect;
 

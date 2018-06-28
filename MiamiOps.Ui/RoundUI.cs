@@ -16,7 +16,7 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         RectangleShape playerBound = new RectangleShape();
-        Texture _monsterTexture = new Texture("../../../../Images/player_brute.png");
+        Texture _monsterTexture = new Texture("../../../../Images/Monster.png");
         ATH _ath;
         View _view;
         View _viewATH;
@@ -27,7 +27,7 @@ namespace MiamiOps
 
         uint _mapWidth;
         uint _mapHeight;
-        Round _roundCtx;
+        GameHandler _roundHandlerCtx;
         Music _effectMusic;
         private List<float[]> _obstacles;
         private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
@@ -39,9 +39,9 @@ namespace MiamiOps
         Texture _doorTexture;
         Sprite _doorSprite;
 
-        public Round RoundContext
+        public GameHandler RoundHandlerContext
         {
-            get { return _roundCtx; }
+            get { return _roundHandlerCtx; }
         }
 
         public uint MapWidth
@@ -65,12 +65,12 @@ namespace MiamiOps
         }
 
 
-        public RoundUI(Round roundCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx,uint screenWidth,uint screenHeight,View viewPlayer, View viewATH)
+        public RoundUI(GameHandler roundHandlerCtx, Game gameCtx, uint mapWidth, uint mapHeight, Map mapCtx, uint screenWidth, uint screenHeight, View viewPlayer, View viewATH)
         {
             Texture _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
 
             Random _random = new Random();
-            _roundCtx = roundCtx;
+            _roundHandlerCtx = roundHandlerCtx;
 
             Texture _weaponTexture = new Texture("../../../../Images/soulcalibur.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
@@ -86,30 +86,30 @@ namespace MiamiOps
             _viewATH = viewATH;
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
             _boundingBoxPackage = new List<FloatRect>();
-            _enemies = new EnemiesUI[_roundCtx.Enemies.Length];
-            for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
+            _enemies = new EnemiesUI[_roundHandlerCtx.RoundObject.Enemies.Length];
+            for (int i = 0; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++)
             {
 
-                _enemies[i] = new EnemiesUI(this, _monsterTexture, 3, 32, 32, _roundCtx.Enemies[i], mapWidth, mapHeight, mapCtx);
+                _enemies[i] = new EnemiesUI(this, _monsterTexture, 3, 32, 32, _roundHandlerCtx.RoundObject.Enemies[i], mapWidth, mapHeight, mapCtx);
             }
 
-            _ath = new ATH(_roundCtx, screenWidth, screenHeight,_view);
-            _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundCtx.Player.Place, mapWidth, mapHeight);
+            _ath = new ATH(_roundHandlerCtx.RoundObject, screenWidth, screenHeight, _view);
+            _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundHandlerCtx.RoundObject.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
-            foreach (var item in _roundCtx.Obstacles)
+            foreach (var item in _roundHandlerCtx.RoundObject.Obstacles)
             {
                 RectangleShape lol = new RectangleShape();
                 Vector2f position = new Vector2f();
                 Vector2f size = new Vector2f();
 
 
-                float xPixel = ((item[0]+1) * 32) / 0.02f;
-                float yPixel = ((item[1]-1) * 32) / 0.02f;
+                float xPixel = ((item[0] + 1) * 32) / 0.02f;
+                float yPixel = ((item[1] - 1) * 32) / 0.02f;
 
                 position.X = xPixel;
-                position.Y = yPixel*-1;
+                position.Y = yPixel * -1;
 
                 lol.Position = position;
 
@@ -129,33 +129,28 @@ namespace MiamiOps
             //playerBound.Position = new Vector2f(1000, 1000);
             //playerBound.Size = new Vector2f(32, 32);
             //playerBound.FillColor = Color.Red;
-           
-     
+
+
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-
-            if (_roundCtx.IsDoorOpened == false)
+            _doorTexture.Dispose();
+            _doorSprite.Dispose();
+            if (_roundHandlerCtx.RoundObject.IsDoorOpened == false)
             {
-                _doorTexture.Dispose();
-                _doorSprite.Dispose();
                 _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
-                _doorSprite = new Sprite(_doorTexture);
             }
             else
             {
-                _doorTexture.Dispose();
-                _doorSprite.Dispose();
                 _doorTexture = new Texture("../../../../Images/doortextureopened.png");
-                _doorSprite = new Sprite(_doorTexture);
             }
-
+            _doorSprite = new Sprite(_doorTexture);
             _doorSprite.Position = new Vector2f(mapWidth / 2, mapHeight / 2);
             _doorSprite.Draw(window, RenderStates.Default);
             FloatRect _hitBoxDoor = _doorSprite.GetGlobalBounds();
-            
-            for (int i = 0; i < this._roundCtx.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundCtx.Enemies[i]);
+
+            for (int i = 0; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundHandlerCtx.RoundObject.Enemies[i]);
             foreach (var item in _drawObstacles)
             {
                 item.Draw(window, RenderStates.Default);
@@ -167,7 +162,7 @@ namespace MiamiOps
             //playerBound.Draw(window, RenderStates.Default);
 
             //Dessine Tous les stuffs et construit un tableau de FloatRect qui comporte tous les BoundingBox des stuffs
-            foreach (IStuff stuff in _roundCtx.StuffList)
+            foreach (IStuff stuff in _roundHandlerCtx.RoundObject.StuffList)
             {
                 if (reset == false)
                 {
@@ -189,10 +184,10 @@ namespace MiamiOps
             CollideToPackage();
 
             CollideToShootEnnemiesAndPlayerToEnnemies();
-           
-            if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == true)
+
+            if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this._roundHandlerCtx.RoundObject.IsDoorOpened == true)
             {
-                this.RoundContext.LevelPass = true;
+                this._roundHandlerCtx.RoundObject.LevelPass = true;
             }
             //else if(this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == false)
             //{
@@ -202,7 +197,7 @@ namespace MiamiOps
 
         public void Update()
         {
-            _ath.UpdateATH(this._view,MapWidth,MapHeight);
+            _ath.UpdateATH(this._view, MapWidth, MapHeight);
             UpdateSpawnEnnemie();
             UpdateMusic();
 
@@ -210,34 +205,34 @@ namespace MiamiOps
 
         public void UpdateSpawnEnnemie()
         {
-            if (this._roundCtx.Time == 120)
+            if (this._roundHandlerCtx.RoundObject.Time == 120)
             {
-                int index = this._roundCtx.CountEnnemi - this._roundCtx.SpawnCount;
-                if(index < 0)
+                int index = this._roundHandlerCtx.RoundObject.CountEnnemi - this._roundHandlerCtx.RoundObject.SpawnCount;
+                if (index < 0)
                 {
                     index = 0;
                 }
 
-                for (int i = index; i < this._roundCtx.CountEnnemi; i++)
+                for (int i = index; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++)
                 {
-                    _enemies[i] = new EnemiesUI(this, _monsterTexture, 3, 32, 32, _roundCtx.Enemies[i], MapWidth, MapHeight, MapCtx);
+                    _enemies[i] = new EnemiesUI(this, _monsterTexture, 3, 32, 32, _roundHandlerCtx.RoundObject.Enemies[i], MapWidth, MapHeight, _roundHandlerCtx.Map);
                 }
-                this._roundCtx.Time = 0;
+                this._roundHandlerCtx.RoundObject.Time = 0;
             }
         }
 
         public void UpdateMusic()
         {
-           if(_roundCtx.Player.Effect == "brute"||
-             _roundCtx.Player.CurrentWeapon.Name == "chaos_blade"||
-             _roundCtx.Player.CurrentWeapon.Name == "soulcalibur"||
-             _roundCtx.Player.Effect == "pyro_fruit"||
-             _roundCtx.Player.CurrentWeapon.Name == "FreezeGun"
-              )
+            if (_roundHandlerCtx.RoundObject.Player.Effect == "brute" ||
+              _roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "chaos_blade" ||
+              _roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "soulcalibur" ||
+              _roundHandlerCtx.RoundObject.Player.Effect == "pyro_fruit" ||
+              _roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "FreezeGun"
+               )
             {
                 GameCtx.MusicMain.Pause();
             }
-            else if(_musicReset == true)
+            else if (_musicReset == true)
             {
                 this._effectMusic.Stop();
                 GameCtx.MusicMain.Play();
@@ -258,22 +253,25 @@ namespace MiamiOps
                 count++;
                 if (this._playerUI.HitBoxPlayer.Intersects(item))
                 {
-                    if (_roundCtx.StuffList.Count != 0)
+                    if (_roundHandlerCtx.RoundObject.StuffList.Count != 0)
                     {
-                        string Music = "../../../../Images/" + _roundCtx.StuffList[count - 1].Name + ".ogg";
+                        string Music = "../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg";
                         if (File.Exists(Music))
                         {
-                            this._effectMusic.Dispose();
-                            this._effectMusic = new Music("../../../../Images/" + _roundCtx.StuffList[count - 1].Name + ".ogg");
-                            _effectMusic.Play();
+                            if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != _roundHandlerCtx.RoundObject.Player.Effect)
+                            {
+                                this._effectMusic.Dispose();
+                                this._effectMusic = new Music("../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg");
+                                _effectMusic.Play();
+                            }
                         }
 
-                        if (_roundCtx.StuffList[count - 1].Name != "speed"||
-                            _roundCtx.StuffList[count - 1].Name != "health"||
-                            _roundCtx.StuffList[count - 1].Name != "point"
+                        if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed"&&
+                            _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health"&&
+                            _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
 
-                        _roundCtx.StuffList[count - 1].WalkOn(_roundCtx);
+                        _roundHandlerCtx.RoundObject.StuffList[count - 1].WalkOn(_roundHandlerCtx.RoundObject);
                         break;
 
                     }
@@ -285,7 +283,7 @@ namespace MiamiOps
         public void CollideToShootEnnemiesAndPlayerToEnnemies()
         {
             // verifie que les tirs collisionne avec les ennemis
-            for (int i = 0; i < this._roundCtx.CountEnnemi; i++)
+            for (int i = 0; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++)
             {
                 for (int a = 0; a < this._weaponUI.BoundingBoxBullet.Count; a++)
                 {
@@ -293,16 +291,17 @@ namespace MiamiOps
                     {
                         if (this._weaponUI.BoundingBoxBullet[a].Intersects(_enemies[i].HitBoxEnnemies))
                         {
-                            if(this.RoundContext.Player.CurrentWeapon.Name == "FreezeGun")
-                            {
-                                _roundCtx.Enemies[i].Effect = "FreezeGun";
-                                _roundCtx.Enemies[i].CreationDateEffect = DateTime.UtcNow;
-                                _roundCtx.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
-                            }
-                                _roundCtx.Enemies[i].Hit((float)_roundCtx.Player.CurrentWeapon.Attack);
-                                _roundCtx.ListBullet.RemoveAt(a);
-                                this._weaponUI.BoundingBoxBullet.RemoveAt(a);
-                                break;
+                            if (_roundHandlerCtx.RoundObject.ListBullet.Count > 0)
+                                if (this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "FreezeGun")
+                                {
+                                    _roundHandlerCtx.RoundObject.Enemies[i].Effect = "FreezeGun";
+                                    _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                                    _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
+                                }
+                            _roundHandlerCtx.RoundObject.Enemies[i].Hit((float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack);
+                            _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
+                            this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                            break;
                         }
                     }
                 }
@@ -311,39 +310,42 @@ namespace MiamiOps
                 //verifie que le player colisione avec les ennemis
                 if (this._playerUI.HitBoxPlayer.Intersects(_enemies[i].HitBoxEnnemies))
                 {
-                    if (_roundCtx.Player.Effect == "brute")
+                    if (_roundHandlerCtx.RoundObject.Player.Effect == "brute")
                     {
-                        _roundCtx.Enemies[i].Hit((float)_roundCtx.Enemies[i].Life);
+                        _roundHandlerCtx.RoundObject.Enemies[i].Hit((float)_roundHandlerCtx.RoundObject.Enemies[i].Life);
 
                     }
-                    else if(_roundCtx.Player.Effect == "pyro_fruit")
+                    else if (_roundHandlerCtx.RoundObject.Player.Effect == "pyro_fruit")
                     {
-                        _roundCtx.Enemies[i].Effect = "pyro_fruit";
-                        _roundCtx.Enemies[i].CreationDateEffect = DateTime.UtcNow;
-                        _roundCtx.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
+                        _roundHandlerCtx.RoundObject.Enemies[i].Effect = "pyro_fruit";
+                        _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                        _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
 
                     }
                     else
                     {
-                        _roundCtx.Player.LifePlayer -= 1;
+                        _roundHandlerCtx.RoundObject.Player.LifePlayer -= 1;
                     }
 
-                    if (_roundCtx.Player.LifePlayer <= 0)
-                    {
-                        GameCtx.MusicMain.Stop();
-                        _roundCtx.GameState = true;
-                    }
                 }
 
             }
+
+            if (_roundHandlerCtx.RoundObject.Player.LifePlayer <= 0)
+            {
+                GameCtx.MusicMain.Stop();
+                _roundHandlerCtx.RoundObject.GameState = true;
+            }
         }
-
-
-        public Map MapCtx => _mapCtx;
         public Music EffectMusic
         {
             get { return _effectMusic; }
             set { _effectMusic = value; }
         }
+       
+            
     }
 }
+
+
+  

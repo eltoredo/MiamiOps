@@ -26,10 +26,9 @@ namespace MiamiOps
         private int level_layers_length;
         private Dictionary<int,string[]> total_array = new Dictionary<int, string[]>();
         private Dictionary<int,VertexArray> total_array_vertex = new Dictionary<int,VertexArray>();
-        Round _ctxround;
         private uint firstX;
 
-        public Map(string name, String XML, string tilesset)
+        public Map(String XML, string tilesset)
         {
 
             using (FileStream fs = File.OpenRead(XML))
