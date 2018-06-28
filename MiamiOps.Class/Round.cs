@@ -109,7 +109,7 @@ namespace MiamiOps
             if (actualPlayer == null)
             {
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 2f, 0, 0f, 60, TimeSpan.MaxValue));
 
                 _stuffFactories = new List<IStuffFactory>();
                 _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
@@ -195,8 +195,8 @@ namespace MiamiOps
         // Method to update the player and all the enemies
         public void Update()
         {
-            Console.WriteLine("Stage: " + _stage);
-            Console.WriteLine("Level: " + _level);
+            //Console.WriteLine("Stage: " + _stage);
+            //Console.WriteLine("Level: " + _level);
             _player.CurrentWeapon.Update();
             _player.Update();
             UpdateList();

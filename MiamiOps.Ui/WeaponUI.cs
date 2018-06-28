@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace MiamiOps
 {
@@ -47,24 +48,42 @@ namespace MiamiOps
 
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
         {
+            Vector2f position;
             _nbDirection = Conversion(_roundUIContext.RoundHandlerContext.RoundObject.Player.Direction);
 
-            if(_nbDirection == 1)
-            {
-                _weaponSprite.Scale = new Vector2f(-1f, 1f);
-            }
-            else if(_nbDirection == 0)
-            {
-                _weaponSprite.Rotation = 90f;
-                _weaponSprite.Scale = new Vector2f(1f, -1f);
-            }
-            else if(_nbDirection == 3)
-            {
-                _weaponSprite.Rotation = -90f;
-            }
-            
+            //if(_nbDirection == 1)
+            //{
+            //    _weaponSprite.Scale = new Vector2f(-1f, 1f);
+            //}
+            //else if(_nbDirection == 0)
+            //{
+            //    _weaponSprite.Rotation = 90f;
+            //    _weaponSprite.Scale = new Vector2f(1f, -1f);
+            //}
+            //else if(_nbDirection == 3)
+            //{
+            //    _weaponSprite.Rotation = -90f;
+            //}
+           position = new Vector2f(((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.X +(float)1.01) * (mapWidth / 2), (((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.Y - (float)1.01) * (mapHeight / 2))*-1);
 
-            return new Vector2f(((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.X +(float)1.01) * (mapWidth / 2), (((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.Y - (float)1.01) * (mapHeight / 2))*-1);
+           Vector2f viewPos = _roundUIContext.GameCtx.MyView.GetPosition();
+           Vector viewPosition = new Vector(viewPos.X, viewPos.Y);
+
+           Vector2i mouseVector2i = Mouse.GetPosition(_roundUIContext.GameCtx.Window);
+
+           Vector2f mouseAim = new Vector2f((float)viewPosition.X + mouseVector2i.X, (float)viewPosition.Y + mouseVector2i.Y);
+
+           float dx = mouseAim.X - position.X;
+           float dy = mouseAim.Y - position.Y;
+           //if (dx < 0) dx = dx * -1;
+           //if (dy < 0) dy = dy * -1;
+           float rotation = (float)((Math.Atan2(dy, dx)) * 180 / 3.14);
+           
+           _weaponSprite.Rotation = rotation;
+           
+
+           return position;
+
         }
 
         private Vector2f UpdatePlaceBullet(Shoot bullet, uint mapWidth, uint mapHeight)
@@ -78,8 +97,6 @@ namespace MiamiOps
             this._weaponSprite.Dispose();
             _weaponTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + ".png");
             _weaponSprite = new Sprite(_weaponTexture);
-
-        
 
             this._weaponSprite.Position = UpdatePlaceWeapon(mapWidth, mapHeight);
             _weaponSprite.Draw(window, RenderStates.Default);
