@@ -109,7 +109,7 @@ namespace MiamiOps
             if (actualPlayer == null)
             {
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
 
                 _stuffFactories = new List<IStuffFactory>();
                 _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
@@ -174,6 +174,8 @@ namespace MiamiOps
             {
                 _stage++;
                 _player.Experience += _player.Points / 2;
+                _player.SavePoints = _player.Points + this._stage * 10000;
+                if (_stage >= 6) _player.SavePoints += this._level * 40000;
                 _player.Points = 0;
                 _levelPass = false;
                 _gameHandlerCtx.OnLeaving();

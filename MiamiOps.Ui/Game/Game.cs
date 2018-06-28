@@ -94,6 +94,10 @@ namespace MiamiOps
             if (_gameHandlerCtx.HasLeft == true)
             {
                 _roundUI.EffectMusic.Stop();
+                this.MusicMain.Stop();
+                this.MusicMain = new Music("../../../../Images/stage" + _gameHandlerCtx.RoundObject.Level + "-" + _gameHandlerCtx.RoundObject.Stage +"OST.ogg");
+                this.MusicMain.Play();
+                _mainMusic.Loop = true;
                 _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _gameHandlerCtx.Map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
                 _gameHandlerCtx.HasLeft = false;
             }

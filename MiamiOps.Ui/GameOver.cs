@@ -125,7 +125,7 @@ namespace MiamiOps
             GameOverList[0].Position = new Vector2f(game.MyView.Center.X - this._width/3, game.MyView.Center.Y   + this._height/3);
             GameOverList[1].Position = new Vector2f(game.MyView.Center.X + this._width/3 - 200, game.MyView.Center.Y   + this._height/3);
             _continue.Position = new Vector2f(game.MyView.Center.X - 100, game.MyView.Center.Y + 200);
-            _score.DisplayedString = "Your Score : " + game.Round.Player.Points.ToString();
+            _score.DisplayedString = "Your Score : " + game.Round.Player.SavePoints.ToString();
             _score.Position = new Vector2f(game.MyView.Center.X - 150, game.MyView.Center.Y + 100);
         
             while (end == true)

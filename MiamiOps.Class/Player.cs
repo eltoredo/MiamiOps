@@ -18,6 +18,7 @@ namespace MiamiOps
         float _height;
         int _level = 1;
         float _points;
+        float _pointsSave;
         float _experience;
         float _experienceMax;
         Vector _direction;
@@ -42,6 +43,7 @@ namespace MiamiOps
             this._experience = 0;
             this._experienceMax = 100;
             this._effect = "nothing";
+            this._pointsSave = 0;
             
         }
 
@@ -218,6 +220,12 @@ namespace MiamiOps
         {
             get { return _points; }
             set { _points = value; }
+        }
+
+        public float SavePoints
+        {
+            get { return _pointsSave; }
+            set { _pointsSave = value; }
         }
 
         public int Level
