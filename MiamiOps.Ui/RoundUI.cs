@@ -258,7 +258,7 @@ namespace MiamiOps
                         string Music = "../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg";
                         if (File.Exists(Music))
                         {
-                            if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != _roundHandlerCtx.RoundObject.Player.Effect)
+                            if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != _roundHandlerCtx.RoundObject.Player.Effect && _roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name != _roundHandlerCtx.RoundObject.StuffList[count - 1].Name)
                             {
                                 this._effectMusic.Dispose();
                                 this._effectMusic = new Music("../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg");
@@ -266,8 +266,8 @@ namespace MiamiOps
                             }
                         }
 
-                        if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed"&&
-                            _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health"&&
+                        if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed" &&
+                            _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health" &&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
 

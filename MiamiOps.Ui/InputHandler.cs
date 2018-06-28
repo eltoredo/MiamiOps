@@ -142,9 +142,9 @@ namespace MiamiOps
                         _bulletSound.Play();
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     }
-                    _roundUIContext.EffectMusic.Play();
-                    _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.LifeSpan = TimeSpan.FromSeconds(0);
-                    _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.CreationDate = DateTime.UtcNow;
+                    //_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.LifeSpan = TimeSpan.FromSeconds(0);
+                    //_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.CreationDate = DateTime.UtcNow;
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Life = false;
                     _roundUIContext.GameCtx.MusicMain.Play();
                     i = 0;
                 }

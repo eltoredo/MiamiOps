@@ -24,6 +24,7 @@ namespace MiamiOps
         Vector _direction;
         Weapon _currentWeapon;
         string _effect;
+        private int _passOut = 0;
         bool _LegendaryWeaponBlock;
         public Player(GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
@@ -44,8 +45,9 @@ namespace MiamiOps
             this._experienceMax = 100;
             this._effect = "nothing";
             this._pointsSave = 0;
-            
-        }
+            this._passOut = 0;
+
+    }
 
         public Player(List<Weapon> weapons, GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(gameHandlerCtx, place, life, speed, direction,width,height)
         {
@@ -233,7 +235,11 @@ namespace MiamiOps
             get { return _level; }
             set { _level = value; }
         }
-
+        public int PassOut
+        {
+            get { return _passOut; }
+            set { _passOut = value; }
+        }
         public float Experience
         {
             get { return _experience; }

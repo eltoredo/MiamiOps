@@ -172,6 +172,13 @@ namespace MiamiOps
         {
             if (_levelPass == true && _isDoorOpened == true)
             {
+                foreach (var item in _player.Weapons)
+                {
+                    if (item.Name == "soulcalibur" || item.Name == "FreezeGun")
+                    {
+                        item.Life = false;
+                    }
+                }
                 _stage++;
                 _player.Experience += _player.Points / 2;
                 _player.SavePoints = _player.Points + this._stage * 10000;
@@ -202,8 +209,8 @@ namespace MiamiOps
             _player.CurrentWeapon.Update();
             _player.Update();
             UpdateList();
-            UpdatePackage();
             UpdateLevel();
+            UpdatePackage();
             OpenDoor();
 
             for (int i = 0 ; i < _count; i++)
@@ -238,21 +245,21 @@ namespace MiamiOps
         public void UpdateList()
         {
           
-            if (this.Player.Level == 5&& _passOut == 0)
+            if (this.Player.Level >= 5&& _player.PassOut == 0)
             {
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5, 0, 0, 30, TimeSpan.MaxValue));
                 this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30)));
-                _passOut++;
-            }else if(this.Player.Level == 10 && _passOut == 1)
+                _player.PassOut++;
+            }else if(this.Player.Level >= 10 && _player.PassOut == 1)
             {
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
-                _passOut++;
+                _player.PassOut++;
             }
-            else if (this.Player.Level == 15 && _passOut == 2)
+            else if (this.Player.Level >= 15 && _player.PassOut == 2)
             {
                 this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "point", TimeSpan.FromSeconds(30)));
-                this._stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 0.5f, 0.1f, 0.05f, 30, TimeSpan.FromSeconds(30)));
-                _passOut++;
+                this._stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 9999f, 0.1f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _player.PassOut++;
             }
 
         }
@@ -282,12 +289,12 @@ namespace MiamiOps
         public void UpdatePackage()
         {
             
-            foreach (Weapon weapon in _weapons)
+            foreach (Weapon weapon in _player.Weapons)
             {
                 if (!weapon.IsAlive || weapon.Life == false)
                 {
-                    if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._weapons[this._weapons.Count - 2];
-                    _weapons.Remove(weapon);
+                    if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._player.Weapons[this._player.Weapons.Count - 2];
+                    _player.Weapons.Remove(weapon);
                     this.Player.BlockWeapon = false;
                     break;
                 }
