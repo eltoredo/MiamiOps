@@ -127,7 +127,7 @@ namespace MiamiOps
 
                             {
 
-                                _textureColor.A = 255;
+                                _textureColor.A = 0;
 
                             }
                             

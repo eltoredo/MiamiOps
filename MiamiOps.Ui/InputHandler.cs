@@ -22,6 +22,7 @@ namespace MiamiOps
         double x = 0.03f;
         double y = 0.03f;
         bool _shoot;
+        int a = 0;
 
         public InputHandler(RoundUI roundUIContext)
         {
@@ -41,15 +42,15 @@ namespace MiamiOps
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, 1));
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+            else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, -1));
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
+            else if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(-1, 0));
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+           else  if (Keyboard.IsKeyPressed(Keyboard.Key.D))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(1, 0));
             }
