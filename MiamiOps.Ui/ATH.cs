@@ -112,7 +112,7 @@ namespace MiamiOps
 
         public void UpdateATH(View view, uint mapWidth, uint mapHeigth)
         {
-            if (_ctx._boss.isDead == false && _ctx._boss != null)
+            if (_ctx._boss != null &&_ctx._boss.isDead == false)
             {
                 _HPboss.Position = new Vector2f(view.Center.X - 200, view.Center.Y - 300);
                 _athBossBarsprite.Position = new Vector2f(_HPboss.Position.X - 90, _HPboss.Position.Y - 15);
@@ -194,7 +194,7 @@ namespace MiamiOps
             _HPbar.Draw(window, RenderStates.Default);
             _XPbar.Draw(window, RenderStates.Default);
 
-            if (_ctx._boss.isDead == false && _ctx._boss != null)
+            if (_ctx._boss != null &&_ctx._boss.isDead == false)
             {
                 _HPboss.Draw(window, RenderStates.Default);
                 _athBossBarsprite.Draw(window, RenderStates.Default);

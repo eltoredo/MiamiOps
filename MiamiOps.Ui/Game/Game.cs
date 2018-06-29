@@ -105,8 +105,7 @@ namespace MiamiOps
             _camera.CameraPlayerUpdate(_roundUI.PlayerUI.PlayerPosition.X, _roundUI.PlayerUI.PlayerPosition.Y, 3168, 3168, _view);
             _playerInput.Handle();
             _roundUI.Update();
-            Console.WriteLine(_gameHandlerCtx.RoundObject.Player.Place.X);
-            Console.WriteLine(_gameHandlerCtx.RoundObject.Player.Place.Y);
+            
         }
 
         public InputHandler Input => _playerInput;

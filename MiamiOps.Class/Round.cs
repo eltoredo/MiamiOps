@@ -26,6 +26,7 @@ namespace MiamiOps
         private int _time;
         private int _timeForWeaponSpawn = 299;
         private int _passOut = 0;
+        private int _nbennemies = 0;
         public Boss _boss;
         float _bossLife;
         int _countSpawn;
@@ -61,7 +62,8 @@ namespace MiamiOps
             _gameHandlerCtx = gameHandlerCtx;
             _stage = stage;
             _level = level;
-
+            Console.WriteLine("Level " + _level);
+            Console.WriteLine("Stage " + _stage);
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
             _bullets = new List<Shoot>();
@@ -99,6 +101,7 @@ namespace MiamiOps
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
             this._spawn = enemySpawn;
+            this._nbennemies = nb_enemies;
             if (this._spawn == null) {
                 this._count = nb_enemies;
             }
@@ -139,7 +142,7 @@ namespace MiamiOps
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(_gameHandlerCtx, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
 
-            if (this._level == 1) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
+            if (this._stage == 5) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
 
             if (this._count > this._enemies.Length)
             {
@@ -192,14 +195,15 @@ namespace MiamiOps
                 if (_stage >= 6) _player.SavePoints += this._level * 40000;
                 _player.Points = 0;
                 _levelPass = false;
+                if (_stage >= 6)
+                {
+                    _level++;
+                    _stage = 1;
+                }
                 _gameHandlerCtx.OnLeaving();
             }
 
-            if (_stage >= 6)
-            {
-                _level++;
-                _stage = 1;
-            }
+            
         }
 
         public void OpenDoor()
@@ -226,7 +230,7 @@ namespace MiamiOps
             }
             UpdateEffect(_enemies);
 
-            if(_boss.isDead == false)
+            if(_boss != null && _boss.isDead == false)
             {
                 this._boss.UpdateBoss();
                 this._boss.Move(this.Player.Place);
@@ -381,6 +385,11 @@ namespace MiamiOps
         {
             get { return this._count; }
             set { this._count = value; }
+        }
+        public int NbEnnemies
+        {
+            get { return this._nbennemies; }
+            set { this._nbennemies = value; }
         }
         public int CountSpawnDead
         {

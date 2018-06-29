@@ -320,7 +320,7 @@ namespace MiamiOps
                                 }
                                 
                         }
-                        else if (this._weaponUI.BoundingBoxBullet[a].Intersects(_bossUI.HitBoxEnnemies))
+                        else if (_bossUI != null && this._weaponUI.BoundingBoxBullet[a].Intersects(_bossUI.HitBoxEnnemies))
                         {
                             _roundHandlerCtx.RoundObject._boss.Hit((float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack);
                             _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
