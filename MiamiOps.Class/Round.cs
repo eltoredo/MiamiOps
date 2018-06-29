@@ -17,6 +17,7 @@ namespace MiamiOps
         private Random random = new Random();
         private List<float[]> _obstacles;
         private List<Shoot> _bullets;
+        private List<Shoot> _bulletsBoss;
         private float _enemiesLargeur;
         private float _enemiesHauteur;
         private int _count;
@@ -25,6 +26,8 @@ namespace MiamiOps
         private int _time;
         private int _timeForWeaponSpawn = 299;
         private int _passOut = 0;
+        public Boss _boss;
+        float _bossLife;
         int _countSpawn;
         bool _gameState;
         bool _levelPass;
@@ -62,7 +65,7 @@ namespace MiamiOps
             _stuffList = new List<IStuff>();
             _listPackageEffect = new List<Package>();
             _bullets = new List<Shoot>();
-      
+            _bulletsBoss = new List<Shoot>();
 
             _countSpawn = 1 ;
             _random = new Random();
@@ -90,6 +93,7 @@ namespace MiamiOps
             
             // Save the enemies parametres
             this._enemiesLife = enemiesLife;
+            this._bossLife = enemiesLife * 30;
             this._enemiesSpeed = enemiesSpeed;
             this._enemiesAttack = enemiesAttack;
             this._enemiesLargeur = enemiesLargeur;
@@ -134,6 +138,9 @@ namespace MiamiOps
             if (enemieSpawn == null) createPosition = CreateRandomPosition;
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(_gameHandlerCtx, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
+
+            if (this._level == 1) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
+
             if (this._count > this._enemies.Length)
             {
                 this._count = this._enemies.Length;
@@ -219,6 +226,11 @@ namespace MiamiOps
             }
             UpdateEffect(_enemies);
 
+            if(_boss.isDead == false)
+            {
+                this._boss.UpdateBoss();
+                this._boss.Move(this.Player.Place);
+            }
             _time++;
             _timeForWeaponSpawn++;
             if (_time == 120 && this._spawn != null)
@@ -354,6 +366,11 @@ namespace MiamiOps
             get { return this._enemies; }
             set { this._enemies = value; }
         }
+        public Boss Boss
+        {
+            get { return this._boss; }
+            set { this._boss = value; }
+        }
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;
         public float EnemiesAttack => _enemiesAttack;
@@ -386,6 +403,11 @@ namespace MiamiOps
         {
             get { return this._bullets; }
             set { this._bullets = value; }
+        }
+        public List<Shoot> ListBulletBoss
+        {
+            get { return this._bulletsBoss; }
+            set { this._bulletsBoss = value; }
         }
         public bool IsDoorOpened => _isDoorOpened;
 

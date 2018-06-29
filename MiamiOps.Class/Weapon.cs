@@ -67,7 +67,14 @@ namespace MiamiOps
             _ammo -= 1;
             if (_ammo <= 0) Reload();
         }
+        public void BossShoot(Vector _bossPlace, Vector _shootDirection)
+        {
+            Shoot shoot = new Shoot(1f, TimeSpan.FromSeconds(5), 0.005f, _bossPlace, _shootDirection);
+            _gameHandler.RoundObject.ListBulletBoss.Add(shoot);
 
+            _ammo -= 1;
+            if (_ammo <= 0) Reload();
+        }
         public Vector BulletMove(Shoot bullet, float speed)
         {
             Vector bulletPlace;
@@ -117,8 +124,27 @@ namespace MiamiOps
                     BulletMove(s, s.SpeedBullet);
                 }
             }
+            if (_gameHandler.RoundObject._boss != null)
+            {
+                if (_gameHandler.RoundObject.ListBulletBoss.Count > 0)
+                {
+                    foreach (Shoot s in _gameHandler.RoundObject.ListBulletBoss)
+                    {
+                        BulletMove(s, s.SpeedBullet);
+                    }
+                }
 
-            foreach (Shoot s in _gameHandler.RoundObject.ListBullet)
+                foreach (Shoot s in _gameHandler.RoundObject.ListBulletBoss)
+                {
+                    if (!s.IsAlive || s.LifeBullet == false)
+                    {
+                        toRemove.Add(s);
+                    }
+
+                }
+            }
+
+                foreach (Shoot s in _gameHandler.RoundObject.ListBullet)
             {
                 if (!s.IsAlive || s.LifeBullet == false)
                 {

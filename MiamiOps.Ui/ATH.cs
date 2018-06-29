@@ -21,11 +21,14 @@ namespace MiamiOps
 
         private Font _font = new Font("../../../Menu/pricedown.ttf");
         Texture _athLifeBar;
-        Sprite _athLifeSprite;
+        Texture _athBossLifeBar;
         Texture _athGun;
+        Sprite _athLifeSprite;
+        Sprite _athBossBarsprite;
         Sprite _athGunSprite;
         RectangleShape _HPbar;
         RectangleShape _XPbar;
+        RectangleShape _HPboss;
 
         Color _couleur = new Color(255, 0, 0);
 
@@ -47,6 +50,8 @@ namespace MiamiOps
             _athLifeSprite = new Sprite(_athLifeBar);
             _athGun = new Texture("../../../../Images/HUD/" + this._ctx.Player.CurrentWeapon.Name + ".png");
             _athGunSprite = new Sprite(_athGun);
+            _athBossLifeBar = new Texture("../../../../Images/HUD/boss.png");
+            _athBossBarsprite = new Sprite(_athBossLifeBar);
 
             _HPbar = new RectangleShape(new Vector2f(271, 40));
             _HPbar.FillColor = _couleur;
@@ -54,6 +59,8 @@ namespace MiamiOps
             _XPbar = new RectangleShape(new Vector2f(271, 30));
             _XPbar.FillColor = Color.Blue;
 
+            _HPboss = new RectangleShape(new Vector2f(300, 40));
+            _HPboss.FillColor = _couleur;
 
             Text LifeBar = new Text
             {
@@ -105,6 +112,17 @@ namespace MiamiOps
 
         public void UpdateATH(View view, uint mapWidth, uint mapHeigth)
         {
+            if (_ctx._boss.isDead == false && _ctx._boss != null)
+            {
+                _HPboss.Position = new Vector2f(view.Center.X - 200, view.Center.Y - 300);
+                _athBossBarsprite.Position = new Vector2f(_HPboss.Position.X - 90, _HPboss.Position.Y - 15);
+                _HPboss.Size = new Vector2f(_ctx._boss.BossLife * 300 / _ctx._boss.BossMaxlife, 40);
+                if (_ctx._boss.isDead == true)
+                {
+                    _athBossBarsprite.Dispose();
+                    _HPboss.Dispose();
+                }
+            }
 
             int b = 3;
             bool a = true;
@@ -176,7 +194,11 @@ namespace MiamiOps
             _HPbar.Draw(window, RenderStates.Default);
             _XPbar.Draw(window, RenderStates.Default);
 
-
+            if (_ctx._boss.isDead == false && _ctx._boss != null)
+            {
+                _HPboss.Draw(window, RenderStates.Default);
+                _athBossBarsprite.Draw(window, RenderStates.Default);
+            }
             for (int i = 0; i < _athList.Count; i++)
             {
                 window.Draw(_athList[i]);

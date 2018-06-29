@@ -24,7 +24,10 @@ namespace MiamiOps
         int _animStop;
 
         List<FloatRect> _bulletBoundingBox;
+        List<FloatRect> _bossBulletBoundingBox;
+
         bool reset;
+        bool resetBoss;
 
         public WeaponUI(RoundUI roundUIContext, Texture weaponTexture, Texture bulletTexture, Vector weaponPlace, uint mapWidth, uint mapHeight)
         {
@@ -44,6 +47,7 @@ namespace MiamiOps
 
             _weaponSprite.Position = new Vector2f(((float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.X + 3) * (mapWidth / 2), (float)_roundUIContext.RoundHandlerContext.RoundObject.Player.Place.Y * (mapHeight / 2));
             _bulletBoundingBox = new List<FloatRect>();
+            _bossBulletBoundingBox = new List<FloatRect>();
         }
 
         private Vector2f UpdatePlaceWeapon(uint mapWidth, uint mapHeight)
@@ -120,6 +124,30 @@ namespace MiamiOps
             }
 
             reset = false;
+
+            if (_roundUIContext.RoundHandlerContext.RoundObject.Boss != null)
+            {
+                foreach (Shoot bossBullet in _roundUIContext.RoundHandlerContext.RoundObject.ListBulletBoss)
+                {
+                    _bulletSprite.Dispose();
+                    _bulletTexture.Dispose();
+                    _bulletTexture = new Texture("../../../../Images/fireball.png");
+                    _bulletSprite = new Sprite(_bulletTexture);
+                    if (resetBoss == false)
+                    {
+                        this._bossBulletBoundingBox.Clear();
+                        resetBoss = true;
+                    }
+
+                    this._bulletSprite.Position = UpdatePlaceBullet(bossBullet, mapWidth, mapHeight);
+                    this._bossBulletBoundingBox.Add(_bulletSprite.GetGlobalBounds());
+                    _bulletSprite.Draw(window, RenderStates.Default);
+
+                }
+                resetBoss = false;
+
+            }
+
         }
 
         private int Conversion(Vector vector)
@@ -137,5 +165,6 @@ namespace MiamiOps
         }
 
         public List<FloatRect> BoundingBoxBullet => this._bulletBoundingBox;
+        public List<FloatRect> BoundingBoxBulletBoss => this._bossBulletBoundingBox;
     }
 }

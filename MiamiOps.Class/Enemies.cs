@@ -7,9 +7,9 @@ namespace MiamiOps
         GameHandler _gameHandlerCtx;
         readonly int _name;
         Vector _place;
-        float _life;
-        float _speed;
-        float _attack;
+        protected float _life;
+        protected float _speed;
+        protected float _attack;
         float _width;
         float _height;
         bool _isDead;
@@ -18,6 +18,7 @@ namespace MiamiOps
         DateTime _effectCreate;
         Vector _oldVector;
         Vector _direction;
+        protected float _maxLife;
 
 
         public Enemies(GameHandler gameHandlerCtx, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
@@ -36,6 +37,7 @@ namespace MiamiOps
             this._effectTiming = TimeSpan.Zero;
             this._oldVector = new Vector();
             this._direction = new Vector();
+            this._maxLife = life;
         }
 
         // Method called when an enemy has less than 1 life point
