@@ -17,6 +17,7 @@ namespace MiamiOps
         Map _mapCtx;
         RectangleShape playerBound = new RectangleShape();
         Texture _monsterTexture = new Texture("../../../../Images/Monster.png");
+        Texture _bossTexture = new Texture("../../../../Images/dragon.png");
         ATH _ath;
         View _view;
         View _viewATH;
@@ -32,7 +33,7 @@ namespace MiamiOps
         private List<float[]> _obstacles;
         private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
 
-
+        EnemiesUI _bossUI;
         Texture _stuffTexture = new Texture("../../../../Images/monstersprite.png");
         Sprite _stuffSprite = new Sprite();
 
@@ -92,6 +93,7 @@ namespace MiamiOps
 
                 _enemies[i] = new EnemiesUI(this, _monsterTexture, 3, 32, 32, _roundHandlerCtx.RoundObject.Enemies[i], mapWidth, mapHeight, mapCtx);
             }
+            if (this._roundHandlerCtx.RoundObject._boss != null) _bossUI = new EnemiesUI(this, _bossTexture, 3, 100, 100, _roundHandlerCtx.RoundObject._boss, mapWidth, mapHeight, mapCtx);
 
             _ath = new ATH(_roundHandlerCtx.RoundObject, screenWidth, screenHeight, _view);
             _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundHandlerCtx.RoundObject.Player.Place, mapWidth, mapHeight);
@@ -178,6 +180,17 @@ namespace MiamiOps
                 _stuffSprite.Draw(window, RenderStates.Default);
             }
 
+            if (_bossUI != null)
+            {
+                if (_roundHandlerCtx.RoundObject._boss.isDead == false)
+                {
+                    _bossUI.Draw(window, mapWidth, mapHeight, _roundHandlerCtx.RoundObject._boss);
+                }
+                else
+                {
+                    _bossUI.HitBoxEnnemies = new FloatRect();
+                }
+            }
 
             _ath.Draw(window);
 
@@ -292,13 +305,24 @@ namespace MiamiOps
                         if (this._weaponUI.BoundingBoxBullet[a].Intersects(_enemies[i].HitBoxEnnemies))
                         {
                             if (_roundHandlerCtx.RoundObject.ListBullet.Count > 0)
-                                if (this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "FreezeGun")
-                                {
-                                    _roundHandlerCtx.RoundObject.Enemies[i].Effect = "FreezeGun";
-                                    _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
-                                    _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
+                            {
+                                    if (this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "FreezeGun")
+                                    {
+                                        _roundHandlerCtx.RoundObject.Enemies[i].Effect = "FreezeGun";
+                                        _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                                        _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
+                                    }
+
+                                    _roundHandlerCtx.RoundObject.Enemies[i].Hit((float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack);
+                                    _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
+                                    this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                                    break;
                                 }
-                            _roundHandlerCtx.RoundObject.Enemies[i].Hit((float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack);
+                                
+                        }
+                        else if (this._weaponUI.BoundingBoxBullet[a].Intersects(_bossUI.HitBoxEnnemies))
+                        {
+                            _roundHandlerCtx.RoundObject._boss.Hit((float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack);
                             _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
                             this._weaponUI.BoundingBoxBullet.RemoveAt(a);
                             break;
@@ -329,6 +353,19 @@ namespace MiamiOps
 
                 }
 
+            }
+            for (int b = 0; b < this._weaponUI.BoundingBoxBulletBoss.Count; b++)
+            {
+                if (this._weaponUI.BoundingBoxBulletBoss.Count > 0)
+                {
+                    if (this._weaponUI.BoundingBoxBulletBoss[b].Intersects(_playerUI.HitBoxPlayer))
+                    {
+                        _roundHandlerCtx.RoundObject.Player.LifePlayer -= 33;
+                        _roundHandlerCtx.RoundObject.ListBulletBoss.RemoveAt(b);
+                        this._weaponUI.BoundingBoxBulletBoss.RemoveAt(b);
+                        break;
+                    }
+                }
             }
 
             if (_roundHandlerCtx.RoundObject.Player.LifePlayer <= 0)

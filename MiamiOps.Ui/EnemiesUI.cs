@@ -123,6 +123,9 @@ namespace MiamiOps
             get { return _enemySprite.Position; }
         }
 
-        public FloatRect HitBoxEnnemies => this._hitBoxEnnemi;
+        public FloatRect HitBoxEnnemies {
+            get { return this._hitBoxEnnemi; }
+            set { this._hitBoxEnnemi = value; }
+        }
     }
 }
