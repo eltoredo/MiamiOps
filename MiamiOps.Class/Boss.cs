@@ -53,8 +53,9 @@ namespace MiamiOps
         internal void Dead()
         {
             this.isDead = true;
-            _context.RoundObject.Player.Experience += _context.RoundObject.Player.Level * 100;
-            _context.RoundObject.Player.Points += 100;
+            _context.RoundObject.Player.LifePlayerMax += 50;
+            _context.RoundObject.Player.Experience += _context.RoundObject.Player.Level * 1000;
+            _context.RoundObject.Player.Points += 6000;
 
         }
 
