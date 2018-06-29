@@ -23,9 +23,11 @@ namespace MiamiOps
         private string[] level_array1;
         private string[] level_array2;
         private string[] level_array3;
+        private string[] level_array4;
         private int level_layers_length;
         private Dictionary<int,string[]> total_array = new Dictionary<int, string[]>();
         private Dictionary<int,VertexArray> total_array_vertex = new Dictionary<int,VertexArray>();
+        List<FloatRect> _collide = new List<FloatRect>();
         private uint firstX;
 
         public Map(String XML, string tilesset)
@@ -69,12 +71,18 @@ namespace MiamiOps
                 string level_layer3 = xml.Descendants("layer")
                                   .Single(l => l.Attribute("name").Value == "spawn")
                                   .Element("data").Value;
+                string level_layer4 = xml.Descendants("layer")
+                                 .Single(l => l.Attribute("name").Value == "collide")
+                                 .Element("data").Value;
+
                 level_array1 = level.Split(',');
                 level_array2 = level_layer2.Split(',');
                 level_array3 = level_layer3.Split(',');
+                level_array4 = level_layer4.Split(',');
                 total_array.Add(0,level_array1);
                 total_array.Add(1,level_array2);
                 total_array.Add(2,level_array3);
+                total_array.Add(3,level_array4);
                 level_layers_length = total_array.Count;
 
                 tileSize = new Vector2u(tileheight,tilewidth);
@@ -115,13 +123,26 @@ namespace MiamiOps
                             }
                             uint index = (uint)(x + y * width) * 4;
                             Color _textureColor = new Color(255, 255, 255, 255);
+                            if (i == 3)
+
+                            {
+
+                                _textureColor.A = 0;
+
+                            }
                             
                                 _vertexArray[index + 0] = new Vertex(new Vector2f(x * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, tv * tileSize.Y));
                                 _vertexArray[index + 1] = new Vertex(new Vector2f((x + 1) * tileSize.X, y * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, tv * tileSize.Y));
                                 _vertexArray[index + 2] = new Vertex(new Vector2f((x + 1) * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f((tu + 1) * tileSize.X, (tv + 1) * tileSize.Y));
                                 _vertexArray[index + 3] = new Vertex(new Vector2f(x * tileSize.X, (y + 1) * tileSize.Y), _textureColor, new Vector2f(tu * tileSize.X, (tv + 1) * tileSize.Y));
-                            
 
+                            if (i == 3)
+
+                            {
+                                FloatRect _collideText = new FloatRect(_vertexArray[index + 0].Position.X, _vertexArray[index + 0].Position.Y, 32, 32);
+                                _collide.Add(_collideText);
+
+                            }
                         }
 
                         a++;
@@ -133,7 +154,13 @@ namespace MiamiOps
                 level_layers_length--;
                 i++;
             }
-
+            //for (int z = 3; z < total_array_vertex.Count; z++)
+            //{
+            //    for (uint b = 0; b < TotalArrayVertex[z].VertexCount; b++)
+            //    {
+            //        Console.WriteLine(TotalArrayVertex[z][b]);
+            //    }
+            //}
           
         }
 
@@ -149,7 +176,21 @@ namespace MiamiOps
             {
                 target.Draw(total_array_vertex[i], states);
             }
-            
+
+        }
+
+        public bool Collide(FloatRect player)
+        {
+            foreach (var item in _collide)
+            {
+                if (player.Intersects(item))
+                {
+                   // Console.WriteLine("Collide");
+                    return true;
+                }
+            }
+           // Console.WriteLine("Non Collide");
+            return false;
         }
     }
 }

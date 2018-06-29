@@ -61,8 +61,18 @@ namespace MiamiOps
         private Vector2f UpdatePlace(uint mapWidth, uint mapHeight)
         {
             _nbDirection = Conversion(_roundUIContext.RoundHandlerContext.RoundObject.Player.Direction);
-            Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), (((float)_player.Place.Y - 1) * (mapHeight / 2))*-1);
-            
+            Vector2f newPlayerPlace = new Vector2f(((float)_player.Place.X + 1) * (mapWidth / 2), (((float)_player.Place.Y - 1) * (mapHeight / 2)) * -1);
+            _hitBoxPlayer = new FloatRect(newPlayerPlace.X, newPlayerPlace.Y, 32, 32);
+            if (_ctxMap.Collide(this._hitBoxPlayer))
+            {
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Collide = true;
+            }
+            else
+            {
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Collide = false;
+            }
+
+
             return newPlayerPlace;
         }
 
@@ -76,10 +86,9 @@ namespace MiamiOps
             if (_animFrames == _nbSprite) _animFrames = 0;
             _playerSprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-            _hitBoxPlayer = _playerSprite.GetGlobalBounds();
-           
+           // _hitBoxPlayer = _playerSprite.GetGlobalBounds();
             _playerSprite.Draw(window, RenderStates.Default);
-           //Console.WriteLine("x : " + _player.Place.X);
+            //Console.WriteLine("x : " + _player.Place.X);
             //Console.WriteLine("y : " + _player.Place.Y);
 
         }

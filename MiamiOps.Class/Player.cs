@@ -26,6 +26,7 @@ namespace MiamiOps
         string _effect;
         private int _passOut = 0;
         bool _LegendaryWeaponBlock;
+        bool _collide;
         public Player(GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width=0 , float height=0)
         {
             this._gameHandlerCtx = gameHandlerCtx;
@@ -46,7 +47,7 @@ namespace MiamiOps
             this._effect = "nothing";
             this._pointsSave = 0;
             this._passOut = 0;
-
+            this._collide = false;
     }
 
         public Player(List<Weapon> weapons, GameHandler gameHandlerCtx, Vector place, float life, float speed, Vector direction, float width = 0, float height = 0) : this(gameHandlerCtx, place, life, speed, direction,width,height)
@@ -204,11 +205,19 @@ namespace MiamiOps
 
         private Vector SimulationMove(Vector direction)
         {
+            if (_collide == false)
+            {
+                _oldPlace = this._place;
+            }
             double diviseur = direction.Magnitude;
             if (direction.Magnitude == 0) diviseur = 1;
             Vector unit_vector = direction * (1.0 / diviseur);
             Vector move = unit_vector * this._speed;
             Vector playerPlace = this._place + move;
+            if(_collide == true)
+            {
+                return _oldPlace;
+            }
             return playerPlace;
         }
 
@@ -286,6 +295,11 @@ namespace MiamiOps
         {
             get { return this._LegendaryWeaponBlock; }
             set { this._LegendaryWeaponBlock = value; }
+        }
+        public bool Collide
+        {
+            get { return this._collide; }
+            set { this._collide = value; }
         }
 
         public float ExperienceMax => this._experienceMax;
