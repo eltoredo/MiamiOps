@@ -41,6 +41,9 @@ namespace MiamiOps
         Texture _doorTexture;
         Sprite _doorSprite;
 
+        Texture _blindEffecTexture;
+        Sprite _blindSprite;
+
         public GameHandler RoundHandlerContext
         {
             get { return _roundHandlerCtx; }
@@ -81,6 +84,9 @@ namespace MiamiOps
 
             _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
             _doorSprite = new Sprite(_doorTexture);
+
+            _blindEffecTexture = new Texture("../../../../Images/soulcalibur.png");
+            _blindSprite = new Sprite(_blindEffecTexture);
 
             _musicReset = false;
             _effectMusic = new Music("../../../../Images/brute.ogg");
@@ -140,6 +146,7 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
+            
             _doorTexture.Dispose();
             _doorSprite.Dispose();
             if (_roundHandlerCtx.RoundObject.IsDoorOpened == false)
@@ -194,7 +201,16 @@ namespace MiamiOps
                     _bossUI.HitBoxEnnemies = new FloatRect();
                 }
             }
+            if (_roundHandlerCtx.RoundObject.Player.Effect == "Blind")
+            {
+                _blindEffecTexture.Dispose();
+                _blindSprite.Dispose();
+                _blindEffecTexture = new Texture("../../../../Images/BlindEffect.png");
+                _blindSprite = new Sprite(_blindEffecTexture);
+                _blindSprite.Position = new Vector2f(this.GameCtx.MyView.Center.X-640, this.GameCtx.MyView.Center.Y-360);
+                _blindSprite.Draw(window, RenderStates.Default);
 
+            }
             _ath.Draw(window);
 
             CollideToPackage();

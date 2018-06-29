@@ -197,6 +197,21 @@ namespace MiamiOps
                     Ctx.PackageEffectList.Add(this);
                 }
             }
+            if (this.Name == "Blind")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "Blind";
+                    this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+            }
             Ctx.StuffList.Remove(this);
 
         }
