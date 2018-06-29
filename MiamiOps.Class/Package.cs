@@ -81,12 +81,12 @@ namespace MiamiOps
                 }
                 else
                 {
+                    Ctx.Player.Effect = "Double Speed";
                     Ctx.Player.Speed += 0.005f;
                     this.LifeSpan = TimeSpan.FromSeconds(5);
                     this.CreationDate = DateTime.UtcNow;
                     Ctx.PackageEffectList.Add(this);
                 }
-                Ctx.StuffList.Remove(this);
             }
 
             if(this.Name == "brute")
@@ -103,7 +103,6 @@ namespace MiamiOps
                     this.CreationDate = DateTime.UtcNow;
                     Ctx.PackageEffectList.Add(this);
                 }
-                Ctx.StuffList.Remove(this);
             }
             if (this.Name == "pyro_fruit")
             {
@@ -121,6 +120,63 @@ namespace MiamiOps
                 }
                 Ctx.StuffList.Remove(this);
             }
+
+            if(this.Name == "apple")
+            {
+                Random random = new Random();
+                int _random;
+                 _random = random.Next(0, 2);
+                if (_random == 1)
+                {
+                    if (exist == true)
+                    {
+                        Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(10);
+                        Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        Ctx.Player.Effect = "Boost atk";
+                        this.LifeSpan = TimeSpan.FromSeconds(10);
+                        this.CreationDate = DateTime.UtcNow;
+                        Ctx.PackageEffectList.Add(this);
+                    }
+                }
+                else
+                {
+                    if (exist == true)
+                    {
+                        Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(10);
+                        Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        Ctx.Player.Effect = "Reverse";
+                        this.LifeSpan = TimeSpan.FromSeconds(10);
+                        this.CreationDate = DateTime.UtcNow;
+                        Ctx.PackageEffectList.Add(this);
+                    }
+                }
+
+            }
+
+            if(this.Name == "Poison")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "Poison";
+                    this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+            }
+
+            Ctx.StuffList.Remove(this);
+
         }
 
         public TimeSpan LifeSpan

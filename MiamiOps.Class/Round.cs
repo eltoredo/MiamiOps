@@ -119,9 +119,10 @@ namespace MiamiOps
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
 
                 _stuffFactories = new List<IStuffFactory>();
-                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
+                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Poison", TimeSpan.FromSeconds(30)));
+                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
-               // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
+                // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
                 //_stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
             }
@@ -299,6 +300,12 @@ namespace MiamiOps
                     _enemies[i].Effect = "nothing";
                     _enemies[i].Speed = 0.0005f;
                 }
+
+            }
+
+            if(_player.Effect == "Poison")
+            {
+                _player.LifePlayer -= 0.1f;
             }
         }
 
@@ -324,14 +331,12 @@ namespace MiamiOps
                     {
                         this.Player.Speed -= 0.005f;
                     }
-                    if(package.Name == "brute")
+                    if(package.Name == "brute"|| package.Name == "pyro_fruit"|| package.Name == "apple"|| package.Name == "Poison")
                     {
                         this.Player.Effect = "nothing";
                     }
-                    if (package.Name == "pyro_fruit")
-                    {
-                        this.Player.Effect = "nothing";
-                    }
+                    
+
                     _listPackageEffect.Remove(package);
                     break;
                 }

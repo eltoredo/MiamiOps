@@ -23,6 +23,7 @@ namespace MiamiOps
         View _viewATH;
         bool reset;
         bool _musicReset;
+        bool _noMusic;
 
         List<FloatRect> _boundingBoxPackage;
 
@@ -202,10 +203,7 @@ namespace MiamiOps
             {
                 this._roundHandlerCtx.RoundObject.LevelPass = true;
             }
-            //else if(this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == false)
-            //{
-            //    Console.WriteLine("ZA WARUDO");
-            //}
+            
         }
 
         public void Update()
@@ -244,10 +242,11 @@ namespace MiamiOps
                )
             {
                 GameCtx.MusicMain.Pause();
-            }
+            } 
             else if (_musicReset == true)
             {
                 this._effectMusic.Stop();
+                GameCtx.MusicMain.Pause();
                 GameCtx.MusicMain.Play();
                 _musicReset = false;
             }
@@ -278,6 +277,7 @@ namespace MiamiOps
                                 _effectMusic.Play();
                             }
                         }
+                        
 
                         if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed" &&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health" &&
@@ -313,7 +313,12 @@ namespace MiamiOps
                                         _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
                                     }
 
-                                    _roundHandlerCtx.RoundObject.Enemies[i].Hit((float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack);
+                                    float attak = (float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack;
+                                    if (this.RoundHandlerContext.RoundObject.Player.Effect == "Boost atk")
+                                    {
+                                    attak = attak * 2;
+                                    }
+                                    _roundHandlerCtx.RoundObject.Enemies[i].Hit(attak);
                                     _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
                                     this._weaponUI.BoundingBoxBullet.RemoveAt(a);
                                     break;

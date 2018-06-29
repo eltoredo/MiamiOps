@@ -23,6 +23,7 @@ namespace MiamiOps
         double y = 0.03f;
         bool _shoot;
         int a = 0;
+        
 
         public InputHandler(RoundUI roundUIContext)
         {
@@ -40,19 +41,47 @@ namespace MiamiOps
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
             {
-                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, 1));
+                if (_roundUIContext.RoundHandlerContext.RoundObject.Player.Effect == "Reverse")
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, -1));
+                }
+                else
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, 1));
+                }
             }
             else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
             {
-                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, -1));
+                if (_roundUIContext.RoundHandlerContext.RoundObject.Player.Effect == "Reverse")
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, 1));
+                }
+                else
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(0, -1));
+                }
             }
             else if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
             {
-                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(-1, 0));
+                if (_roundUIContext.RoundHandlerContext.RoundObject.Player.Effect == "Reverse")
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(1, 0));
+                }
+                else
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(-1, 0));
+                }
             }
            else  if (Keyboard.IsKeyPressed(Keyboard.Key.D))
             {
-                _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(1, 0));
+                if (_roundUIContext.RoundHandlerContext.RoundObject.Player.Effect == "Reverse")
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(-1, 0));
+                }
+                else
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Move(new Vector(1, 0));
+                }
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.P)&&_roundUIContext.RoundHandlerContext.RoundObject.Player.BlockWeapon == false)
