@@ -16,8 +16,8 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         RectangleShape playerBound = new RectangleShape();
-        Texture _monsterTexture = new Texture("../../../../Images/Monster.png");
         Texture _bossTexture = new Texture("../../../../Images/dragon.png");
+        Texture _monsterTexture;
         ATH _ath;
         View _view;
         View _viewATH;
@@ -73,6 +73,8 @@ namespace MiamiOps
 
             Random _random = new Random();
             _roundHandlerCtx = roundHandlerCtx;
+            _monsterTexture = new Texture("../../../../Images/Monster" + _roundHandlerCtx.RoundObject.Level + "-" + _roundHandlerCtx.RoundObject.Stage + ".png");
+
 
             Texture _weaponTexture = new Texture("../../../../Images/soulcalibur.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
@@ -242,13 +244,18 @@ namespace MiamiOps
                )
             {
                 GameCtx.MusicMain.Pause();
-            } 
+            }else if(_roundHandlerCtx.RoundObject.Player.Effect == "Poison") {
+            }
             else if (_musicReset == true)
             {
                 this._effectMusic.Stop();
                 GameCtx.MusicMain.Pause();
                 GameCtx.MusicMain.Play();
                 _musicReset = false;
+            }
+            else
+            {
+                this._effectMusic.Loop = false;
             }
 
         }
@@ -275,6 +282,8 @@ namespace MiamiOps
                                 this._effectMusic.Dispose();
                                 this._effectMusic = new Music("../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg");
                                 _effectMusic.Play();
+                                _effectMusic.Loop = true;
+
                             }
                         }
                         
@@ -283,6 +292,10 @@ namespace MiamiOps
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health" &&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
+
+                        if (_roundHandlerCtx.RoundObject.Player.Effect == "Poison") this._effectMusic.Loop = true;
+
+
 
                         _roundHandlerCtx.RoundObject.StuffList[count - 1].WalkOn(_roundHandlerCtx.RoundObject);
                         break;

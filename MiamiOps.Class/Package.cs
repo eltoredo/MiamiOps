@@ -175,6 +175,28 @@ namespace MiamiOps
                 }
             }
 
+            if(this.Name == "Cookie")
+            {
+                Ctx.Player.LifePlayer += 5;
+                if (Ctx.Player.LifePlayer > Ctx.Player.LifePlayerMax) Ctx.Player.LifePlayer = Ctx.Player.LifePlayerMax;
+            }
+
+            if (this.Name == "Slow")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "Reduce Speed";
+                    Ctx.Player.Speed -= Ctx.Player.Speed/2;
+                    this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+            }
             Ctx.StuffList.Remove(this);
 
         }
