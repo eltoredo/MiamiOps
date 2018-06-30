@@ -342,7 +342,15 @@ namespace MiamiOps
                                         _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
                                     }
 
+                                    if (this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "SheepGun")
+                                    {
+                                        _roundHandlerCtx.RoundObject.Enemies[i].Effect = "Sheep";
+                                        _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                                        _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(10);
+                                    }
+
                                     float attak = (float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack;
+
                                     if (this.RoundHandlerContext.RoundObject.Player.Effect == "Boost atk")
                                     {
                                     attak = attak * 2;

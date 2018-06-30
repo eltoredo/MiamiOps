@@ -120,9 +120,9 @@ namespace MiamiOps
 
                 _stuffFactories = new List<IStuffFactory>();
 
-                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
+                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
                 //this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Poison", TimeSpan.FromSeconds(30)));
-               // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Blind", TimeSpan.FromSeconds(30)));
+                // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Blind", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Slow", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Cookie", TimeSpan.FromSeconds(30)));
                 //  this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "apple", TimeSpan.FromSeconds(30)));
@@ -131,6 +131,7 @@ namespace MiamiOps
                 // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
                 //_stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 0.1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
             }
             else
             {
@@ -233,7 +234,18 @@ namespace MiamiOps
 
             for (int i = 0 ; i < _count; i++)
             {
-                this._enemies[i].Move(this._player.Place);
+                Vector place;
+                if (this._enemies[i].Effect == "Sheep")
+                {
+                    place = this.CreateRandomPosition();
+
+                }
+                else
+                {
+                    place = this._player.Place;
+                }
+
+                this._enemies[i].Move(place);
             }
             UpdateEffect(_enemies);
 

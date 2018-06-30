@@ -177,6 +177,12 @@ namespace MiamiOps
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Life = false;
                     _roundUIContext.GameCtx.MusicMain.Play();
                     i = 0;
+                }else if (i >= 20 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "SheepGun")
+                {
+                    ChangeSound();
+                    _bulletSound.Play();
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
+                    i = 0;
                 }
 
 

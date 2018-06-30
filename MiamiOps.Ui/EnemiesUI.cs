@@ -53,6 +53,7 @@ namespace MiamiOps
         private Vector2f UpdatePlace(Vector enemyPlace, uint mapWidth, uint mapHeight)
         {
             Vector2f newEnnemyPlace = new Vector2f(((float)enemyPlace.X + 1) * (mapWidth / 2), (((float)enemyPlace.Y - 1) * (mapHeight / 2))*-1);
+            _hitBoxEnnemi = new FloatRect(newEnnemyPlace.X, newEnnemyPlace.Y, 32, 32);
             //if (_ctxMap.Collide(this._hitBoxEnnemi))
             //{
             //    _enemySprite.Color = Color.Red;
@@ -60,15 +61,16 @@ namespace MiamiOps
             //}
 
             //_enemySprite.Color = colorCharacters;
-           
+
             return newEnnemyPlace;
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight, Enemies enemies)
         {
             this._enemy = enemies;
+            EffectOnSprite();
             this._enemySprite.Position = UpdatePlace(enemies.Place, mapWidth, mapHeight);
-            _hitBoxEnnemi = _enemySprite.GetGlobalBounds();
+           // _hitBoxEnnemi = _enemySprite.GetGlobalBounds();
             _nbDirection = Conversion(this._enemy.Direction);
 
             _animStop = _spriteWidth;
@@ -77,7 +79,6 @@ namespace MiamiOps
             if (_animFrames == _nbSprite) _animFrames = 0;
             _enemySprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-            EffectOnSprite();
 
             _enemySprite.Draw(window, RenderStates.Default);
         }
@@ -103,9 +104,20 @@ namespace MiamiOps
                     _enemySprite.Color = colorCharacters;
                 }
                 _effectTime++;
+            }else if(_enemy.Effect == "Sheep")
+            {
+                this._enemyTexture.Dispose();
+                this._enemySprite.Dispose();
+                this._enemyTexture = new Texture("../../../../Images/SheepTransform.png");
+                this._enemySprite = new Sprite(_enemyTexture);
+            
             }
             else
             {
+                this._enemyTexture.Dispose();
+                this._enemySprite.Dispose();
+                this._enemyTexture = new Texture("../../../../Images/Monster" + _roundUIContext.RoundHandlerContext.RoundObject.Level + "-" + _roundUIContext.RoundHandlerContext.RoundObject.Stage + ".png");
+                this._enemySprite = new Sprite(_enemyTexture);
                 _enemySprite.Color = colorCharacters;
             }
         }

@@ -19,7 +19,7 @@ namespace MiamiOps
         Vector _oldVector;
         Vector _direction;
         protected float _maxLife;
-
+        Random random = new Random();
 
         public Enemies(GameHandler gameHandlerCtx, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
         {
@@ -151,6 +151,7 @@ namespace MiamiOps
 
         private Vector SimulateMove(Vector target)
         {
+            
             // Builds a vector in the direction of the enemie
             Vector direction = target - this._place;
             // Builds a unit vector in the direction of the enemie
@@ -165,6 +166,11 @@ namespace MiamiOps
         public void Attack(float attack, float distance)
         {
             throw new NotImplementedException();
+        }
+
+        internal float GetNextRandomFloat()
+        {
+            return ((float)this.random.NextDouble() * 2) - 1;
         }
 
         public double Life => this._life;
