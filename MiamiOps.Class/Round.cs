@@ -117,7 +117,7 @@ namespace MiamiOps
             if (actualPlayer == null)
             {
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "HypnoseGun", 0f, 0, 0f, 60, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
 
                 _stuffFactories = new List<IStuffFactory>();
 

@@ -88,7 +88,7 @@ namespace MiamiOps
 
         public void EffectOnSprite()
         {
-            if (_enemy.Effect == "pyro_fruit" || _enemy.Effect == "FreezeGun" || _enemy.Effect == "Hypnose")
+            if (_enemy.Effect == "pyro_fruit" || _enemy.Effect == "FreezeGun")// || _enemy.Effect == "Hypnose")
             {
                 if (_effectTime == 10)
                 {
@@ -111,6 +111,10 @@ namespace MiamiOps
                     _enemySprite.Color = colorCharacters;
                 }
                 _effectTime++;
+            }
+            else if (_enemy.Effect == "Hypnose")
+            {
+                _enemySprite.Color = Color.Black;
             }
             else if (_enemy.Effect == "Sheep")
             {
