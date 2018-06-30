@@ -59,6 +59,7 @@ namespace MiamiOps
                     exist = true;
                 }
             }
+
             if (this.Name == "health")
             {
                 Ctx.Player.LifePlayer += 20;
@@ -210,6 +211,16 @@ namespace MiamiOps
                     this.LifeSpan = TimeSpan.FromSeconds(5);
                     this.CreationDate = DateTime.UtcNow;
                     Ctx.PackageEffectList.Add(this);
+                }
+            }
+
+            if(this.Name == "bossSpawn")
+            {
+                if(Ctx._boss == null)
+                {
+                    Ctx._boss = new Boss(_gameHandlerCtx, 999, Ctx.CreateRandomPosition(), Ctx.EnemiesLife * 30, Ctx.EnemiesSpeed, Ctx.EnemiesAttack, Ctx.EnemiesHauteur, Ctx.EnemiesLargeur);
+                    Ctx.Player.Effect = "Boss";
+                    Ctx._boss.Effect = "Boss";
                 }
             }
             Ctx.StuffList.Remove(this);

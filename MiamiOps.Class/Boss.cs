@@ -25,7 +25,7 @@ namespace MiamiOps
             _isDead = false;
             _count = 0;
             _countMax = 30;
-
+            
         }
         public void UpdateBoss()
         {

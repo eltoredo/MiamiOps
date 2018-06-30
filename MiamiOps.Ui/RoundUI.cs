@@ -16,7 +16,8 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         RectangleShape playerBound = new RectangleShape();
-        Texture _bossTexture = new Texture("../../../../Images/dragon.png");
+        Texture _bossTexture;
+        Sprite _bossSprite;
         Texture _monsterTexture;
         Sprite _monsterSprite;
         ATH _ath;
@@ -80,6 +81,8 @@ namespace MiamiOps
             _monsterTexture = new Texture("../../../../Images/Monster" + _roundHandlerCtx.RoundObject.Level + "-" + _roundHandlerCtx.RoundObject.Stage + ".png");
             _monsterSprite = new Sprite(_monsterTexture);
 
+            _bossTexture = new Texture("../../../../Images/dragon.png");
+            _bossSprite = new Sprite(_bossTexture);
 
             Texture _weaponTexture = new Texture("../../../../Images/soulcalibur.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
@@ -186,11 +189,22 @@ namespace MiamiOps
 
             CollideToShootEnnemiesAndPlayerToEnnemies();
 
+            UpdateEffect();
+
             if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this._roundHandlerCtx.RoundObject.IsDoorOpened == true)
             {
                 this._roundHandlerCtx.RoundObject.LevelPass = true;
             }
             
+        }
+
+        private void UpdateEffect()
+        {
+            if (_roundHandlerCtx.RoundObject.Player.Effect == "Boss")
+            {
+                CreateBoss();
+                _roundHandlerCtx.RoundObject.Player.Effect = "nothing";
+            }
         }
 
         public void Update()
@@ -271,7 +285,7 @@ namespace MiamiOps
 
                             }
                         }
-                        
+
 
                         if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed" &&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health" &&
@@ -280,6 +294,8 @@ namespace MiamiOps
 
 
                         _roundHandlerCtx.RoundObject.StuffList[count - 1].WalkOn(_roundHandlerCtx.RoundObject);
+
+                       
                         break;
 
                     }
@@ -320,6 +336,7 @@ namespace MiamiOps
                                     _roundHandlerCtx.RoundObject.Enemies[i].Effect = "Hypnose";
                                     _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
                                     _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromHours(1);
+                                    this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
                                 }
 
                                 float attak = (float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack;
@@ -410,6 +427,11 @@ namespace MiamiOps
                 _roundHandlerCtx.RoundObject.GameState = true;
             }
         }
+
+        public void CreateBoss()
+        {
+            _bossUI = new EnemiesUI(this, _bossTexture, 3, 100, 100, _roundHandlerCtx.RoundObject._boss, MapWidth, MapHeight, Map);
+        }
         public Music EffectMusic
         {
             get { return _effectMusic; }
@@ -425,6 +447,18 @@ namespace MiamiOps
             get { return _monsterSprite; }
             set { _monsterSprite = value; }
         }
+        public Texture BossTexture
+        {
+            get { return _bossTexture; }
+            set { _bossTexture = value; }
+        }
+        public Sprite BossSprite
+        {
+            get { return _bossSprite; }
+            set { _bossSprite = value; }
+        }
+
+        public Map Map => _mapCtx;
 
     }
 }

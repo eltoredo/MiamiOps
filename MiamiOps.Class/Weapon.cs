@@ -13,6 +13,7 @@ namespace MiamiOps
 
         private Random random = new Random();
         Vector _place;
+        Vector _placeTP;
         bool _life;
         string _name;
         float _attack;
@@ -52,6 +53,7 @@ namespace MiamiOps
             this._place = CreateRandomPosition();
             this._lifeSpan = lifeSpan;
             this._creationDate = DateTime.UtcNow;
+            this._placeTP = new Vector();
             _type = type;
             _life = true;
         }
@@ -246,6 +248,12 @@ namespace MiamiOps
         {
             get { return this._type; }
             set { this._type = value; }
+        }
+
+        public Vector TpPlace
+        {
+            get { return this._placeTP; }
+            set { this._placeTP = value; }
         }
     }
 

@@ -126,8 +126,14 @@ namespace MiamiOps
             }
             else if (_enemy.Effect == "nothing")
             {
+                
                 this._enemyTexture = _roundUIContext.MonsterTexture;
                 this._enemySprite = _roundUIContext.MonsterSprite;
+                this._enemySprite.Color = colorCharacters;
+            }else if(_enemy.Effect == "Boss")
+            {
+                this._enemyTexture = _roundUIContext.BossTexture;
+                this._enemySprite = _roundUIContext.BossSprite;
                 this._enemySprite.Color = colorCharacters;
             }
         }

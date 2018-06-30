@@ -191,6 +191,21 @@ namespace MiamiOps
                     _bulletSound.Play();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
+                }else if(i>=40 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "TpGun")
+                {
+                    ChangeSound();
+                   _bulletSound.Play();
+                     if (a == 0) {
+
+                        _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace = CalculMouseVector();
+                        a++;
+                    }
+                    else if(a == 1)
+                    {
+                        _roundUIContext.RoundHandlerContext.RoundObject.Player.Place = _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace;
+                        a = 0;
+                    }
+                    i = 0;
                 }
 
 
@@ -236,7 +251,15 @@ namespace MiamiOps
         public void ChangeSound()
         {
             _bulletSound.Dispose();
-            _bulletSound = new Music("../../../../Images/" +_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "bullet.ogg");
+            if(a == 1)
+            {
+                _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "2bullet.ogg");
+
+            }
+            else
+            {
+                _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "bullet.ogg");
+            }
             _bulletSound.Volume = 150f;
         }
     }
