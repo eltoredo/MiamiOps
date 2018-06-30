@@ -26,7 +26,7 @@ namespace MiamiOps
         Convert _convert = new Convert();
         Text pause = new Text();
         Menu menu = new Menu(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-        GameOver gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        GameOver gameOver;
         Music _mainMusic = new Music("../../../../Images/stage1-1OST.ogg");
         
 
@@ -61,9 +61,10 @@ namespace MiamiOps
 
         public override void Initialize()
         {
+            gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _gameHandlerCtx);
             if (gameOver.ReturnOrNot == false)
             {
-                gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+                gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT,_gameHandlerCtx);
                 menu.OpenGame(Window);
             }
 
@@ -86,8 +87,18 @@ namespace MiamiOps
         {
             if (_gameHandlerCtx.RoundObject.GameState == true)
             {
+                gameOver = new GameOver(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _gameHandlerCtx);
                 Window.Clear();
-                gameOver.EndGame(Window, this,menu, _gameHandlerCtx);
+                _roundUI.EffectMusic.Stop();
+                this.MusicMain.Stop();
+                if (_gameHandlerCtx.RoundObject.GameWin == true)
+                {
+                    gameOver.WinGame(Window, this, menu, _gameHandlerCtx);
+                }
+                else
+                {
+                    gameOver.EndGame(Window, this, menu, _gameHandlerCtx);
+                }
                 Window.Clear();
             }
 

@@ -32,6 +32,7 @@ namespace MiamiOps
         int _countSpawn;
         bool _gameState;
         bool _levelPass;
+        bool _gameWin;
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
@@ -420,8 +421,16 @@ namespace MiamiOps
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
         }
 
-        public int Level => _level;
-        public int Stage => _stage;
+        public int Level
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
+        public int Stage
+        {
+            get { return _stage; }
+            set { _stage = value; }
+        }
         public bool LevelPass
         {
             get { return _levelPass; }
@@ -474,6 +483,11 @@ namespace MiamiOps
         {
             get { return this._gameState; }
             set { this._gameState = value; }
+        }
+        public bool GameWin
+        {
+            get { return this._gameWin; }
+            set { this._gameWin = value; }
         }
         public List<Shoot> ListBullet
         {

@@ -197,6 +197,25 @@ namespace MiamiOps
                 i++;
 
             }
+
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F1))
+            {
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Experience += 500;
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F2))
+            {
+                _roundUIContext.RoundHandlerContext.RoundObject.Player.Points += 1000000;
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F12))
+            {
+                _roundUIContext.RoundHandlerContext.RoundObject.Stage = 5;
+                _roundUIContext.RoundHandlerContext.RoundObject.Level = 3;
+
+            }
+
         }
 
         public Vector CalculMouseVector()

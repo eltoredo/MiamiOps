@@ -24,10 +24,20 @@ namespace MiamiOps
         public void OnLeaving()
         {
 
-            _roundObject = new Round(this, _roundObject.NbEnnemies + 10, _roundObject.Stage, _roundObject.Level, _roundObject.StuffFactories, _roundObject.Player, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f, enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\stage" + _roundObject.Level + "-" + _roundObject.Stage + ".tmx"), playerHauteur: 0f, playerLargeur: 0f, playerLife: 100, enemiesLife: 10);
-            _roundNotUpdate = _roundObject;// new Round(this, 10, _roundObject.Stage, _roundObject.Level, _roundObject.StuffFactories, _roundObject.Player, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f, enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\stage" + _roundObject.Level + "-" + _roundObject.Stage + ".tmx"), playerHauteur: 0f, playerLargeur: 0f, playerLife: 100);
-            _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\stage" + _roundObject.Level + "-" + _roundObject.Stage + ".tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset_stage" + _roundObject.Level + "-" + _roundObject.Stage + ".png");
-            _hasLeft = true;
+            if(_roundObject.Stage == 1 && _roundObject.Level == 4)
+            {
+                _roundObject.GameWin = true;
+                _roundObject.GameState = true;
+            }
+            else
+            {
+                _roundObject = new Round(this, _roundObject.NbEnnemies + 10, _roundObject.Stage, _roundObject.Level, _roundObject.StuffFactories, _roundObject.Player, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f, enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\stage" + _roundObject.Level + "-" + _roundObject.Stage + ".tmx"), playerHauteur: 0f, playerLargeur: 0f, playerLife: 100, enemiesLife: 10);
+                _roundNotUpdate = _roundObject;// new Round(this, 10, _roundObject.Stage, _roundObject.Level, _roundObject.StuffFactories, _roundObject.Player, enemieSpawn: new Vector(), enemiesSpeed: 0.0005f, playerSpeed: 0.005f, enemySpawn: _convert.ConvertXMLSpawn(@"..\..\..\..\MiamiOps.Map\Map\stage" + _roundObject.Level + "-" + _roundObject.Stage + ".tmx"), playerHauteur: 0f, playerLargeur: 0f, playerLife: 100);
+                _map = new Map(@"..\..\..\..\MiamiOps.Map\Map\stage" + _roundObject.Level + "-" + _roundObject.Stage + ".tmx", @"..\..\..\..\MiamiOps.Map\Map\tileset_stage" + _roundObject.Level + "-" + _roundObject.Stage + ".png");
+                _hasLeft = true;
+            }
+
+           
         }
 
         public void GameOver()
