@@ -267,7 +267,7 @@ namespace MiamiOps
                                 this._effectMusic.Dispose();
                                 this._effectMusic = new Music("../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg");
                                 _effectMusic.Play();
-                                if (_roundHandlerCtx.RoundObject.Player.Effect == "Poison") this._effectMusic.Loop = true;
+                                if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name == "Poison") this._effectMusic.Loop = true;
 
                             }
                         }
@@ -320,7 +320,6 @@ namespace MiamiOps
                                     _roundHandlerCtx.RoundObject.Enemies[i].Effect = "Hypnose";
                                     _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
                                     _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromHours(1);
-                                    this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
                                 }
 
                                 float attak = (float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack;
@@ -372,11 +371,19 @@ namespace MiamiOps
 
                 if (_roundHandlerCtx.RoundObject.Enemies[i].Effect == "Hypnose")
                 {
+                    
+
                     if (_enemies[i].HitBoxEnnemies.Intersects(_enemies[_roundHandlerCtx.RoundObject.Enemies[i].TargetID].HitBoxEnnemies))
                     {
+                        if(i == 0)
+                        {
 
-                        _roundHandlerCtx.RoundObject.Enemies[_roundHandlerCtx.RoundObject.Enemies[i].TargetID].Hit(99999999);
-                        _roundHandlerCtx.RoundObject.Enemies[i].Hit(99999999);
+                        }
+                       if (i != 0 || _roundHandlerCtx.RoundObject.Enemies[i].TargetID != 0)
+                       {
+                            _roundHandlerCtx.RoundObject.Enemies[_roundHandlerCtx.RoundObject.Enemies[i].TargetID].Hit(99999999);
+                            _roundHandlerCtx.RoundObject.Enemies[i].Hit(99999999);
+                        }
 
                     }
                 }
