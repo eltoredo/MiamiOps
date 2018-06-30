@@ -16,6 +16,8 @@ namespace MiamiOps
         float _galaxCoin;
         float _xp;
         string _effect;
+        int _level;
+        int _stage;
 
         private List<Text> _athList = new List<Text>();
         public List<Text> AthList => _athList;
@@ -46,7 +48,8 @@ namespace MiamiOps
             _galaxCoin = _ctx.Player.Points;
             _xp = _ctx.Player.Experience;
             _effect = _ctx.Player.Effect;
-             
+            _level = _ctx.Level;
+            _stage = _ctx.Stage;
 
             
             _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
@@ -119,6 +122,16 @@ namespace MiamiOps
 
             };
             _athList.Add(EffectBar);
+
+            Text StageBar = new Text
+            {
+                Font = _font,
+                Color = Color.White,
+                DisplayedString = "Stage: " + _stage.ToString() + "-" + _level.ToString(),
+                CharacterSize = 40
+
+            };
+            _athList.Add(StageBar);
         }
 
 
@@ -196,6 +209,9 @@ namespace MiamiOps
             }
             _athList[5].DisplayedString = "Effect:" + effectOnAth;
 
+            _athList[6].DisplayedString = "Stage: " + _ctx.Level.ToString() + " - " + _ctx.Stage.ToString();
+
+
 
 
             _athLifeSprite.Position = new Vector2f(_athList[0].Position.X - 100, _athList[0].Position.Y - 100);
@@ -210,6 +226,8 @@ namespace MiamiOps
             _athList[3].Position = new Vector2f(_athList[0].Position.X - 70, _athList[0].Position.Y + 70);
             _athList[4].Position = new Vector2f(_athList[0].Position.X + 10, _athList[0].Position.Y + 40);
             _athList[5].Position = new Vector2f(_athList[0].Position.X -70, _athList[0].Position.Y+100);
+            _athList[6].Position = new Vector2f(_athList[0].Position.X - 1000, _athList[0].Position.Y -80);
+
 
 
         }

@@ -199,17 +199,17 @@ namespace MiamiOps
             }
 
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F1))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F1)&& (Keyboard.IsKeyPressed(Keyboard.Key.F2)))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Experience += 500;
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F2))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F2)&& (Keyboard.IsKeyPressed(Keyboard.Key.F3)))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Points += 1000000;
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F12))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F12)&& Keyboard.IsKeyPressed(Keyboard.Key.F11))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Stage = 5;
                 _roundUIContext.RoundHandlerContext.RoundObject.Level = 3;
