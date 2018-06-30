@@ -26,6 +26,7 @@ namespace MiamiOps
         bool verifWeaponInList;
         int _time;
         int count;
+        string _type;
 
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
@@ -44,13 +45,14 @@ namespace MiamiOps
             _life = true;
         }
 
-        public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo, TimeSpan lifeSpan, string type) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
         {
             this._gameHandler = context;
             this._name = name;
             this._place = CreateRandomPosition();
             this._lifeSpan = lifeSpan;
             this._creationDate = DateTime.UtcNow;
+            _type = type;
             _life = true;
         }
 
@@ -239,6 +241,12 @@ namespace MiamiOps
             get { return this._life ; }
             set { this._life = value ; }
         }
+
+        public string Type
+        {
+            get { return this._type; }
+            set { this._type = value; }
+        }
     }
 
     public class WeaponFactory : IStuffFactory
@@ -267,7 +275,7 @@ namespace MiamiOps
 
         public IStuff Create()
         {
-            return new Weapon(this._gameHandlerCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
+            return new Weapon(this._gameHandlerCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan,"legendary");
         }
 
 

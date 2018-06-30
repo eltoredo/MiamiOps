@@ -117,7 +117,7 @@ namespace MiamiOps
             if (actualPlayer == null)
             {
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue,"normal"));
 
                 _stuffFactories = new List<IStuffFactory>();
 
@@ -195,7 +195,7 @@ namespace MiamiOps
             {
                 foreach (var item in _player.Weapons)
                 {
-                    if (item.Name == "soulcalibur" || item.Name == "FreezeGun")
+                    if (item.Type == "legendary")
                     {
                        item.Life = false;
                     }
@@ -309,12 +309,12 @@ namespace MiamiOps
           
             if (this.Player.Level >= 5&& _player.PassOut == 0)
             {
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5, 0, 0, 30, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5, 0, 0, 30, TimeSpan.MaxValue, "normal"));
                 this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30)));
                 _player.PassOut++;
             }else if(this.Player.Level >= 10 && _player.PassOut == 1)
             {
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue, "normal"));
                 _player.PassOut++;
             }
             else if (this.Player.Level >= 15 && _player.PassOut == 2)
@@ -357,6 +357,12 @@ namespace MiamiOps
             if(_player.Effect == "Poison")
             {
                 _player.LifePlayer -= 0.1f;
+            }
+
+            if(_player.Effect == "nothing")
+            {
+                this.Player.Speed = 0.005f;
+                this.Player.Effect = "nothing";
             }
         }
 

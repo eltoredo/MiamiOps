@@ -20,7 +20,7 @@ namespace MiamiOps
         public Boss(GameHandler context, int name, Vector place, float life, float speed, float attack, float width = 0, float height = 0, int pattern = 0) : base(context, name, place, life, speed, attack, width, height)
         {
             _pattern = pattern;
-            _bossweapon = new Weapon(context, "circleShoot", 5, 360, 0, 9999, TimeSpan.MaxValue);
+            _bossweapon = new Weapon(context, "circleShoot", 5, 360, 0, 9999, TimeSpan.MaxValue,"normal");
             _context = context;
             _isDead = false;
             _count = 0;

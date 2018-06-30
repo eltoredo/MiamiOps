@@ -165,6 +165,7 @@ namespace MiamiOps
                     TimeSpan span = TimeSpan.FromSeconds(0);
                     _roundUIContext.GameCtx.MusicMain.Pause();
                     _roundUIContext.EffectMusic.Pause();
+                    _roundUIContext.GameCtx.MusicMain.Pause();
                     _zawarudo.Play();
                     while (span < TimeBegin && Keyboard.IsKeyPressed(Keyboard.Key.Space)) {
                          span = DateTime.UtcNow - DateBegin;
