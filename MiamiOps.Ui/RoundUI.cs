@@ -18,6 +18,7 @@ namespace MiamiOps
         RectangleShape playerBound = new RectangleShape();
         Texture _bossTexture = new Texture("../../../../Images/dragon.png");
         Texture _monsterTexture;
+        Sprite _monsterSprite;
         ATH _ath;
         View _view;
         View _viewATH;
@@ -77,6 +78,7 @@ namespace MiamiOps
             Random _random = new Random();
             _roundHandlerCtx = roundHandlerCtx;
             _monsterTexture = new Texture("../../../../Images/Monster" + _roundHandlerCtx.RoundObject.Level + "-" + _roundHandlerCtx.RoundObject.Stage + ".png");
+            _monsterSprite = new Sprite(_monsterTexture);
 
 
             Texture _weaponTexture = new Texture("../../../../Images/soulcalibur.png");
@@ -109,39 +111,6 @@ namespace MiamiOps
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
-            //foreach (var item in _roundHandlerCtx.RoundObject.Obstacles)
-            //{
-            //    RectangleShape lol = new RectangleShape();
-            //    Vector2f position = new Vector2f();
-            //    Vector2f size = new Vector2f();
-
-
-            //    float xPixel = ((item[0] + 1) * 32) / 0.02f;
-            //    float yPixel = ((item[1] - 1) * 32) / 0.02f;
-
-            //    position.X = xPixel;
-            //    position.Y = yPixel * -1;
-
-            //    lol.Position = position;
-
-            //    float lengthPixel = (item[2] * 32) / 0.02f;
-            //    float heigthPixel = (item[3] * 32) / 0.02f;
-
-            //    size.X = lengthPixel;
-            //    size.Y = heigthPixel;
-
-            //    lol.Size = size;
-            //    lol.FillColor = Color.Red;
-
-            //    //_drawObstacles.Add(lol);
-
-            //}
-
-            //playerBound.Position = new Vector2f(1000, 1000);
-            //playerBound.Size = new Vector2f(32, 32);
-            //playerBound.FillColor = Color.Red;
-
-
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
@@ -298,7 +267,7 @@ namespace MiamiOps
                                 this._effectMusic.Dispose();
                                 this._effectMusic = new Music("../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg");
                                 _effectMusic.Play();
-                                _effectMusic.Loop = true;
+                                if (_roundHandlerCtx.RoundObject.Player.Effect == "Poison") this._effectMusic.Loop = true;
 
                             }
                         }
@@ -308,9 +277,6 @@ namespace MiamiOps
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health" &&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
-
-                        if (_roundHandlerCtx.RoundObject.Player.Effect == "Poison") this._effectMusic.Loop = true;
-
 
 
                         _roundHandlerCtx.RoundObject.StuffList[count - 1].WalkOn(_roundHandlerCtx.RoundObject);
@@ -349,7 +315,15 @@ namespace MiamiOps
                                         _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(10);
                                     }
 
-                                    float attak = (float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack;
+                                if (this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "HypnoseGun")
+                                {
+                                    _roundHandlerCtx.RoundObject.Enemies[i].Effect = "Hypnose";
+                                    _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                                    _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromHours(1);
+                                    this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
+                                }
+
+                                float attak = (float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack;
 
                                     if (this.RoundHandlerContext.RoundObject.Player.Effect == "Boost atk")
                                     {
@@ -395,6 +369,19 @@ namespace MiamiOps
 
                 }
 
+
+                if (_roundHandlerCtx.RoundObject.Enemies[i].Effect == "Hypnose")
+                {
+                    if (_enemies[i].HitBoxEnnemies.Intersects(_enemies[_roundHandlerCtx.RoundObject.Enemies[i].TargetID].HitBoxEnnemies))
+                    {
+
+                        _roundHandlerCtx.RoundObject.Enemies[_roundHandlerCtx.RoundObject.Enemies[i].TargetID].Hit(99999999);
+                        _roundHandlerCtx.RoundObject.Enemies[i].Hit(99999999);
+
+                    }
+                }
+
+
             }
             for (int b = 0; b < this._weaponUI.BoundingBoxBulletBoss.Count; b++)
             {
@@ -421,8 +408,17 @@ namespace MiamiOps
             get { return _effectMusic; }
             set { _effectMusic = value; }
         }
-       
-            
+        public Texture MonsterTexture
+        {
+            get { return _monsterTexture; }
+            set { _monsterTexture = value; }
+        }
+        public Sprite MonsterSprite
+        {
+            get { return _monsterSprite; }
+            set { _monsterSprite = value; }
+        }
+
     }
 }
 

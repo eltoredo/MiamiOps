@@ -12,6 +12,7 @@ namespace MiamiOps
         Texture _enemyTexture;
         Sprite _enemySprite;
         Enemies _enemy;
+        Enemies _target;
 
         int _nbSprite;    // The number of columns in a sprite
         int _spriteWidth;
@@ -68,8 +69,9 @@ namespace MiamiOps
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight, Enemies enemies)
         {
             this._enemy = enemies;
+            _hitBoxEnnemi = new FloatRect();
             EffectOnSprite();
-            this._enemySprite.Position = UpdatePlace(enemies.Place, mapWidth, mapHeight);
+            this._enemySprite.Position = UpdatePlace(this._enemy.Place, mapWidth, mapHeight);
            // _hitBoxEnnemi = _enemySprite.GetGlobalBounds();
             _nbDirection = Conversion(this._enemy.Direction);
 
@@ -86,14 +88,19 @@ namespace MiamiOps
 
         public void EffectOnSprite()
         {
-            if (_enemy.Effect == "pyro_fruit"||_enemy.Effect == "FreezeGun")
+            if (_enemy.Effect == "pyro_fruit" || _enemy.Effect == "FreezeGun" || _enemy.Effect == "Hypnose")
             {
                 if (_effectTime == 10)
                 {
                     if (_enemy.Effect == "pyro_fruit")
                     {
                         _enemySprite.Color = Color.Red;
-                    }else if(_enemy.Effect == "FreezeGun")
+                    }
+                    else if (_enemy.Effect == "Hypnose")
+                    {
+                        _enemySprite.Color = Color.Black;
+                    }
+                    else if (_enemy.Effect == "FreezeGun")
                     {
                         _enemySprite.Color = Color.Blue;
                     }
@@ -104,21 +111,20 @@ namespace MiamiOps
                     _enemySprite.Color = colorCharacters;
                 }
                 _effectTime++;
-            }else if(_enemy.Effect == "Sheep")
+            }
+            else if (_enemy.Effect == "Sheep")
             {
                 this._enemyTexture.Dispose();
                 this._enemySprite.Dispose();
                 this._enemyTexture = new Texture("../../../../Images/SheepTransform.png");
                 this._enemySprite = new Sprite(_enemyTexture);
-            
+
             }
-            else
+            else if (_enemy.Effect == "nothing")
             {
-                this._enemyTexture.Dispose();
-                this._enemySprite.Dispose();
-                this._enemyTexture = new Texture("../../../../Images/Monster" + _roundUIContext.RoundHandlerContext.RoundObject.Level + "-" + _roundUIContext.RoundHandlerContext.RoundObject.Stage + ".png");
-                this._enemySprite = new Sprite(_enemyTexture);
-                _enemySprite.Color = colorCharacters;
+                this._enemyTexture = _roundUIContext.MonsterTexture;
+                this._enemySprite = _roundUIContext.MonsterSprite;
+                this._enemySprite.Color = colorCharacters;
             }
         }
 

@@ -20,6 +20,8 @@ namespace MiamiOps
         Vector _direction;
         protected float _maxLife;
         Random random = new Random();
+        Enemies _target;
+        int _targetID;
 
         public Enemies(GameHandler gameHandlerCtx, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
         {
@@ -38,6 +40,8 @@ namespace MiamiOps
             this._oldVector = new Vector();
             this._direction = new Vector();
             this._maxLife = life;
+            this._target = null;
+            this._targetID = 0;
         }
 
         // Method called when an enemy has less than 1 life point
@@ -192,6 +196,19 @@ namespace MiamiOps
             get { return _effectTiming; }
             set { _effectTiming = value; }
         }
+
+        public Enemies Target
+        {
+            get { return _target; }
+            set { _target = value; }
+        }
+
+        public int TargetID
+        {
+            get { return _targetID; }
+            set { _targetID = value; }
+        }
+
 
         public bool IsEffectAlive
         {

@@ -184,6 +184,13 @@ namespace MiamiOps
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
                 }
+                else if (i >= 20 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "HypnoseGun")
+                {
+                    ChangeSound();
+                    _bulletSound.Play();
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
+                    i = 0;
+                }
 
 
                 i++;
