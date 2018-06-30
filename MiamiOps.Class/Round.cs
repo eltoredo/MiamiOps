@@ -122,7 +122,7 @@ namespace MiamiOps
 
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
                 //this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Poison", TimeSpan.FromSeconds(30)));
-                // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Blind", TimeSpan.FromSeconds(30)));
+                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Blind", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Slow", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Cookie", TimeSpan.FromSeconds(30)));
                 //  this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "apple", TimeSpan.FromSeconds(30)));
@@ -130,8 +130,9 @@ namespace MiamiOps
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
                 // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
-                //_stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
-                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 0.1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                // _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 999f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                // _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 0.1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
             }
             else
             {
@@ -194,7 +195,7 @@ namespace MiamiOps
                 {
                     if (item.Name == "soulcalibur" || item.Name == "FreezeGun")
                     {
-                        item.Life = false;
+                       item.Life = false;
                     }
                 }
                 _stage++;
@@ -334,7 +335,7 @@ namespace MiamiOps
             {
                 if (!weapon.IsAlive || weapon.Life == false)
                 {
-                    if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._player.Weapons[this._player.Weapons.Count - 2];
+                    if (this.Player.CurrentWeapon == weapon) this.Player.ChangeWeapon(1);
                     _player.Weapons.Remove(weapon);
                     this.Player.BlockWeapon = false;
                     break;

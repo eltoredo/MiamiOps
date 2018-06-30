@@ -109,33 +109,33 @@ namespace MiamiOps
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
-            foreach (var item in _roundHandlerCtx.RoundObject.Obstacles)
-            {
-                RectangleShape lol = new RectangleShape();
-                Vector2f position = new Vector2f();
-                Vector2f size = new Vector2f();
+            //foreach (var item in _roundHandlerCtx.RoundObject.Obstacles)
+            //{
+            //    RectangleShape lol = new RectangleShape();
+            //    Vector2f position = new Vector2f();
+            //    Vector2f size = new Vector2f();
 
 
-                float xPixel = ((item[0] + 1) * 32) / 0.02f;
-                float yPixel = ((item[1] - 1) * 32) / 0.02f;
+            //    float xPixel = ((item[0] + 1) * 32) / 0.02f;
+            //    float yPixel = ((item[1] - 1) * 32) / 0.02f;
 
-                position.X = xPixel;
-                position.Y = yPixel * -1;
+            //    position.X = xPixel;
+            //    position.Y = yPixel * -1;
 
-                lol.Position = position;
+            //    lol.Position = position;
 
-                float lengthPixel = (item[2] * 32) / 0.02f;
-                float heigthPixel = (item[3] * 32) / 0.02f;
+            //    float lengthPixel = (item[2] * 32) / 0.02f;
+            //    float heigthPixel = (item[3] * 32) / 0.02f;
 
-                size.X = lengthPixel;
-                size.Y = heigthPixel;
+            //    size.X = lengthPixel;
+            //    size.Y = heigthPixel;
 
-                lol.Size = size;
-                lol.FillColor = Color.Red;
+            //    lol.Size = size;
+            //    lol.FillColor = Color.Red;
 
-                //_drawObstacles.Add(lol);
+            //    //_drawObstacles.Add(lol);
 
-            }
+            //}
 
             //playerBound.Position = new Vector2f(1000, 1000);
             //playerBound.Size = new Vector2f(32, 32);
