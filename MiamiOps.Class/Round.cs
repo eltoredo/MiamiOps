@@ -120,7 +120,8 @@ namespace MiamiOps
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue,"normal"));
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "TpGun", 2f, 0, 0f, 60, TimeSpan.MaxValue, "normal"));
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "BFG", 999f, 0, 0f, 60, TimeSpan.MaxValue, "Legendary"));
+                // this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "BFG", 999f, 0, 0f, 60, TimeSpan.MaxValue, "Legendary"));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "Infinity_Gauntlet", 9999999f, 0, 0f, 60, TimeSpan.MaxValue, "Legendary"));
 
                 _stuffFactories = new List<IStuffFactory>();
 
@@ -135,8 +136,8 @@ namespace MiamiOps
                 // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
                 // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
               //  _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
-               _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
-                //_stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "HypnoseGun", 0f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+              // _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "HypnoseGun", 0f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                //  _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 999f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 0.1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
             }
@@ -157,7 +158,7 @@ namespace MiamiOps
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(_gameHandlerCtx, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
 
-            if (this._stage == 5) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
+            if (this._stage == 1) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
 
             if (this._count > this._enemies.Length)
             {
@@ -358,11 +359,6 @@ namespace MiamiOps
                 {
                     _enemies[i].Speed = 0.005f;
                 }
-
-
-                
-
-
 
             }
 

@@ -166,7 +166,6 @@ namespace MiamiOps
                     TimeSpan TimeBegin = TimeSpan.FromSeconds(5);
                     DateTime DateBegin = DateTime.UtcNow;
                     TimeSpan span = TimeSpan.FromSeconds(0);
-                    _roundUIContext.GameCtx.MusicMain.Pause();
                     _roundUIContext.EffectMusic.Pause();
                     _roundUIContext.GameCtx.MusicMain.Pause();
                     _zawarudo.Play();
@@ -215,6 +214,27 @@ namespace MiamiOps
                     _bulletSound.Play();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
+                }else if(_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "Infinity_Gauntlet")
+                {
+                    ChangeSound();
+                    _bulletSound.Play();
+                    _roundUIContext.EffectMusic.Pause();
+                    _roundUIContext.GameCtx.MusicMain.Pause();
+                    while (_bulletSound.Status == SoundStatus.Playing)
+                    {
+
+                    }
+                    //int thanosKill;
+                    for (int i = 0; i < _roundUIContext.RoundHandlerContext.RoundObject.CountEnnemi; i++)
+                    {
+                        _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Hit(_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Attack);
+                    }
+
+                    if(_roundUIContext.RoundHandlerContext.RoundObject._boss != null)
+                    {
+                        _roundUIContext.RoundHandlerContext.RoundObject._boss.Hit(_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Attack);
+                    }
+                    _roundUIContext.GameCtx.MusicMain.Play();
                 }
 
 

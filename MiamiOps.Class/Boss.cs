@@ -15,6 +15,7 @@ namespace MiamiOps
         Weapon _bossweapon;
         int _count;
         int _countMax;
+        //string _effect;
 
 
         public Boss(GameHandler context, int name, Vector place, float life, float speed, float attack, float width = 0, float height = 0, int pattern = 0) : base(context, name, place, life, speed, attack, width, height)
@@ -25,6 +26,7 @@ namespace MiamiOps
             _isDead = false;
             _count = 0;
             _countMax = 30;
+            this.Effect = "Boss";
             
         }
         public void UpdateBoss()
