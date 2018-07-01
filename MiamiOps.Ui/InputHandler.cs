@@ -22,7 +22,10 @@ namespace MiamiOps
         double x = 0.03f;
         double y = 0.03f;
         bool _shoot;
-        int a = 0;
+        int putPortal = 0;
+        int ennemiesSpeed;
+        int stuffFactories;
+        int cheat;
         
 
         public InputHandler(RoundUI roundUIContext)
@@ -195,15 +198,15 @@ namespace MiamiOps
                 {
                     ChangeSound();
                    _bulletSound.Play();
-                     if (a == 0) {
+                     if (putPortal == 0) {
 
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace = CalculMouseVector();
-                        a++;
+                        putPortal++;
                     }
-                    else if(a == 1)
+                    else if(putPortal == 1)
                     {
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.Place = _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace;
-                        a = 0;
+                        putPortal = 0;
                     }
                     i = 0;
                 }
@@ -231,6 +234,41 @@ namespace MiamiOps
 
             }
 
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F3))
+            {
+                for (int i = 0; i < _roundUIContext.RoundHandlerContext.RoundObject.CountEnnemi; i++)
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Speed = 0f;
+                    _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Effect = "Cheat";
+                }
+
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F4))
+            {
+                for (int i = 0; i < _roundUIContext.RoundHandlerContext.RoundObject.CountEnnemi; i++)
+                {
+                    _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Speed = 0.0005f;
+                    _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Effect = "Nothing";
+                }
+            }
+
+            if (cheat >= 10 && Keyboard.IsKeyPressed(Keyboard.Key.F3) && Keyboard.IsKeyPressed(Keyboard.Key.F4))
+            {
+
+                stuffFactories++;
+                if (stuffFactories > _roundUIContext.RoundHandlerContext.RoundObject.StuffFactories.Count - 1) stuffFactories = 0;
+                cheat = 0;
+            }
+
+            if (cheat >= 10 && Keyboard.IsKeyPressed(Keyboard.Key.F4) && Keyboard.IsKeyPressed(Keyboard.Key.F5))
+            {
+
+                IStuffFactory randomStuffFactory = _roundUIContext.RoundHandlerContext.RoundObject.StuffFactories[stuffFactories];
+                IStuff stuff = randomStuffFactory.CreateToCheat(CalculMouseVector());
+                _roundUIContext.RoundHandlerContext.RoundObject.StuffList.Add(stuff);
+            }
+            cheat++;
         }
 
         public Vector CalculMouseVector()
@@ -251,7 +289,7 @@ namespace MiamiOps
         public void ChangeSound()
         {
             _bulletSound.Dispose();
-            if(a == 1)
+            if(putPortal == 1)
             {
                 _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "2bullet.ogg");
 
@@ -262,5 +300,8 @@ namespace MiamiOps
             }
             _bulletSound.Volume = 150f;
         }
+
+        public int PortalOn => putPortal;
+        public int StuffFactories => stuffFactories;
     }
 }

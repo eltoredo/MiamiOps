@@ -123,12 +123,12 @@ namespace MiamiOps
 
                 _stuffFactories = new List<IStuffFactory>();
 
-                // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
-                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "bossSpawn", TimeSpan.FromSeconds(30)));
-                //this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Poison", TimeSpan.FromSeconds(30)));
+                 _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
+                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "bossSpawn", TimeSpan.FromSeconds(30)));
+               this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Poison", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Blind", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Slow", TimeSpan.FromSeconds(30)));
-                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Cookie", TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Cookie", TimeSpan.FromSeconds(30)));
                 // this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "apple", TimeSpan.FromSeconds(30)));
                 //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
                 // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
@@ -343,7 +343,11 @@ namespace MiamiOps
                     _enemies[i].Speed = 0.00020f;
                 }
 
-                if (_enemies[i].IsEffectAlive == false)
+                if (_enemies[i].Effect == "Cheat")
+                {
+
+                }
+               else if (_enemies[i].IsEffectAlive == false)
                 {
                     _enemies[i].Effect = "nothing";
                     _enemies[i].Speed = this._enemiesSpeed ;
@@ -353,6 +357,10 @@ namespace MiamiOps
                 {
                     _enemies[i].Speed = 0.005f;
                 }
+
+
+                
+
 
 
             }

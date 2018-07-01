@@ -36,11 +36,13 @@ namespace MiamiOps
         Color _couleur = new Color(255, 0, 0);
 
         Round _ctx;
+        RoundUI _ctxUI;
 
-        public ATH(Round Context, float width, float height, View View)
+        public ATH(Round Context, float width, float height, View View, RoundUI ctxUI )
         {
 
             _ctx = Context;
+            _ctxUI = ctxUI;
 
             _life = _ctx.Player.LifePlayer;
             _ammo = _ctx.Player.CurrentWeapon.Ammo;
@@ -50,6 +52,7 @@ namespace MiamiOps
             _effect = _ctx.Player.Effect;
             _level = _ctx.Level;
             _stage = _ctx.Stage;
+            
 
             
             _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
@@ -132,6 +135,16 @@ namespace MiamiOps
 
             };
             _athList.Add(StageBar);
+
+            Text PackageBar = new Text
+            {
+                Font = _font,
+                Color = Color.White,
+                DisplayedString = "Package: " + _stage.ToString() + "-" + _level.ToString(),
+                CharacterSize = 20
+
+            };
+            _athList.Add(PackageBar);
         }
 
 
@@ -209,8 +222,11 @@ namespace MiamiOps
             }
             _athList[5].DisplayedString = "Effect:" + effectOnAth;
 
+            //Current stage
             _athList[6].DisplayedString = "Stage: " + _ctx.Level.ToString() + " - " + _ctx.Stage.ToString();
 
+            //Current stage
+            _athList[7].DisplayedString = "Package: " + _ctx.StuffFactories[_ctxUI.GameCtx.Input.StuffFactories].Name;
 
 
 
@@ -227,6 +243,7 @@ namespace MiamiOps
             _athList[4].Position = new Vector2f(_athList[0].Position.X + 10, _athList[0].Position.Y + 40);
             _athList[5].Position = new Vector2f(_athList[0].Position.X -70, _athList[0].Position.Y+100);
             _athList[6].Position = new Vector2f(_athList[0].Position.X - 1000, _athList[0].Position.Y -80);
+            _athList[7].Position = new Vector2f(_athList[0].Position.X , _athList[0].Position.Y +500);
 
 
 

@@ -26,7 +26,7 @@ namespace MiamiOps
         bool reset;
         bool _musicReset;
         bool _noMusic;
-
+        
         List<FloatRect> _boundingBoxPackage;
 
         uint _mapWidth;
@@ -42,6 +42,9 @@ namespace MiamiOps
 
         Texture _doorTexture;
         Sprite _doorSprite;
+
+        Texture _portalTexture;
+        Sprite _portalSprite;
 
         Texture _blindEffecTexture;
         Sprite _blindSprite;
@@ -90,6 +93,9 @@ namespace MiamiOps
             _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
             _doorSprite = new Sprite(_doorTexture);
 
+            _portalTexture = new Texture("../../../../Images/portal.png");
+            _portalSprite = new Sprite(_doorTexture);
+
             _blindEffecTexture = new Texture("../../../../Images/soulcalibur.png");
             _blindSprite = new Sprite(_blindEffecTexture);
 
@@ -109,7 +115,7 @@ namespace MiamiOps
             }
             if (this._roundHandlerCtx.RoundObject._boss != null) _bossUI = new EnemiesUI(this, _bossTexture, 3, 100, 100, _roundHandlerCtx.RoundObject._boss, mapWidth, mapHeight, mapCtx);
 
-            _ath = new ATH(_roundHandlerCtx.RoundObject, screenWidth, screenHeight, _view);
+            _ath = new ATH(_roundHandlerCtx.RoundObject, screenWidth, screenHeight, _view, this);
             _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundHandlerCtx.RoundObject.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
@@ -118,7 +124,7 @@ namespace MiamiOps
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
-            
+            //Door
             _doorTexture.Dispose();
             _doorSprite.Dispose();
             if (_roundHandlerCtx.RoundObject.IsDoorOpened == false)
@@ -132,6 +138,23 @@ namespace MiamiOps
             _doorSprite = new Sprite(_doorTexture);
             _doorSprite.Position = new Vector2f(mapWidth / 2, mapHeight / 2);
             _doorSprite.Draw(window, RenderStates.Default);
+
+            //Tp Portal
+            _portalTexture.Dispose();
+            _portalSprite.Dispose();
+            if (this.GameCtx.Input.PortalOn == 0)
+            {
+                _portalTexture = new Texture("../../../../Images/VideBullet.png");
+            }
+            else
+            {
+                _portalTexture = new Texture("../../../../Images/portal.png");
+            }
+            _portalSprite = new Sprite(_portalTexture);
+            _portalSprite.Position = new Vector2f((((float)this.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace.X + 1) * (mapWidth / 2) - 82), ((((float)this.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace.Y - 1) * (mapHeight / 2))  +40 )* -1);
+            _portalSprite.Draw(window, RenderStates.Default);
+
+
             FloatRect _hitBoxDoor = _doorSprite.GetGlobalBounds();
 
             for (int i = 0; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundHandlerCtx.RoundObject.Enemies[i]);
@@ -195,7 +218,7 @@ namespace MiamiOps
             {
                 this._roundHandlerCtx.RoundObject.LevelPass = true;
             }
-            
+
         }
 
         private void UpdateEffect()

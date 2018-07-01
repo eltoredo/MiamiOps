@@ -58,6 +58,18 @@ namespace MiamiOps
             _life = true;
         }
 
+        public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo, TimeSpan lifeSpan, string type, Vector place) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        {
+            this._gameHandler = context;
+            this._name = name;
+            this._place = place;
+            this._lifeSpan = lifeSpan;
+            this._creationDate = DateTime.UtcNow;
+            this._placeTP = new Vector();
+            _type = type;
+            _life = true;
+        }
+
         public void Shoot(Vector playerPosition, Vector mousePlace)
         {
             // Player - Context - Monsters -> If X or Y of mousePlace (direction of bullet) is touching the bounding box of an enemy, he looses life
@@ -281,11 +293,17 @@ namespace MiamiOps
             _lifeSpan = lifeSpan;
         }
 
+        public string Name => _name;
+
         public IStuff Create()
         {
             return new Weapon(this._gameHandlerCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan,"legendary");
         }
 
+        public IStuff CreateToCheat(Vector place)
+        {
+            return new Weapon(this._gameHandlerCtx, _name, _attack, _radius, _range, _maxAmmo, _lifeSpan, "legendary", place);
+        }
 
     }
 }

@@ -12,5 +12,7 @@
     public interface IStuffFactory
     {
         IStuff Create();
+        IStuff CreateToCheat(Vector place);
+        string Name { get; }
     }
 }

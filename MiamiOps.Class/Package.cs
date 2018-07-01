@@ -37,6 +37,19 @@ namespace MiamiOps
             this._creationDate = DateTime.UtcNow;
         }
 
+        public Package(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan, Vector place, float width = 0, float height = 0)
+        {
+            _gameHandlerCtx = gameHandlerCtx;
+
+            this._name = name;
+            this._place = place;
+            this._width = width;
+            this._height = height;
+            this._lifeSpan = lifeSpan;
+            this._name = name;
+            this._creationDate = DateTime.UtcNow;
+        }
+
         internal float GetNextRandomFloat()
         {
             return ((float)this.random.NextDouble() * 2) - 1;
@@ -265,10 +278,18 @@ namespace MiamiOps
             _lifeSpan = lifeSpan;
         }
 
+        public string Name => _name;
+
         public IStuff Create()
         {
             return new Package(_gameHandlerCtx, _name, _lifeSpan);
         }
+
+        public IStuff CreateToCheat(Vector place)
+        {
+            return new Package(_gameHandlerCtx, _name, _lifeSpan,place);
+        }
+
     }
 }
 
