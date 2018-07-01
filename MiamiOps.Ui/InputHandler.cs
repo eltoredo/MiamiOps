@@ -110,14 +110,14 @@ namespace MiamiOps
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
-                              
+
                 if (i >= 30 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "USP")
                 {
                     ChangeSound();
                     _bulletSound.Play();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
-                }else if(i >= 10 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "ak47")
+                } else if (i >= 10 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "ak47")
                 {
                     ChangeSound();
                     _bulletSound.Play();
@@ -125,8 +125,8 @@ namespace MiamiOps
                     i = 0;
                 }
 
-            else if (i >= 50 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "shotgun" || i >= 10 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "FreezeGun")
-            {
+                else if (i >= 50 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "shotgun" || i >= 10 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "FreezeGun")
+                {
                     ChangeSound();
                     _bulletSound.Play();
                     Vector shotgun_shoot = CalculMouseVector();
@@ -134,7 +134,7 @@ namespace MiamiOps
                     int count = 0;
                     for (int i = 0; i < 4; i++)
                     {
-                       
+
                         Vector new_shotgun_shoot = new Vector(shotgun_shoot.X + x, shotgun_shoot.Y + y);
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(new_shotgun_shoot);
                         if (count < 2)
@@ -149,7 +149,7 @@ namespace MiamiOps
                         }
 
                         count++;
-                        if(count == 2)
+                        if (count == 2)
                         {
                             x = -0.01f;
                             y = -0.01f;
@@ -161,7 +161,7 @@ namespace MiamiOps
                     y = 0.03f;
 
                 }
-                else if(_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "soulcalibur")
+                else if (_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "soulcalibur")
                 {
                     TimeSpan TimeBegin = TimeSpan.FromSeconds(5);
                     DateTime DateBegin = DateTime.UtcNow;
@@ -171,7 +171,7 @@ namespace MiamiOps
                     _roundUIContext.GameCtx.MusicMain.Pause();
                     _zawarudo.Play();
                     while (span < TimeBegin && Keyboard.IsKeyPressed(Keyboard.Key.Space)) {
-                         span = DateTime.UtcNow - DateBegin;
+                        span = DateTime.UtcNow - DateBegin;
                         ChangeSound();
                         _bulletSound.Play();
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
@@ -181,7 +181,7 @@ namespace MiamiOps
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Life = false;
                     _roundUIContext.GameCtx.MusicMain.Play();
                     i = 0;
-                }else if (i >= 20 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "SheepGun")
+                } else if (i >= 20 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "SheepGun")
                 {
                     ChangeSound();
                     _bulletSound.Play();
@@ -194,20 +194,26 @@ namespace MiamiOps
                     _bulletSound.Play();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
-                }else if(i>=40 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "TpGun")
+                } else if (i >= 40 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "TpGun")
                 {
                     ChangeSound();
-                   _bulletSound.Play();
-                     if (putPortal == 0) {
+                    _bulletSound.Play();
+                    if (putPortal == 0) {
 
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace = CalculMouseVector();
                         putPortal++;
                     }
-                    else if(putPortal == 1)
+                    else if (putPortal == 1)
                     {
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.Place = _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace;
                         putPortal = 0;
                     }
+                    i = 0;
+                } else if (i >= 50 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "BFG" && _roundUIContext.TargetBool == false)
+                {
+                    ChangeSound();
+                    _bulletSound.Play();
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
                 }
 

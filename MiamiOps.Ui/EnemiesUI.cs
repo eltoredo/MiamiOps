@@ -25,7 +25,7 @@ namespace MiamiOps
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
         int _direction;    // Direction in which the player is looking
         int _animStop;
-        Color colorCharacters = new Color(255, 255, 255, 255);
+        //Color colorCharacters = new Color(255, 255, 255, 255);
 
        
         public EnemiesUI(RoundUI roundUIContext, Texture texture, int nbSprite, int spriteWidth, int spriteHeight, Enemies enemy, uint mapWidth, uint mapHeight, Map ctxMap)
@@ -88,6 +88,7 @@ namespace MiamiOps
 
         public void EffectOnSprite()
         {
+            Color colorCharacters = new Color(255, 255, 255, 255);
             if (_enemy.Effect == "pyro_fruit" || _enemy.Effect == "FreezeGun")// || _enemy.Effect == "Hypnose")
             {
                 if (_effectTime == 10)
@@ -118,18 +119,15 @@ namespace MiamiOps
             }
             else if (_enemy.Effect == "Sheep")
             {
-                this._enemyTexture.Dispose();
-                this._enemySprite.Dispose();
-                this._enemyTexture = new Texture("../../../../Images/SheepTransform.png");
-                this._enemySprite = new Sprite(_enemyTexture);
-
+                this._enemyTexture = _roundUIContext.SheepTexture;
+                this._enemySprite = _roundUIContext.SheepSprite;
             }
             else if (_enemy.Effect == "nothing")
             {
-                
                 this._enemyTexture = _roundUIContext.MonsterTexture;
                 this._enemySprite = _roundUIContext.MonsterSprite;
                 this._enemySprite.Color = colorCharacters;
+
             }else if(_enemy.Effect == "Boss")
             {
                 this._enemyTexture = _roundUIContext.BossTexture;
