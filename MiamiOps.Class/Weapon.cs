@@ -213,7 +213,10 @@ namespace MiamiOps
                 Ctx.Player.Weapons[count-1].LifeSpan = TimeSpan.FromSeconds(30);
                 Ctx.Player.Weapons[count-1].CreationDate = DateTime.UtcNow;
             }
-            Ctx.Player.BlockWeapon = true;
+            if(this.Name != "SheepGun")
+            {
+                Ctx.Player.BlockWeapon = true;
+            }
             Ctx.StuffList.Remove(this);
 
         }

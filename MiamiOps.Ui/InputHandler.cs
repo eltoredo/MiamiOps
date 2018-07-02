@@ -194,7 +194,7 @@ namespace MiamiOps
                     _bulletSound.Play();
                     _roundUIContext.RoundHandlerContext.RoundObject.Player.Attack(CalculMouseVector());
                     i = 0;
-                } else if (i >= 40 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "TpGun")
+                } else if (i >= 40 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "TpGun" && _roundUIContext.RoundHandlerContext.RoundObject.Stage !=3)
                 {
                     ChangeSound();
                     if (putPortal == 0) {

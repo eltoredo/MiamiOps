@@ -98,7 +98,6 @@ namespace MiamiOps
             this._enemiesLife = enemiesLife;
             this._bossLife = enemiesLife * 30;
             this._enemiesSpeed = enemiesSpeed;
-            Console.WriteLine(this._enemiesSpeed);
             this._enemiesAttack = enemiesAttack;
             this._enemiesLargeur = enemiesLargeur;
             this._enemiesHauteur = enemiesHauteur;
@@ -159,7 +158,7 @@ namespace MiamiOps
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(_gameHandlerCtx, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
 
-            if (this._stage == 5) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
+            if (this._stage == 3) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
 
             if (this._count > this._enemies.Length)
             {
@@ -212,7 +211,7 @@ namespace MiamiOps
                 if (_stage >= 6) _player.SavePoints += this._level * 40000;
                 _player.Points = 0;
                 _levelPass = false;
-                if (_stage >= 6)
+                if (_stage >= 4)
                 {
                     _level++;
                     _stage = 1;
