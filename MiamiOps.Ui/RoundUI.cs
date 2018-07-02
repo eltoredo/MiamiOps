@@ -139,11 +139,11 @@ namespace MiamiOps
             _doorSprite.Dispose();
             if (_roundHandlerCtx.RoundObject.IsDoorOpened == false)
             {
-                _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
+                _doorTexture = new Texture("../../../../Images/CloseBus.png");
             }
             else
             {
-                _doorTexture = new Texture("../../../../Images/doortextureopened.png");
+                _doorTexture = new Texture("../../../../Images/OpenBus.png");
             }
             _doorSprite = new Sprite(_doorTexture);
             _doorSprite.Position = new Vector2f(mapWidth / 2, mapHeight / 2);
@@ -231,6 +231,11 @@ namespace MiamiOps
             CollideToShootEnnemiesAndPlayerToEnnemies();
 
             CollideShootToWall();
+
+            if (_playerUI.HitBoxPlayer.Intersects(_doorSprite.GetGlobalBounds()))
+            {
+                this.RoundHandlerContext.RoundObject.Player.Collide = true;
+            }
 
             UpdateEffect();
 
