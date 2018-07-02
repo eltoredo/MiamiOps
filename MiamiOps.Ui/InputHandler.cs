@@ -279,7 +279,7 @@ namespace MiamiOps
                 }
             }
 
-            if (cheat >= 10 && Keyboard.IsKeyPressed(Keyboard.Key.F3) && Keyboard.IsKeyPressed(Keyboard.Key.F4))
+            if (cheat >= 20 && Keyboard.IsKeyPressed(Keyboard.Key.F3) && Keyboard.IsKeyPressed(Keyboard.Key.F4))
             {
 
                 stuffFactories++;
