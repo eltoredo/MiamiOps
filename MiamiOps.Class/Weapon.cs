@@ -79,7 +79,6 @@ namespace MiamiOps
             // Position de départ et d'arrivée de la balle, vitesse / quand est-ce que j'ai tiré
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
-
             Shoot shoot = new Shoot(1f, TimeSpan.FromSeconds(5), 0.005f, playerPosition, mousePlace);
             _gameHandler.RoundObject.ListBullet.Add(shoot);
 

@@ -36,7 +36,7 @@ namespace MiamiOps
         uint _mapHeight;
         GameHandler _roundHandlerCtx;
         Music _effectMusic;
-        private List<float[]> _obstacles;
+        List<FloatRect> _collide;
         private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
 
         EnemiesUI _bossUI;
@@ -117,6 +117,7 @@ namespace MiamiOps
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
             _boundingBoxPackage = new List<FloatRect>();
             _enemies = new EnemiesUI[_roundHandlerCtx.RoundObject.Enemies.Length];
+            _collide = mapCtx.CollideMap;
             for (int i = 0; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++)
             {
 
@@ -229,6 +230,8 @@ namespace MiamiOps
 
             CollideToShootEnnemiesAndPlayerToEnnemies();
 
+            CollideShootToWall();
+
             UpdateEffect();
 
             if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this._roundHandlerCtx.RoundObject.IsDoorOpened == true)
@@ -236,6 +239,27 @@ namespace MiamiOps
                 this._roundHandlerCtx.RoundObject.LevelPass = true;
             }
 
+        }
+
+        private void CollideShootToWall()
+        {
+           
+            foreach (var item in _collide)
+            {
+                for (int a = 0; a < this._weaponUI.BoundingBoxBullet.Count; a++)
+                {
+                    if (this._weaponUI.BoundingBoxBullet[a].Intersects(item))
+                    {
+                        if(_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name != "BFG")
+                        {
+                            this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                            _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
+                            break;
+                        }
+                       
+                    }
+                }
+            }
         }
 
         private void UpdateEffect()
@@ -355,6 +379,14 @@ namespace MiamiOps
                     {
                         if (_targetBFGbool == true)
                         {
+                            if(_roundHandlerCtx.RoundObject.ListBullet.Count == 0)
+                            {
+                                this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                                _countBFG = 0;
+                                _targetBFGbool = false;
+                                //this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
+                                break;
+                            }
                             _roundHandlerCtx.RoundObject.ListBullet[a].MousePosition = _roundHandlerCtx.RoundObject.Enemies[_targetBFG].Place;
                         }
 
@@ -403,10 +435,10 @@ namespace MiamiOps
                                         _roundHandlerCtx.RoundObject.ListBullet[a].MousePosition = _roundHandlerCtx.RoundObject.Enemies[_targetBFG].Place;
                                         _roundHandlerCtx.RoundObject.ListBullet[a].StartPosition = _roundHandlerCtx.RoundObject.ListBullet[a].BulletPosition;
                                         _targetBFG = randomEnnemie;
-
+                                        Console.WriteLine(_targetBFG);
                                     }
 
-                                    if(_targetBFGbool == false)
+                                    if (_targetBFGbool == false)
                                     {
                                         _roundHandlerCtx.RoundObject.Enemies[i].Hit(attak);
                                         Random random = new Random();
@@ -418,6 +450,7 @@ namespace MiamiOps
                                         _roundHandlerCtx.RoundObject.ListBullet[a].StartPosition = _roundHandlerCtx.RoundObject.ListBullet[a].BulletPosition;
                                         _roundHandlerCtx.RoundObject.ListBullet[a].SpeedBullet = 0.005f;
                                         _targetBFGbool = true;
+                                        Console.WriteLine(_targetBFG);
                                     }
                                     
                                     if (_countBFG == 3)
@@ -427,12 +460,14 @@ namespace MiamiOps
                                             this._weaponUI.BoundingBoxBullet.RemoveAt(a);
                                             _countBFG = 0;
                                             _targetBFGbool = false;
-                                        this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
+                                        //this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
                                     }
                                   break;
                                 }
                                 else
                                 {
+                                    _countBFG = 0;
+                                    _targetBFGbool = false;
                                     _roundHandlerCtx.RoundObject.Enemies[i].Hit(attak);
                                     _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
                                     this._weaponUI.BoundingBoxBullet.RemoveAt(a);

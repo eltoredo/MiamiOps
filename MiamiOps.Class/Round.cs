@@ -121,8 +121,6 @@ namespace MiamiOps
                 this._player.Weapons.Add(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue,"normal"));
                 this._player.CurrentWeapon = this._player.Weapons[0];
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "TpGun", 0f, 0, 0f, 60, TimeSpan.MaxValue, "normal"));
-                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "BFG", 999f, 0, 0f, 60, TimeSpan.MaxValue, "legendary"));
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "Infinity_Gauntlet", 9999999f, 0, 0f, 60, TimeSpan.MaxValue, "legendary"));
 
                 _stuffFactories = new List<IStuffFactory>();
 
@@ -140,6 +138,9 @@ namespace MiamiOps
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "HypnoseGun", 0f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 999f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "BFG", 999f, 0, 0, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "Infinity_Gauntlet", 9999999f, 0, 0, 1, TimeSpan.FromSeconds(30)));
+
             }
             else
             {

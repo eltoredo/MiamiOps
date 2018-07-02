@@ -285,7 +285,7 @@ namespace MiamiOps
             {
                 for (int i = 0; i < _roundUIContext.RoundHandlerContext.RoundObject.CountEnnemi; i++)
                 {
-                    _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Speed = 0.0005f;
+                    _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Speed = _roundUIContext.RoundHandlerContext.RoundObject.EnemiesSpeed;
                     _roundUIContext.RoundHandlerContext.RoundObject.Enemies[i].Effect = "Nothing";
                 }
             }
