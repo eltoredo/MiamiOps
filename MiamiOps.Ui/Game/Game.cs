@@ -111,6 +111,7 @@ namespace MiamiOps
                 this.MusicMain.Play();
                 _mainMusic.Loop = true;
                 _roundUI = new RoundUI(_gameHandlerCtx, this, 3168, 3168, _gameHandlerCtx.Map, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, _view, _viewATH);
+                _playerInput = new InputHandler(_roundUI);
                 _gameHandlerCtx.HasLeft = false;
             }
 

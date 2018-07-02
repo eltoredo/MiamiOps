@@ -28,6 +28,7 @@ namespace MiamiOps
         int _time;
         int count;
         string _type;
+        string _status;
 
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
@@ -56,6 +57,7 @@ namespace MiamiOps
             this._placeTP = new Vector();
             _type = type;
             _life = true;
+            _status = "NoCheat";
         }
 
         public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo, TimeSpan lifeSpan, string type, Vector place) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
@@ -68,6 +70,7 @@ namespace MiamiOps
             this._placeTP = new Vector();
             _type = type;
             _life = true;
+            _status = "Cheat";
         }
 
         public void Shoot(Vector playerPosition, Vector mousePlace)
@@ -261,6 +264,11 @@ namespace MiamiOps
             get { return this._type; }
             set { this._type = value; }
         }
+        public string Status
+        {
+            get { return this._status; }
+            set { this._status = value; }
+        }
 
         public Vector TpPlace
         {
@@ -272,6 +280,7 @@ namespace MiamiOps
     public class WeaponFactory : IStuffFactory
     {
         readonly string _name;
+        string _status;
         readonly float _attack;
         readonly float _radius;
         readonly float _range;
@@ -297,11 +306,13 @@ namespace MiamiOps
 
         public IStuff Create()
         {
+            _status = "NoCheat";
             return new Weapon(this._gameHandlerCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan,"legendary");
         }
 
         public IStuff CreateToCheat(Vector place)
         {
+            _status = "Cheat";
             return new Weapon(this._gameHandlerCtx, _name, _attack, _radius, _range, _maxAmmo, _lifeSpan, "legendary", place);
         }
 

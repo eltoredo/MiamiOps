@@ -326,7 +326,7 @@ namespace MiamiOps
         public void ChangeSound()
         {
             _bulletSound.Dispose();
-            if(putPortal == 1)
+            if(putPortal == 1 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "TpGun")
             {
                 _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "2bullet.ogg");
 

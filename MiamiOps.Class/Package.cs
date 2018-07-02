@@ -18,6 +18,7 @@ namespace MiamiOps
         GameHandler _gameHandlerCtx;
         string _name;
         int _id;
+        string _status;
 
         public Package()
         {
@@ -35,6 +36,7 @@ namespace MiamiOps
             this._lifeSpan = lifeSpan;
             this._name = name;
             this._creationDate = DateTime.UtcNow;
+            _status = "NoCheat";
         }
 
         public Package(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan, Vector place, float width = 0, float height = 0)
@@ -48,6 +50,7 @@ namespace MiamiOps
             this._lifeSpan = lifeSpan;
             this._name = name;
             this._creationDate = DateTime.UtcNow;
+            _status = "Cheat";
         }
 
         internal float GetNextRandomFloat()
@@ -263,6 +266,12 @@ namespace MiamiOps
         public string Name => _name;
 
         public Vector Position => _place;
+
+        public string Status
+        {
+            get { return this._status; }
+            set { this._status = value; }
+        }
     }
 
     public class PackageFactory : IStuffFactory

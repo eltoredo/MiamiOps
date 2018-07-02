@@ -187,7 +187,15 @@ namespace MiamiOps
                 }
                 _stuffTexture.Dispose();
                 _stuffSprite.Dispose();
-                _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
+                if(stuff.Status == "Cheat")
+                {
+                    _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
+
+                }
+                else
+                {
+                    _stuffTexture = new Texture("../../../../Images/random.png");
+                }
                 _stuffSprite = new Sprite(_stuffTexture);
                 _stuffSprite.Position = new Vector2f(((float)stuff.Position.X + 1) * (mapWidth / 2), (((float)stuff.Position.Y - 1) * (mapHeight / 2)) * (-1));
                 _boundingBoxPackage.Add(_stuffSprite.GetGlobalBounds());
