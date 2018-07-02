@@ -114,7 +114,7 @@ namespace MiamiOps
                 if (File.Exists(bulletExist))
                 {
                     _bulletTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "Bullet.png");
-                    _bulletSprite = new Sprite(_bulletTexture);
+                      _bulletSprite = new Sprite(_bulletTexture);
                 }
                 else
                 {
