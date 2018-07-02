@@ -17,10 +17,10 @@ namespace MiamiOps
         private Text[] GameOverList = new Text[2];
         private Text[] GameWinList = new Text[1];
         private Texture[] buttonList = new Texture[3];
-        private Font font = new Font("../../../Menu/arial.ttf");
+        private Font font = new Font("../../../Menu/pricedown.ttf");
         static Texture _backgroundTextureGameOver = new Texture("../../../../Images/game_over_screen.png");
         static Sprite _backgroundSpriteGameOver;
-        static Texture _backgroundTextureGameWin = new Texture("../../../../Images/game_win_screen.png");
+        static Texture _backgroundTextureGameWin = new Texture("../../../../Images/game_win_screen.jpg");
         static Sprite _backgroundSpriteGameWin;
         Music musicGameOver = new Music("../../../Menu/DarkSoulsDie.ogg");
         Music musicGameWin = new Music("../../../../Images/GameWin.ogg");
@@ -65,18 +65,12 @@ namespace MiamiOps
                 Position = new Vector2f(width / 2 - width / 10 + 50, height - height / 4)
 
             };
-            Text Congratulation = new Text
-            {
-                Font = font,
-                Color = Color.Black,
-                DisplayedString = "CONGRATULATION NINGEN ! ",
-                CharacterSize = 70
 
-            };
             Text Score = new Text
             {
                 Font = font,
-                Color = Color.Red
+                Color = Color.Red,
+                CharacterSize = 70
 
             };
 
@@ -91,7 +85,6 @@ namespace MiamiOps
 
             _score = Score;
             _continue = Continue;
-            _congratulation = Congratulation;
             _backgroundSpriteGameOver = new Sprite(_backgroundTextureGameOver);
             _backgroundSpriteGameWin = new Sprite(_backgroundTextureGameWin);
         }
@@ -104,7 +97,6 @@ namespace MiamiOps
                 _backgroundSpriteGameWin.Draw(window, RenderStates.Default);
                 window.Draw(GameWinList[0]);
                 window.Draw(this._score);
-                window.Draw(this._congratulation);
             }
             else
             {
@@ -234,11 +226,9 @@ namespace MiamiOps
             this.PlaySoundMenu();
             bool end = true;
             _backgroundSpriteGameWin.Position = new Vector2f(game.MyView.Center.X - this._width / 2, game.MyView.Center.Y - this._height / 2);
-            GameWinList[0].Position = new Vector2f(game.MyView.Center.X - 100, game.MyView.Center.Y + 200);
-            _score.DisplayedString = "Your Score : " + game.Round.Player.SavePoints.ToString();
-            _score.Position = new Vector2f(game.MyView.Center.X - 150, game.MyView.Center.Y + 100);
-            _congratulation.Position = new Vector2f(game.MyView.Center.X-500, game.MyView.Center.Y-300);
-
+            GameWinList[0].Position = new Vector2f(game.MyView.Center.X - 100, game.MyView.Center.Y + 300);
+            _score.DisplayedString = game.Round.Player.SavePoints.ToString();
+            _score.Position = new Vector2f(game.MyView.Center.X - 150, game.MyView.Center.Y + 170);
             while (end == true)
             {
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
