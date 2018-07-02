@@ -121,7 +121,7 @@ namespace MiamiOps
 
         private void GamePause(object sender, KeyEventArgs e)
         {
-            if (e.Code == Keyboard.Key.M)
+            if (e.Code == Keyboard.Key.P)
             {
                 _pause = !_pause;
                 if (!Pause)

@@ -88,7 +88,7 @@ namespace MiamiOps
                 }
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.P)&&_roundUIContext.RoundHandlerContext.RoundObject.Player.BlockWeapon == false)
+            if (Keyboard.IsKeyPressed(Keyboard.Key.E)&&_roundUIContext.RoundHandlerContext.RoundObject.Player.BlockWeapon == false)
             {
                 if (_timerNextWeapon == 5)
                 {
@@ -98,7 +98,7 @@ namespace MiamiOps
                 _timerNextWeapon++;
                
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.O)&& _roundUIContext.RoundHandlerContext.RoundObject.Player.BlockWeapon == false)
+            if (Keyboard.IsKeyPressed(Keyboard.Key.R)&& _roundUIContext.RoundHandlerContext.RoundObject.Player.BlockWeapon == false)
             {
                 if (_timerPreviousWeapon == 4)
                 {

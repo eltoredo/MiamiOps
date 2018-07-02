@@ -61,14 +61,14 @@ namespace MiamiOps
 
         public void Move(Keyboard.Key key)
         {
-            if (key == Keyboard.Key.Z)
+            if (key == Keyboard.Key.D)
             {
                 menuList[selectedItemIndex].Color = Color.White;
                 selectedItemIndex--;
                 if (selectedItemIndex < 0) selectedItemIndex = 1;
                 menuList[selectedItemIndex].Color = Color.Red;
             }
-           else  if (key == Keyboard.Key.S)
+           else  if (key == Keyboard.Key.Q)
             {
                 menuList[selectedItemIndex].Color = Color.White;
                 selectedItemIndex++;
@@ -113,14 +113,14 @@ namespace MiamiOps
                     window.Close();
                 }
 
-                if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
+                if (Keyboard.IsKeyPressed(Keyboard.Key.D))
                 {
-                    this.Move(Keyboard.Key.Z);
+                    this.Move(Keyboard.Key.D);
                     KeyPressed = false;
                 }
-                else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
                 {
-                    this.Move(Keyboard.Key.S);
+                    this.Move(Keyboard.Key.Q);
                     KeyPressed = false;
                 }
 
