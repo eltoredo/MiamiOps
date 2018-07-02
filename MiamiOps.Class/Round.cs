@@ -118,9 +118,10 @@ namespace MiamiOps
             if (actualPlayer == null)
             {
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue,"normal"));
+                this._player.Weapons.Add(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue,"normal"));
+                this._player.CurrentWeapon = this._player.Weapons[0];
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "TpGun", 2f, 0, 0f, 60, TimeSpan.MaxValue, "normal"));
-                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "BFG", 999f, 0, 0f, 60, TimeSpan.MaxValue, "Legendary"));
+                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "BFG", 999f, 0, 0f, 60, TimeSpan.MaxValue, "legendary"));
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "Infinity_Gauntlet", 9999999f, 0, 0f, 60, TimeSpan.MaxValue, "legendary"));
 
                 _stuffFactories = new List<IStuffFactory>();

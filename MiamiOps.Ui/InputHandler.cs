@@ -22,7 +22,7 @@ namespace MiamiOps
         double x = 0.03f;
         double y = 0.03f;
         bool _shoot;
-        int putPortal = 0;
+        int putPortal;
         int ennemiesSpeed;
         int stuffFactories;
         int cheat;
@@ -36,6 +36,7 @@ namespace MiamiOps
             _bulletSound = new Music("../../../../Images/" + _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "bullet.ogg");
             _zawarudo = new Music("../../../../Images/ZA WARUDO.ogg");
             _shoot = false;
+            putPortal = 0;
 
         }
 
@@ -196,14 +197,24 @@ namespace MiamiOps
                 } else if (i >= 40 && _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name == "TpGun")
                 {
                     ChangeSound();
-                    _bulletSound.Play();
                     if (putPortal == 0) {
 
-                        _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace = CalculMouseVector();
-                        putPortal++;
+                        Vector tpplace = CalculMouseVector();
+                        if(tpplace.X > 0.98 || tpplace.Y> 0.98 || tpplace.X < -0.98 || tpplace.Y <-0.98)
+                        {
+
+                        }
+                        else
+                        {
+                            _bulletSound.Play();
+                            _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace = tpplace;
+                            putPortal++;
+                        }
+
                     }
                     else if (putPortal == 1)
                     {
+                        _bulletSound.Play();
                         _roundUIContext.RoundHandlerContext.RoundObject.Player.Place = _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace;
                         putPortal = 0;
                     }
