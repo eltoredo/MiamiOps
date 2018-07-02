@@ -57,8 +57,8 @@ namespace MiamiOps
             this._gameHandlerCtx.RoundObject.Enemies[this._name].Effect = "nothing";
             this._gameHandlerCtx.RoundObject.Enemies[this._name].CreationDateEffect = DateTime.Now;
             this._gameHandlerCtx.RoundObject.Enemies[this._name].LifeSpanEffect = TimeSpan.FromTicks(0);
-            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 1000;
-            _gameHandlerCtx.RoundObject.Player.Points += 100;
+            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 10;
+            _gameHandlerCtx.RoundObject.Player.Points += 50;
             this._gameHandlerCtx.RoundObject.CountEnnemi = oldCount;
 
         }

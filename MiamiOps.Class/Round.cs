@@ -120,7 +120,7 @@ namespace MiamiOps
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
                 this._player.Weapons.Add(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue,"normal"));
                 this._player.CurrentWeapon = this._player.Weapons[0];
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "TpGun", 2f, 0, 0f, 60, TimeSpan.MaxValue, "normal"));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "TpGun", 0f, 0, 0f, 60, TimeSpan.MaxValue, "normal"));
                  this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "BFG", 999f, 0, 0f, 60, TimeSpan.MaxValue, "legendary"));
                 this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "Infinity_Gauntlet", 9999999f, 0, 0f, 60, TimeSpan.MaxValue, "legendary"));
 
@@ -136,10 +136,10 @@ namespace MiamiOps
                 _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
                 _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
-                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "HypnoseGun", 0f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 999f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
-                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 0.1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
             }
             else
             {
@@ -314,18 +314,16 @@ namespace MiamiOps
           
             if (this.Player.Level >= 5&& _player.PassOut == 0)
             {
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5, 0, 0, 30, TimeSpan.MaxValue, "normal"));
-                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30)));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5f, 0, 0, 30, TimeSpan.MaxValue, "normal"));
                 _player.PassOut++;
             }else if(this.Player.Level >= 10 && _player.PassOut == 1)
             {
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue, "normal"));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8f, 0, 0, 10, TimeSpan.MaxValue, "normal"));
                 _player.PassOut++;
             }
             else if (this.Player.Level >= 15 && _player.PassOut == 2)
             {
                 this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "point", TimeSpan.FromSeconds(30)));
-                this._stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 9999f, 0.1f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 _player.PassOut++;
             }
 

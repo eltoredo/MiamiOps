@@ -391,7 +391,7 @@ namespace MiamiOps
                                         _countBFG++;
                                         this._enemies[i].HitBoxEnnemies = new FloatRect();
                                         Random random = new Random();
-                                        int randomEnnemie = random.Next(0, _roundHandlerCtx.RoundObject.Enemies.Length);
+                                        int randomEnnemie = random.Next(0, _roundHandlerCtx.RoundObject.CountEnnemi);
                                         _roundHandlerCtx.RoundObject.ListBullet[a].MousePosition = _roundHandlerCtx.RoundObject.Enemies[_targetBFG].Place;
                                         _roundHandlerCtx.RoundObject.ListBullet[a].StartPosition = _roundHandlerCtx.RoundObject.ListBullet[a].BulletPosition;
                                         _targetBFG = randomEnnemie;
@@ -402,7 +402,7 @@ namespace MiamiOps
                                     {
                                         _roundHandlerCtx.RoundObject.Enemies[i].Hit(attak);
                                         Random random = new Random();
-                                        int randomEnnemie = random.Next(0, _roundHandlerCtx.RoundObject.Enemies.Length);
+                                        int randomEnnemie = random.Next(0, _roundHandlerCtx.RoundObject.CountEnnemi);
 
                                         _targetBFG = randomEnnemie;
 

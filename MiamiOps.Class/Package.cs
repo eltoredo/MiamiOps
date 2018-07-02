@@ -205,7 +205,7 @@ namespace MiamiOps
                 else
                 {
                     Ctx.Player.Effect = "Reduce Speed";
-                    Ctx.Player.Speed -= Ctx.Player.Speed/2;
+                    Ctx.Player.Speed = Ctx.Player.Speed/10;
                     this.LifeSpan = TimeSpan.FromSeconds(5);
                     this.CreationDate = DateTime.UtcNow;
                     Ctx.PackageEffectList.Add(this);
