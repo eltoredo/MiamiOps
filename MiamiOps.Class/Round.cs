@@ -139,6 +139,7 @@ namespace MiamiOps
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "BFG", 999f, 0, 0, 1, TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "Infinity_Gauntlet", 9999999f, 0, 0, 1, TimeSpan.FromSeconds(30)));
+                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "point", TimeSpan.FromSeconds(30)));
 
             }
             else
@@ -208,7 +209,7 @@ namespace MiamiOps
                 _stage++;
                 _player.Experience += _player.Points / 2;
                 _player.SavePoints = _player.Points + this._stage * 10000;
-                if (_stage >= 6) _player.SavePoints += this._level * 40000;
+                if (_stage >= 4) _player.SavePoints += this._level * 40000;
                 _player.Points = 0;
                 _levelPass = false;
                 if (_stage >= 4)
@@ -323,7 +324,6 @@ namespace MiamiOps
             }
             else if (this.Player.Level >= 15 && _player.PassOut == 2)
             {
-                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "point", TimeSpan.FromSeconds(30)));
                 _player.PassOut++;
             }
 
@@ -393,12 +393,13 @@ namespace MiamiOps
                     if(package.Name == "speed")
                     {
                         this.Player.Speed -= 0.005f;
-                        this.Player.Effect = "nothing";
+
                     }
                     if (package.Name == "brute"|| package.Name == "pyro_fruit"|| package.Name == "apple"|| package.Name == "Poison"|| package.Name =="Blind" )
                     {
                         this.Player.Effect = "nothing";
-                    }if(package.Name == "Slow")
+                    }
+                    if (package.Name == "Slow")
                     {
                         this.Player.Speed = 0.005f;
                         this.Player.Effect = "nothing";

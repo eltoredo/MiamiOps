@@ -271,7 +271,7 @@ namespace MiamiOps
 
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F3))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F5))
             {
                 for (int i = 0; i < _roundUIContext.RoundHandlerContext.RoundObject.CountEnnemi; i++)
                 {
@@ -281,7 +281,7 @@ namespace MiamiOps
 
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F4))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F6))
             {
                 for (int i = 0; i < _roundUIContext.RoundHandlerContext.RoundObject.CountEnnemi; i++)
                 {

@@ -212,7 +212,11 @@ namespace MiamiOps
 
             //current Effect
             string effectOnAth;
-            if(_ctx.Player.Effect == "nothing")
+            if(_ctx.Player.Effect == "nothing" && _ctx.Player.Speed == 0.005f)
+            {
+                effectOnAth = "";
+            }
+            else if(_ctx.Player.Effect == "nothing")
             {
                 effectOnAth = "";
             }
