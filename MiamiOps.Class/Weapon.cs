@@ -13,6 +13,7 @@ namespace MiamiOps
 
         private Random random = new Random();
         Vector _place;
+        Vector _placeTP;
         bool _life;
         string _name;
         float _attack;
@@ -26,6 +27,8 @@ namespace MiamiOps
         bool verifWeaponInList;
         int _time;
         int count;
+        string _type;
+        string _status;
 
         public Weapon(Player owner, float attack, float radius, float range, uint _maxAmmo)
         {
@@ -44,14 +47,30 @@ namespace MiamiOps
             _life = true;
         }
 
-        public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo,TimeSpan lifeSpan) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo, TimeSpan lifeSpan, string type) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
         {
             this._gameHandler = context;
             this._name = name;
             this._place = CreateRandomPosition();
             this._lifeSpan = lifeSpan;
             this._creationDate = DateTime.UtcNow;
+            this._placeTP = new Vector();
+            _type = type;
             _life = true;
+            _status = "NoCheat";
+        }
+
+        public Weapon(GameHandler context, string name, float attack, float radius, float range, uint _maxAmmo, TimeSpan lifeSpan, string type, Vector place) : this(new Player(null, new Vector(), 0, 0, new Vector()), attack, radius, range, _maxAmmo)
+        {
+            this._gameHandler = context;
+            this._name = name;
+            this._place = place;
+            this._lifeSpan = lifeSpan;
+            this._creationDate = DateTime.UtcNow;
+            this._placeTP = new Vector();
+            _type = type;
+            _life = true;
+            _status = "Cheat";
         }
 
         public void Shoot(Vector playerPosition, Vector mousePlace)
@@ -60,7 +79,6 @@ namespace MiamiOps
             // Position de départ et d'arrivée de la balle, vitesse / quand est-ce que j'ai tiré
             // Faire la différence entre le moment où la balle a été tirée et le temps qui s'est écoulé
             // Supprimer la balle après un certain temps
-
             Shoot shoot = new Shoot(1f, TimeSpan.FromSeconds(5), 0.005f, playerPosition, mousePlace);
             _gameHandler.RoundObject.ListBullet.Add(shoot);
 
@@ -195,7 +213,10 @@ namespace MiamiOps
                 Ctx.Player.Weapons[count-1].LifeSpan = TimeSpan.FromSeconds(30);
                 Ctx.Player.Weapons[count-1].CreationDate = DateTime.UtcNow;
             }
-            Ctx.Player.BlockWeapon = true;
+            if(this.Name != "SheepGun")
+            {
+                Ctx.Player.BlockWeapon = true;
+            }
             Ctx.StuffList.Remove(this);
 
         }
@@ -239,11 +260,29 @@ namespace MiamiOps
             get { return this._life ; }
             set { this._life = value ; }
         }
+
+        public string Type
+        {
+            get { return this._type; }
+            set { this._type = value; }
+        }
+        public string Status
+        {
+            get { return this._status; }
+            set { this._status = value; }
+        }
+
+        public Vector TpPlace
+        {
+            get { return this._placeTP; }
+            set { this._placeTP = value; }
+        }
     }
 
     public class WeaponFactory : IStuffFactory
     {
         readonly string _name;
+        string _status;
         readonly float _attack;
         readonly float _radius;
         readonly float _range;
@@ -265,11 +304,19 @@ namespace MiamiOps
             _lifeSpan = lifeSpan;
         }
 
+        public string Name => _name;
+
         public IStuff Create()
         {
-            return new Weapon(this._gameHandlerCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan);
+            _status = "NoCheat";
+            return new Weapon(this._gameHandlerCtx,_name, _attack, _radius, _range, _maxAmmo,_lifeSpan,"legendary");
         }
 
+        public IStuff CreateToCheat(Vector place)
+        {
+            _status = "Cheat";
+            return new Weapon(this._gameHandlerCtx, _name, _attack, _radius, _range, _maxAmmo, _lifeSpan, "legendary", place);
+        }
 
     }
 }

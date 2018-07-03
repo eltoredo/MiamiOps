@@ -169,6 +169,11 @@ namespace MiamiOps
             get { return total_array_vertex; }
         }
 
+        public List<FloatRect> CollideMap
+        {
+            get { return _collide; }
+        }
+
         public void Draw(RenderTarget target, RenderStates states)
         {
             states.Texture = tileset;

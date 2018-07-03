@@ -118,6 +118,10 @@ namespace MiamiOps
                 }
                 _effectTime++;
             }
+            else if(_player.Effect == "Poison")
+            {
+                _playerSprite.Color = new Color(255, 0, 255);
+            }
             else
             {
                 this._playerTexture.Dispose();

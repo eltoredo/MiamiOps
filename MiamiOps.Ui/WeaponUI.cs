@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -109,8 +110,19 @@ namespace MiamiOps
             {
                 _bulletSprite.Dispose();
                 _bulletTexture.Dispose();
-                _bulletTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "Bullet.png");
-                _bulletSprite = new Sprite(_bulletTexture);
+                string bulletExist = "../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "Bullet.png";
+                if (File.Exists(bulletExist))
+                {
+                    _bulletTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "Bullet.png");
+                      _bulletSprite = new Sprite(_bulletTexture);
+                }
+                else
+                {
+                    _bulletTexture = new Texture("../../../../Images/Fireball.png");
+                    _bulletSprite = new Sprite(_bulletTexture);
+                }
+            
+                
                 if (reset == false)
                 {
                     this._bulletBoundingBox.Clear();

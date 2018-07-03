@@ -16,13 +16,19 @@ namespace MiamiOps
         Game _gameCtx;
         Map _mapCtx;
         RectangleShape playerBound = new RectangleShape();
-        Texture _monsterTexture = new Texture("../../../../Images/Monster.png");
-        Texture _bossTexture = new Texture("../../../../Images/dragon.png");
+        Texture _bossTexture;
+        Sprite _bossSprite;
+        Texture _monsterTexture;
+        Sprite _monsterSprite;
         ATH _ath;
         View _view;
         View _viewATH;
         bool reset;
         bool _musicReset;
+        bool _noMusic;
+        int _countBFG;
+        int _targetBFG;
+        bool _targetBFGbool;
 
         List<FloatRect> _boundingBoxPackage;
 
@@ -30,7 +36,7 @@ namespace MiamiOps
         uint _mapHeight;
         GameHandler _roundHandlerCtx;
         Music _effectMusic;
-        private List<float[]> _obstacles;
+        List<FloatRect> _collide;
         private List<RectangleShape> _drawObstacles = new List<RectangleShape>();
 
         EnemiesUI _bossUI;
@@ -39,6 +45,15 @@ namespace MiamiOps
 
         Texture _doorTexture;
         Sprite _doorSprite;
+
+        Texture _portalTexture;
+        Sprite _portalSprite;
+
+        Texture _blindEffecTexture;
+        Sprite _blindSprite;
+
+         Texture _sheepTexture;
+         Sprite  _sheepSprite;
 
         public GameHandler RoundHandlerContext
         {
@@ -72,12 +87,26 @@ namespace MiamiOps
 
             Random _random = new Random();
             _roundHandlerCtx = roundHandlerCtx;
+            _monsterTexture = new Texture("../../../../Images/Monster" + _roundHandlerCtx.RoundObject.Level + "-" + _roundHandlerCtx.RoundObject.Stage + ".png");
+            _monsterSprite = new Sprite(_monsterTexture);
+
+            _bossTexture = new Texture("../../../../Images/dragon.png");
+            _bossSprite = new Sprite(_bossTexture);
+
+             _sheepTexture = new Texture("../../../../Images/SheepTransform.png");
+             _sheepSprite = new Sprite(_sheepTexture);
 
             Texture _weaponTexture = new Texture("../../../../Images/soulcalibur.png");
             Texture _bulletTexture = new Texture("../../../../Images/fireball.png");
 
             _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
             _doorSprite = new Sprite(_doorTexture);
+
+            _portalTexture = new Texture("../../../../Images/portal.png");
+            _portalSprite = new Sprite(_doorTexture);
+
+            _blindEffecTexture = new Texture("../../../../Images/soulcalibur.png");
+            _blindSprite = new Sprite(_blindEffecTexture);
 
             _musicReset = false;
             _effectMusic = new Music("../../../../Images/brute.ogg");
@@ -88,6 +117,7 @@ namespace MiamiOps
             _playerUI = new PlayerUI(this, 2, 3, 32, 32, new Vector(0, 0), mapWidth, mapHeight, mapCtx);
             _boundingBoxPackage = new List<FloatRect>();
             _enemies = new EnemiesUI[_roundHandlerCtx.RoundObject.Enemies.Length];
+            _collide = mapCtx.CollideMap;
             for (int i = 0; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++)
             {
 
@@ -95,61 +125,46 @@ namespace MiamiOps
             }
             if (this._roundHandlerCtx.RoundObject._boss != null) _bossUI = new EnemiesUI(this, _bossTexture, 3, 100, 100, _roundHandlerCtx.RoundObject._boss, mapWidth, mapHeight, mapCtx);
 
-            _ath = new ATH(_roundHandlerCtx.RoundObject, screenWidth, screenHeight, _view);
+            _ath = new ATH(_roundHandlerCtx.RoundObject, screenWidth, screenHeight, _view, this);
             _weaponUI = new WeaponUI(this, _weaponTexture, _bulletTexture, _roundHandlerCtx.RoundObject.Player.Place, mapWidth, mapHeight);
 
             _mapWidth = mapWidth;
             _mapHeight = mapHeight;
-            foreach (var item in _roundHandlerCtx.RoundObject.Obstacles)
-            {
-                RectangleShape lol = new RectangleShape();
-                Vector2f position = new Vector2f();
-                Vector2f size = new Vector2f();
-
-
-                float xPixel = ((item[0] + 1) * 32) / 0.02f;
-                float yPixel = ((item[1] - 1) * 32) / 0.02f;
-
-                position.X = xPixel;
-                position.Y = yPixel * -1;
-
-                lol.Position = position;
-
-                float lengthPixel = (item[2] * 32) / 0.02f;
-                float heigthPixel = (item[3] * 32) / 0.02f;
-
-                size.X = lengthPixel;
-                size.Y = heigthPixel;
-
-                lol.Size = size;
-                lol.FillColor = Color.Red;
-
-                //_drawObstacles.Add(lol);
-
-            }
-
-            //playerBound.Position = new Vector2f(1000, 1000);
-            //playerBound.Size = new Vector2f(32, 32);
-            //playerBound.FillColor = Color.Red;
-
-
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight)
         {
+            //Door
             _doorTexture.Dispose();
             _doorSprite.Dispose();
             if (_roundHandlerCtx.RoundObject.IsDoorOpened == false)
             {
-                _doorTexture = new Texture("../../../../Images/doortextureclosed.png");
+                _doorTexture = new Texture("../../../../Images/CloseBus.png");
             }
             else
             {
-                _doorTexture = new Texture("../../../../Images/doortextureopened.png");
+                _doorTexture = new Texture("../../../../Images/OpenBus.png");
             }
             _doorSprite = new Sprite(_doorTexture);
             _doorSprite.Position = new Vector2f(mapWidth / 2, mapHeight / 2);
             _doorSprite.Draw(window, RenderStates.Default);
+
+            //Tp Portal
+            _portalTexture.Dispose();
+            _portalSprite.Dispose();
+            if (this.GameCtx.Input.PortalOn == 0)
+            {
+                _portalTexture = new Texture("../../../../Images/VideBullet.png");
+            }
+            else
+            {
+                _portalTexture = new Texture("../../../../Images/portal.png");
+            }
+            _portalSprite = new Sprite(_portalTexture);
+            _portalSprite.Position = new Vector2f((((float)this.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace.X + 1) * (mapWidth / 2) - 82), ((((float)this.RoundHandlerContext.RoundObject.Player.CurrentWeapon.TpPlace.Y - 1) * (mapHeight / 2))  +40 )* -1);
+            _portalSprite.Draw(window, RenderStates.Default);
+
+
             FloatRect _hitBoxDoor = _doorSprite.GetGlobalBounds();
 
             for (int i = 0; i < this._roundHandlerCtx.RoundObject.CountEnnemi; i++) _enemies[i].Draw(window, mapWidth, mapHeight, _roundHandlerCtx.RoundObject.Enemies[i]);
@@ -173,7 +188,15 @@ namespace MiamiOps
                 }
                 _stuffTexture.Dispose();
                 _stuffSprite.Dispose();
-                _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
+                if(stuff.Status == "Cheat")
+                {
+                    _stuffTexture = new Texture("../../../../Images/" + stuff.Name + ".png");
+
+                }
+                else
+                {
+                    _stuffTexture = new Texture("../../../../Images/random.png");
+                }
                 _stuffSprite = new Sprite(_stuffTexture);
                 _stuffSprite.Position = new Vector2f(((float)stuff.Position.X + 1) * (mapWidth / 2), (((float)stuff.Position.Y - 1) * (mapHeight / 2)) * (-1));
                 _boundingBoxPackage.Add(_stuffSprite.GetGlobalBounds());
@@ -191,21 +214,66 @@ namespace MiamiOps
                     _bossUI.HitBoxEnnemies = new FloatRect();
                 }
             }
+            if (_roundHandlerCtx.RoundObject.Player.Effect == "Blind")
+            {
+                _blindEffecTexture.Dispose();
+                _blindSprite.Dispose();
+                _blindEffecTexture = new Texture("../../../../Images/BlindEffect.png");
+                _blindSprite = new Sprite(_blindEffecTexture);
+                _blindSprite.Position = new Vector2f(this.GameCtx.MyView.Center.X-640, this.GameCtx.MyView.Center.Y-360);
+                _blindSprite.Draw(window, RenderStates.Default);
 
+            }
             _ath.Draw(window);
 
             CollideToPackage();
 
             CollideToShootEnnemiesAndPlayerToEnnemies();
 
+            CollideShootToWall();
+
+            if (_playerUI.HitBoxPlayer.Intersects(_doorSprite.GetGlobalBounds()))
+            {
+                this.RoundHandlerContext.RoundObject.Player.Collide = true;
+            }
+
+            UpdateEffect();
+
             if (this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this._roundHandlerCtx.RoundObject.IsDoorOpened == true)
             {
                 this._roundHandlerCtx.RoundObject.LevelPass = true;
             }
-            //else if(this._playerUI.HitBoxPlayer.Intersects(_hitBoxDoor) && this.RoundContext.IsDoorOpened == false)
-            //{
-            //    Console.WriteLine("ZA WARUDO");
-            //}
+
+        }
+
+        private void CollideShootToWall()
+        {
+           
+            foreach (var item in _collide)
+            {
+                for (int a = 0; a < this._weaponUI.BoundingBoxBullet.Count; a++)
+                {
+                    if (this._weaponUI.BoundingBoxBullet[a].Intersects(item))
+                    {
+                        if(_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name != "BFG")
+                        {
+                            this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                            _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
+                            break;
+                        }
+                       
+                    }
+                }
+            }
+        }
+
+        private void UpdateEffect()
+        {
+            if (_roundHandlerCtx.RoundObject.Player.Effect == "Boss")
+            {
+                CreateBoss();
+                _roundHandlerCtx.RoundObject.Player.Effect = "nothing";
+            }
         }
 
         public void Update()
@@ -244,12 +312,18 @@ namespace MiamiOps
                )
             {
                 GameCtx.MusicMain.Pause();
+            }else if(_roundHandlerCtx.RoundObject.Player.Effect == "Poison") {
             }
             else if (_musicReset == true)
             {
                 this._effectMusic.Stop();
+                GameCtx.MusicMain.Pause();
                 GameCtx.MusicMain.Play();
                 _musicReset = false;
+            }
+            else
+            {
+                this._effectMusic.Loop = false;
             }
 
         }
@@ -276,15 +350,21 @@ namespace MiamiOps
                                 this._effectMusic.Dispose();
                                 this._effectMusic = new Music("../../../../Images/" + _roundHandlerCtx.RoundObject.StuffList[count - 1].Name + ".ogg");
                                 _effectMusic.Play();
+                                if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name == "Poison") this._effectMusic.Loop = true;
+
                             }
                         }
+
 
                         if (_roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "speed" &&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "health" &&
                             _roundHandlerCtx.RoundObject.StuffList[count - 1].Name != "point"
                             ) _musicReset = true;
 
+
                         _roundHandlerCtx.RoundObject.StuffList[count - 1].WalkOn(_roundHandlerCtx.RoundObject);
+
+                       
                         break;
 
                     }
@@ -302,6 +382,19 @@ namespace MiamiOps
                 {
                     if (this._weaponUI.BoundingBoxBullet.Count > 0)
                     {
+                        if (_targetBFGbool == true)
+                        {
+                            if(_roundHandlerCtx.RoundObject.ListBullet.Count == 0)
+                            {
+                                this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                                _countBFG = 0;
+                                _targetBFGbool = false;
+                                //this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
+                                break;
+                            }
+                            _roundHandlerCtx.RoundObject.ListBullet[a].MousePosition = _roundHandlerCtx.RoundObject.Enemies[_targetBFG].Place;
+                        }
+
                         if (this._weaponUI.BoundingBoxBullet[a].Intersects(_enemies[i].HitBoxEnnemies))
                         {
                             if (_roundHandlerCtx.RoundObject.ListBullet.Count > 0)
@@ -313,10 +406,79 @@ namespace MiamiOps
                                         _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(3);
                                     }
 
-                                    _roundHandlerCtx.RoundObject.Enemies[i].Hit((float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack);
+                                    if (this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "SheepGun")
+                                    {
+                                        _roundHandlerCtx.RoundObject.Enemies[i].Effect = "Sheep";
+                                        _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                                        _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromSeconds(10);
+                                    }
+
+                                if (this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "HypnoseGun")
+                                {
+                                    _roundHandlerCtx.RoundObject.Enemies[i].Effect = "Hypnose";
+                                    _roundHandlerCtx.RoundObject.Enemies[i].CreationDateEffect = DateTime.UtcNow;
+                                    _roundHandlerCtx.RoundObject.Enemies[i].LifeSpanEffect = TimeSpan.FromHours(1);
+                                    this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
+                                }
+
+                                float attak = (float)_roundHandlerCtx.RoundObject.Player.CurrentWeapon.Attack;
+
+                                    if (this.RoundHandlerContext.RoundObject.Player.Effect == "Boost atk")
+                                    {
+                                         attak = attak * 2;
+                                    }
+
+                                if(this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Name == "BFG")
+                                {
+                                    if (_targetBFG == i && _targetBFGbool == true)
+                                    {
+                                        _roundHandlerCtx.RoundObject.Enemies[i].Hit(attak);
+                                        _countBFG++;
+                                        this._enemies[i].HitBoxEnnemies = new FloatRect();
+                                        Random random = new Random();
+                                        int randomEnnemie = random.Next(0, _roundHandlerCtx.RoundObject.CountEnnemi);
+                                        _roundHandlerCtx.RoundObject.ListBullet[a].MousePosition = _roundHandlerCtx.RoundObject.Enemies[_targetBFG].Place;
+                                        _roundHandlerCtx.RoundObject.ListBullet[a].StartPosition = _roundHandlerCtx.RoundObject.ListBullet[a].BulletPosition;
+                                        _targetBFG = randomEnnemie;
+                                        Console.WriteLine(_targetBFG);
+                                    }
+
+                                    if (_targetBFGbool == false)
+                                    {
+                                        _roundHandlerCtx.RoundObject.Enemies[i].Hit(attak);
+                                        Random random = new Random();
+                                        int randomEnnemie = random.Next(0, _roundHandlerCtx.RoundObject.CountEnnemi);
+
+                                        _targetBFG = randomEnnemie;
+
+                                        _roundHandlerCtx.RoundObject.ListBullet[a].MousePosition = _roundHandlerCtx.RoundObject.Enemies[_targetBFG].Place;
+                                        _roundHandlerCtx.RoundObject.ListBullet[a].StartPosition = _roundHandlerCtx.RoundObject.ListBullet[a].BulletPosition;
+                                        _roundHandlerCtx.RoundObject.ListBullet[a].SpeedBullet = 0.005f;
+                                        _targetBFGbool = true;
+                                        Console.WriteLine(_targetBFG);
+                                    }
+                                    
+                                    if (_countBFG == 3)
+                                    {
+                                            // this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
+                                            _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
+                                            this._weaponUI.BoundingBoxBullet.RemoveAt(a);
+                                            _countBFG = 0;
+                                            _targetBFGbool = false;
+                                        //this._roundHandlerCtx.RoundObject.Player.CurrentWeapon.Life = false;
+                                    }
+                                  break;
+                                }
+                                else
+                                {
+                                    _countBFG = 0;
+                                    _targetBFGbool = false;
+                                    _roundHandlerCtx.RoundObject.Enemies[i].Hit(attak);
                                     _roundHandlerCtx.RoundObject.ListBullet.RemoveAt(a);
                                     this._weaponUI.BoundingBoxBullet.RemoveAt(a);
                                     break;
+                                }
+                                    
                                 }
                                 
                         }
@@ -353,6 +515,27 @@ namespace MiamiOps
 
                 }
 
+
+                if (_roundHandlerCtx.RoundObject.Enemies[i].Effect == "Hypnose")
+                {
+                    
+
+                    if (_enemies[i].HitBoxEnnemies.Intersects(_enemies[_roundHandlerCtx.RoundObject.Enemies[i].TargetID].HitBoxEnnemies))
+                    {
+                        if(i == 0)
+                        {
+
+                        }
+                       if (i != 0 || _roundHandlerCtx.RoundObject.Enemies[i].TargetID != 0)
+                       {
+                            _roundHandlerCtx.RoundObject.Enemies[_roundHandlerCtx.RoundObject.Enemies[i].TargetID].Hit(99999999);
+                            _roundHandlerCtx.RoundObject.Enemies[i].Hit(99999999);
+                        }
+
+                    }
+                }
+
+
             }
             for (int b = 0; b < this._weaponUI.BoundingBoxBulletBoss.Count; b++)
             {
@@ -374,13 +557,51 @@ namespace MiamiOps
                 _roundHandlerCtx.RoundObject.GameState = true;
             }
         }
+
+        public void CreateBoss()
+        {
+            _bossUI = new EnemiesUI(this, _bossTexture, 3, 100, 100, _roundHandlerCtx.RoundObject._boss, MapWidth, MapHeight, Map);
+        }
         public Music EffectMusic
         {
             get { return _effectMusic; }
             set { _effectMusic = value; }
         }
-       
-            
+        public Texture MonsterTexture
+        {
+            get { return _monsterTexture; }
+            set { _monsterTexture = value; }
+        }
+        public Sprite MonsterSprite
+        {
+            get { return _monsterSprite; }
+            set { _monsterSprite = value; }
+        }
+        public Texture BossTexture
+        {
+            get { return _bossTexture; }
+            set { _bossTexture = value; }
+        }
+        public Sprite BossSprite
+        {
+            get { return _bossSprite; }
+            set { _bossSprite = value; }
+        }
+
+        public Texture SheepTexture
+        {
+            get { return _sheepTexture; }
+            set { _sheepTexture = value; }
+        }
+        public Sprite SheepSprite
+        {
+            get { return _sheepSprite; }
+            set { _sheepSprite = value; }
+        }
+
+        public bool TargetBool => _targetBFGbool;
+        public Map Map => _mapCtx;
+
     }
 }
 

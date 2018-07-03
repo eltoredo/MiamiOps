@@ -72,9 +72,12 @@ namespace MiamiOps
         public void GetNewWeapon(Weapon weapon)
         {
             this._weapons.Add(weapon);
-            if (this.BlockWeapon == false)
+            if (this.CurrentWeapon.Type != "legendary")
             {
-                this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+                if (this.BlockWeapon == false)
+                {
+                    this._currentWeapon = this._weapons[this.Weapons.Count - 1];
+                }
             }
         }
 
