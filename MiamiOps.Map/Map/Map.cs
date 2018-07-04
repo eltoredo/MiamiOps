@@ -108,7 +108,16 @@ namespace MiamiOps
                     {
                         string[] level_array = total_array[i];
 
-                        int tileID = Int32.Parse(level_array[a]);
+                        int tileID;
+
+                       try{
+                            tileID = int.Parse(level_array[a]);
+                        }
+                        catch
+                        {
+
+                            tileID = 0;
+                        }
 
                         if (tileID != 0)
                         {
