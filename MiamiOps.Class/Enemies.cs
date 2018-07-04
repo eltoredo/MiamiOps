@@ -19,7 +19,9 @@ namespace MiamiOps
         Vector _oldVector;
         Vector _direction;
         protected float _maxLife;
-
+        Random random = new Random();
+        Enemies _target;
+        int _targetID;
 
         public Enemies(GameHandler gameHandlerCtx, int name, Vector place, float life, float speed, float attack,float width=0, float height=0)
         {
@@ -38,6 +40,8 @@ namespace MiamiOps
             this._oldVector = new Vector();
             this._direction = new Vector();
             this._maxLife = life;
+            this._target = null;
+            this._targetID = 0;
         }
 
         // Method called when an enemy has less than 1 life point
@@ -53,8 +57,8 @@ namespace MiamiOps
             this._gameHandlerCtx.RoundObject.Enemies[this._name].Effect = "nothing";
             this._gameHandlerCtx.RoundObject.Enemies[this._name].CreationDateEffect = DateTime.Now;
             this._gameHandlerCtx.RoundObject.Enemies[this._name].LifeSpanEffect = TimeSpan.FromTicks(0);
-            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 1000;
-            _gameHandlerCtx.RoundObject.Player.Points += 100;
+            _gameHandlerCtx.RoundObject.Player.Experience += _gameHandlerCtx.RoundObject.Stage * 10;
+            _gameHandlerCtx.RoundObject.Player.Points += 50;
             this._gameHandlerCtx.RoundObject.CountEnnemi = oldCount;
 
         }
@@ -151,6 +155,7 @@ namespace MiamiOps
 
         private Vector SimulateMove(Vector target)
         {
+            
             // Builds a vector in the direction of the enemie
             Vector direction = target - this._place;
             // Builds a unit vector in the direction of the enemie
@@ -165,6 +170,11 @@ namespace MiamiOps
         public void Attack(float attack, float distance)
         {
             throw new NotImplementedException();
+        }
+
+        internal float GetNextRandomFloat()
+        {
+            return ((float)this.random.NextDouble() * 2) - 1;
         }
 
         public double Life => this._life;
@@ -186,6 +196,19 @@ namespace MiamiOps
             get { return _effectTiming; }
             set { _effectTiming = value; }
         }
+
+        public Enemies Target
+        {
+            get { return _target; }
+            set { _target = value; }
+        }
+
+        public int TargetID
+        {
+            get { return _targetID; }
+            set { _targetID = value; }
+        }
+
 
         public bool IsEffectAlive
         {

@@ -12,6 +12,7 @@ namespace MiamiOps
         Texture _enemyTexture;
         Sprite _enemySprite;
         Enemies _enemy;
+        Enemies _target;
 
         int _nbSprite;    // The number of columns in a sprite
         int _spriteWidth;
@@ -24,7 +25,7 @@ namespace MiamiOps
         int _animFrames;    // Number of animation frames (0 to 3 so a total of 4)
         int _direction;    // Direction in which the player is looking
         int _animStop;
-        Color colorCharacters = new Color(255, 255, 255, 255);
+        //Color colorCharacters = new Color(255, 255, 255, 255);
 
        
         public EnemiesUI(RoundUI roundUIContext, Texture texture, int nbSprite, int spriteWidth, int spriteHeight, Enemies enemy, uint mapWidth, uint mapHeight, Map ctxMap)
@@ -53,6 +54,7 @@ namespace MiamiOps
         private Vector2f UpdatePlace(Vector enemyPlace, uint mapWidth, uint mapHeight)
         {
             Vector2f newEnnemyPlace = new Vector2f(((float)enemyPlace.X + 1) * (mapWidth / 2), (((float)enemyPlace.Y - 1) * (mapHeight / 2))*-1);
+            _hitBoxEnnemi = new FloatRect(newEnnemyPlace.X, newEnnemyPlace.Y, 32, 32);
             //if (_ctxMap.Collide(this._hitBoxEnnemi))
             //{
             //    _enemySprite.Color = Color.Red;
@@ -60,15 +62,17 @@ namespace MiamiOps
             //}
 
             //_enemySprite.Color = colorCharacters;
-           
+
             return newEnnemyPlace;
         }
 
         public void Draw(RenderWindow window, uint mapWidth, uint mapHeight, Enemies enemies)
         {
             this._enemy = enemies;
-            this._enemySprite.Position = UpdatePlace(enemies.Place, mapWidth, mapHeight);
-            _hitBoxEnnemi = _enemySprite.GetGlobalBounds();
+            _hitBoxEnnemi = new FloatRect();
+            EffectOnSprite();
+            this._enemySprite.Position = UpdatePlace(this._enemy.Place, mapWidth, mapHeight);
+           // _hitBoxEnnemi = _enemySprite.GetGlobalBounds();
             _nbDirection = Conversion(this._enemy.Direction);
 
             _animStop = _spriteWidth;
@@ -77,7 +81,6 @@ namespace MiamiOps
             if (_animFrames == _nbSprite) _animFrames = 0;
             _enemySprite.TextureRect = new IntRect(_animFrames * _animStop, _direction, _spriteWidth, _spriteHeight);
             ++_animFrames;
-            EffectOnSprite();
 
             _enemySprite.Draw(window, RenderStates.Default);
         }
@@ -85,14 +88,20 @@ namespace MiamiOps
 
         public void EffectOnSprite()
         {
-            if (_enemy.Effect == "pyro_fruit"||_enemy.Effect == "FreezeGun")
+            Color colorCharacters = new Color(255, 255, 255, 255);
+            if (_enemy.Effect == "pyro_fruit" || _enemy.Effect == "FreezeGun")// || _enemy.Effect == "Hypnose")
             {
                 if (_effectTime == 10)
                 {
                     if (_enemy.Effect == "pyro_fruit")
                     {
                         _enemySprite.Color = Color.Red;
-                    }else if(_enemy.Effect == "FreezeGun")
+                    }
+                    else if (_enemy.Effect == "Hypnose")
+                    {
+                        _enemySprite.Color = Color.Black;
+                    }
+                    else if (_enemy.Effect == "FreezeGun")
                     {
                         _enemySprite.Color = Color.Blue;
                     }
@@ -104,9 +113,26 @@ namespace MiamiOps
                 }
                 _effectTime++;
             }
-            else
+            else if (_enemy.Effect == "Hypnose")
             {
-                _enemySprite.Color = colorCharacters;
+                _enemySprite.Color = Color.Black;
+            }
+            else if (_enemy.Effect == "Sheep")
+            {
+                this._enemyTexture = _roundUIContext.SheepTexture;
+                this._enemySprite = _roundUIContext.SheepSprite;
+            }
+            else if (_enemy.Effect == "nothing")
+            {
+                this._enemyTexture = _roundUIContext.MonsterTexture;
+                this._enemySprite = _roundUIContext.MonsterSprite;
+                this._enemySprite.Color = colorCharacters;
+
+            }else if(_enemy.Effect == "Boss")
+            {
+                this._enemyTexture = _roundUIContext.BossTexture;
+                this._enemySprite = _roundUIContext.BossSprite;
+                this._enemySprite.Color = colorCharacters;
             }
         }
 

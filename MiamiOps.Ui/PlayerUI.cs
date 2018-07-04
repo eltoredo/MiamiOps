@@ -72,6 +72,27 @@ namespace MiamiOps
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Collide = false;
             }
 
+            if(_roundUIContext.RoundHandlerContext.RoundObject.Player.Collide == true)
+            {
+                if(_nbDirection == 2)
+                {
+                    newPlayerPlace = new Vector2f(newPlayerPlace.X - 8, newPlayerPlace.Y);
+                }
+                else if(_nbDirection == 1)
+                {
+                    newPlayerPlace = new Vector2f(newPlayerPlace.X + 8, newPlayerPlace.Y);
+                }
+                else if (_nbDirection == 3)
+                {
+                    newPlayerPlace = new Vector2f(newPlayerPlace.X, newPlayerPlace.Y + 8);
+                }
+                else if (_nbDirection == 0)
+                {
+                    newPlayerPlace = new Vector2f(newPlayerPlace.X, newPlayerPlace.Y - 8);
+                }
+
+            }
+
 
             return newPlayerPlace;
         }
@@ -118,6 +139,10 @@ namespace MiamiOps
                 }
                 _effectTime++;
             }
+            else if(_player.Effect == "Poison")
+            {
+                _playerSprite.Color = new Color(255, 0, 255);
+            }
             else
             {
                 this._playerTexture.Dispose();
@@ -150,6 +175,11 @@ namespace MiamiOps
         public int AnimStop {
             get { return this._animStop; }
             set { this._animStop = value; }
+        }
+        public int NbDirection
+        {
+            get { return this._nbDirection; }
+            set { this._nbDirection = value; }
         }
     }
 }

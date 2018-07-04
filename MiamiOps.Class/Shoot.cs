@@ -46,14 +46,26 @@ namespace MiamiOps
             }
         }
 
-        public Vector MousePosition => _mousePosition;
+        public Vector MousePosition
+        {
+            get { return _mousePosition; }
+            set { _mousePosition = value; }
+        }
         public Vector BulletPosition
         {
             get { return _bulletPosition; }
             set { _bulletPosition = value; }
         }
-        public Vector StartPosition => _playerPosition;
-        public float SpeedBullet => _speed;
+        public Vector StartPosition
+        {
+            get { return _playerPosition; }
+            set { _playerPosition = value; }
+        }
+        public float SpeedBullet
+        {
+            get { return _speed; }
+            set { _speed = value; }
+        }
         public int CountBullet
         {
             get { return _count; }

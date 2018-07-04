@@ -32,6 +32,7 @@ namespace MiamiOps
         int _countSpawn;
         bool _gameState;
         bool _levelPass;
+        bool _gameWin;
 
         Random _random;
         private List<IStuffFactory> _stuffFactories;
@@ -95,7 +96,7 @@ namespace MiamiOps
             
             // Save the enemies parametres
             this._enemiesLife = enemiesLife;
-            this._bossLife = enemiesLife * 30;
+            this._bossLife = enemiesLife * 5;
             this._enemiesSpeed = enemiesSpeed;
             this._enemiesAttack = enemiesAttack;
             this._enemiesLargeur = enemiesLargeur;
@@ -116,14 +117,30 @@ namespace MiamiOps
             if (actualPlayer == null)
             {
                 this._player = new Player(_weapons, _gameHandlerCtx, player, playerLife, playerSpeed, playerDir, playerLargeur, playerHauteur);
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue));
+                this._player.Weapons.Add(new Weapon(_gameHandlerCtx, "USP", 2f, 0, 0f, 60, TimeSpan.MaxValue,"normal"));
+                this._player.CurrentWeapon = this._player.Weapons[0];
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "TpGun", 0f, 0, 0f, 60, TimeSpan.MaxValue, "normal"));
 
                 _stuffFactories = new List<IStuffFactory>();
+
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "bossSpawn", TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Poison", TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Blind", TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Slow", TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "Cookie", TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "apple", TimeSpan.FromSeconds(30)));
                 _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "health", TimeSpan.FromSeconds(30)));
-                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
-               // _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "brute", TimeSpan.FromSeconds(30)));
-                //_stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
-                //_stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 0.5f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30))); // indice de rareté
+                _stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "pyro_fruit", TimeSpan.FromSeconds(30))); // indice de rareté
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "FreezeGun", 1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "HypnoseGun", 0f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 999f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "SheepGun", 1f, 15f, 0.05f, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "BFG", 999f, 0, 0, 1, TimeSpan.FromSeconds(30)));
+                _stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "Infinity_Gauntlet", 9999999f, 0, 0, 1, TimeSpan.FromSeconds(30)));
+                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "point", TimeSpan.FromSeconds(30)));
+
             }
             else
             {
@@ -142,7 +159,7 @@ namespace MiamiOps
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(_gameHandlerCtx, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
 
-            if (this._stage == 5) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
+            if (this._stage == 3) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
 
             if (this._count > this._enemies.Length)
             {
@@ -156,7 +173,7 @@ namespace MiamiOps
             return ((float)this.random.NextDouble() * 2) -1;
         }
 
-      public  Vector CreatePositionOnSpawn(Vector enemieSpawn)
+      public Vector CreatePositionOnSpawn(Vector enemieSpawn)
         {
             Vector Position;
             if (_spawn != null)
@@ -173,7 +190,7 @@ namespace MiamiOps
             return Position;
         }
 
-        Vector CreateRandomPosition()
+       public Vector CreateRandomPosition()
         {
             return new Vector(GetNextRandomFloat(), GetNextRandomFloat());
         }
@@ -184,18 +201,18 @@ namespace MiamiOps
             {
                 foreach (var item in _player.Weapons)
                 {
-                    if (item.Name == "soulcalibur" || item.Name == "FreezeGun")
+                    if (item.Type == "legendary")
                     {
-                        item.Life = false;
+                       item.Life = false;
                     }
                 }
                 _stage++;
                 _player.Experience += _player.Points / 2;
                 _player.SavePoints = _player.Points + this._stage * 10000;
-                if (_stage >= 6) _player.SavePoints += this._level * 40000;
+                if (_stage >= 4) _player.SavePoints += this._level * 40000;
                 _player.Points = 0;
                 _levelPass = false;
-                if (_stage >= 6)
+                if (_stage >= 4)
                 {
                     _level++;
                     _stage = 1;
@@ -226,7 +243,42 @@ namespace MiamiOps
 
             for (int i = 0 ; i < _count; i++)
             {
-                this._enemies[i].Move(this._player.Place);
+                Vector place;
+                if (this._enemies[i].Effect == "Sheep")
+                {
+                    place = this.CreateRandomPosition();
+
+                }else if(this._enemies[i].Effect == "Hypnose")
+                {
+                    if (this._enemies[i].Target == null)
+                    {
+                        float target = 80f;
+                        int ennemiesTarget = 0;
+                        for (int a = 0; a < _count; a++)
+                        {
+                            Vector distanceVect = new Vector();
+                               if (a != i)
+                            {
+                                float distanceMin = distanceVect.Distance(this._enemies[i].Place, this._enemies[a].Place);
+                                if (target > distanceMin)
+                                {
+                                    target = distanceMin;
+                                    ennemiesTarget = a;
+                                }
+                            }
+                        }
+
+                        this._enemies[i].Target = this._enemies[ennemiesTarget];
+                        this._enemies[i].TargetID = ennemiesTarget;
+                    }
+                    place = this._enemies[i].Target.Place;
+                }
+                else
+                {
+                    place = this._player.Place;
+                }
+
+                this._enemies[i].Move(place);
             }
             UpdateEffect(_enemies);
 
@@ -263,18 +315,15 @@ namespace MiamiOps
           
             if (this.Player.Level >= 5&& _player.PassOut == 0)
             {
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5, 0, 0, 30, TimeSpan.MaxValue));
-                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "speed", TimeSpan.FromSeconds(30)));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "ak47", 5f, 0, 0, 30, TimeSpan.MaxValue, "normal"));
                 _player.PassOut++;
             }else if(this.Player.Level >= 10 && _player.PassOut == 1)
             {
-                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8, 0, 0, 10, TimeSpan.MaxValue));
+                this._player.GetNewWeapon(new Weapon(_gameHandlerCtx, "shotgun", 8f, 0, 0, 10, TimeSpan.MaxValue, "normal"));
                 _player.PassOut++;
             }
             else if (this.Player.Level >= 15 && _player.PassOut == 2)
             {
-                this._stuffFactories.Add(new PackageFactory(_gameHandlerCtx, "point", TimeSpan.FromSeconds(30)));
-                this._stuffFactories.Add(new WeaponFactory(_gameHandlerCtx, "soulcalibur", 9999f, 0.1f, 0.05f, 1, TimeSpan.FromSeconds(30)));
                 _player.PassOut++;
             }
 
@@ -294,11 +343,32 @@ namespace MiamiOps
                     _enemies[i].Speed = 0.00020f;
                 }
 
-                if (_enemies[i].IsEffectAlive == false)
+                if (_enemies[i].Effect == "Cheat")
+                {
+
+                }
+               else if (_enemies[i].IsEffectAlive == false)
                 {
                     _enemies[i].Effect = "nothing";
-                    _enemies[i].Speed = 0.0005f;
+                    _enemies[i].Speed = this._enemiesSpeed ;
                 }
+
+                if (_enemies[i].Effect == "Hypnose")
+                {
+                    _enemies[i].Speed = 0.005f;
+                }
+
+            }
+
+            if(_player.Effect == "Poison")
+            {
+                _player.LifePlayer -= 0.1f;
+            }
+
+            if(_player.Effect == "nothing")
+            {
+                this.Player.Speed = 0.005f;
+                this.Player.Effect = "nothing";
             }
         }
 
@@ -309,7 +379,7 @@ namespace MiamiOps
             {
                 if (!weapon.IsAlive || weapon.Life == false)
                 {
-                    if (this.Player.CurrentWeapon == weapon) this.Player.CurrentWeapon = this._player.Weapons[this._player.Weapons.Count - 2];
+                    if (this.Player.CurrentWeapon == weapon) this.Player.ChangeWeapon(1);
                     _player.Weapons.Remove(weapon);
                     this.Player.BlockWeapon = false;
                     break;
@@ -323,15 +393,19 @@ namespace MiamiOps
                     if(package.Name == "speed")
                     {
                         this.Player.Speed -= 0.005f;
+
                     }
-                    if(package.Name == "brute")
+                    if (package.Name == "brute"|| package.Name == "pyro_fruit"|| package.Name == "apple"|| package.Name == "Poison"|| package.Name =="Blind" )
                     {
                         this.Player.Effect = "nothing";
                     }
-                    if (package.Name == "pyro_fruit")
+                    if (package.Name == "Slow")
                     {
+                        this.Player.Speed = 0.005f;
                         this.Player.Effect = "nothing";
                     }
+
+
                     _listPackageEffect.Remove(package);
                     break;
                 }
@@ -353,8 +427,16 @@ namespace MiamiOps
             this._obstacles.Add(new float[]{x, y, largeur, hauteur});
         }
 
-        public int Level => _level;
-        public int Stage => _stage;
+        public int Level
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
+        public int Stage
+        {
+            get { return _stage; }
+            set { _stage = value; }
+        }
         public bool LevelPass
         {
             get { return _levelPass; }
@@ -378,6 +460,8 @@ namespace MiamiOps
         public float EnemiesLife => _enemiesLife;
         public float EnemiesSpeed => _enemiesSpeed;
         public float EnemiesAttack => _enemiesAttack;
+        public float EnemiesHauteur => _enemiesHauteur;
+        public float EnemiesLargeur => _enemiesLargeur;
         public Player Player => this._player;
         public List<float[]> Obstacles => this._obstacles;
         public int SpawnCount => this._spawn.Count;
@@ -407,6 +491,11 @@ namespace MiamiOps
         {
             get { return this._gameState; }
             set { this._gameState = value; }
+        }
+        public bool GameWin
+        {
+            get { return this._gameWin; }
+            set { this._gameWin = value; }
         }
         public List<Shoot> ListBullet
         {

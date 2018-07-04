@@ -18,6 +18,7 @@ namespace MiamiOps
         GameHandler _gameHandlerCtx;
         string _name;
         int _id;
+        string _status;
 
         public Package()
         {
@@ -35,6 +36,21 @@ namespace MiamiOps
             this._lifeSpan = lifeSpan;
             this._name = name;
             this._creationDate = DateTime.UtcNow;
+            _status = "NoCheat";
+        }
+
+        public Package(GameHandler gameHandlerCtx, string name, TimeSpan lifeSpan, Vector place, float width = 0, float height = 0)
+        {
+            _gameHandlerCtx = gameHandlerCtx;
+
+            this._name = name;
+            this._place = place;
+            this._width = width;
+            this._height = height;
+            this._lifeSpan = lifeSpan;
+            this._name = name;
+            this._creationDate = DateTime.UtcNow;
+            _status = "Cheat";
         }
 
         internal float GetNextRandomFloat()
@@ -59,6 +75,7 @@ namespace MiamiOps
                     exist = true;
                 }
             }
+
             if (this.Name == "health")
             {
                 Ctx.Player.LifePlayer += 20;
@@ -81,12 +98,12 @@ namespace MiamiOps
                 }
                 else
                 {
+                    Ctx.Player.Effect = "Double Speed";
                     Ctx.Player.Speed += 0.005f;
                     this.LifeSpan = TimeSpan.FromSeconds(5);
                     this.CreationDate = DateTime.UtcNow;
                     Ctx.PackageEffectList.Add(this);
                 }
-                Ctx.StuffList.Remove(this);
             }
 
             if(this.Name == "brute")
@@ -103,7 +120,6 @@ namespace MiamiOps
                     this.CreationDate = DateTime.UtcNow;
                     Ctx.PackageEffectList.Add(this);
                 }
-                Ctx.StuffList.Remove(this);
             }
             if (this.Name == "pyro_fruit")
             {
@@ -121,6 +137,110 @@ namespace MiamiOps
                 }
                 Ctx.StuffList.Remove(this);
             }
+
+            if(this.Name == "apple")
+            {
+                Random random = new Random();
+                int _random;
+                 _random = random.Next(0, 2);
+                if (_random == 1)
+                {
+                    if (exist == true)
+                    {
+                        Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(10);
+                        Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        Ctx.Player.Effect = "Boost atk";
+                        this.LifeSpan = TimeSpan.FromSeconds(10);
+                        this.CreationDate = DateTime.UtcNow;
+                        Ctx.PackageEffectList.Add(this);
+                    }
+                }
+                else
+                {
+                    if (exist == true)
+                    {
+                        Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(10);
+                        Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        Ctx.Player.Effect = "Reverse";
+                        this.LifeSpan = TimeSpan.FromSeconds(10);
+                        this.CreationDate = DateTime.UtcNow;
+                        Ctx.PackageEffectList.Add(this);
+                    }
+                }
+
+            }
+
+            if(this.Name == "Poison")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "Poison";
+                    this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+            }
+
+            if(this.Name == "Cookie")
+            {
+                Ctx.Player.LifePlayer += 5;
+                if (Ctx.Player.LifePlayer > Ctx.Player.LifePlayerMax) Ctx.Player.LifePlayer = Ctx.Player.LifePlayerMax;
+            }
+
+            if (this.Name == "Slow")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "Reduce Speed";
+                    Ctx.Player.Speed = Ctx.Player.Speed/10;
+                    this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+            }
+            if (this.Name == "Blind")
+            {
+                if (exist == true)
+                {
+                    Ctx.PackageEffectList[count].LifeSpan = TimeSpan.FromSeconds(5);
+                    Ctx.PackageEffectList[count].CreationDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    Ctx.Player.Effect = "Blind";
+                    this.LifeSpan = TimeSpan.FromSeconds(5);
+                    this.CreationDate = DateTime.UtcNow;
+                    Ctx.PackageEffectList.Add(this);
+                }
+            }
+
+            if(this.Name == "bossSpawn")
+            {
+                if(Ctx._boss == null)
+                {
+                    Ctx._boss = new Boss(_gameHandlerCtx, 999, Ctx.CreateRandomPosition(), Ctx.EnemiesLife * 30, Ctx.EnemiesSpeed, Ctx.EnemiesAttack, Ctx.EnemiesHauteur, Ctx.EnemiesLargeur);
+                    Ctx.Player.Effect = "Boss";
+                    Ctx._boss.Effect = "Boss";
+                }
+            }
+            Ctx.StuffList.Remove(this);
+
         }
 
         public TimeSpan LifeSpan
@@ -146,6 +266,12 @@ namespace MiamiOps
         public string Name => _name;
 
         public Vector Position => _place;
+
+        public string Status
+        {
+            get { return this._status; }
+            set { this._status = value; }
+        }
     }
 
     public class PackageFactory : IStuffFactory
@@ -161,10 +287,18 @@ namespace MiamiOps
             _lifeSpan = lifeSpan;
         }
 
+        public string Name => _name;
+
         public IStuff Create()
         {
             return new Package(_gameHandlerCtx, _name, _lifeSpan);
         }
+
+        public IStuff CreateToCheat(Vector place)
+        {
+            return new Package(_gameHandlerCtx, _name, _lifeSpan,place);
+        }
+
     }
 }
 

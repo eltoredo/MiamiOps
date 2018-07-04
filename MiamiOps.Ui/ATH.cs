@@ -15,6 +15,9 @@ namespace MiamiOps
         int _lvl;
         float _galaxCoin;
         float _xp;
+        string _effect;
+        int _level;
+        int _stage;
 
         private List<Text> _athList = new List<Text>();
         public List<Text> AthList => _athList;
@@ -33,17 +36,23 @@ namespace MiamiOps
         Color _couleur = new Color(255, 0, 0);
 
         Round _ctx;
+        RoundUI _ctxUI;
 
-        public ATH(Round Context, float width, float height, View View)
+        public ATH(Round Context, float width, float height, View View, RoundUI ctxUI )
         {
 
             _ctx = Context;
+            _ctxUI = ctxUI;
 
             _life = _ctx.Player.LifePlayer;
             _ammo = _ctx.Player.CurrentWeapon.Ammo;
             _lvl = _ctx.Player.Level;
             _galaxCoin = _ctx.Player.Points;
             _xp = _ctx.Player.Experience;
+            _effect = _ctx.Player.Effect;
+            _level = _ctx.Level;
+            _stage = _ctx.Stage;
+            
 
             
             _athLifeBar = new Texture("../../../../Images/HUD/LifeBar.png");
@@ -106,6 +115,36 @@ namespace MiamiOps
 
             };
             _athList.Add(XPBar);
+
+            Text EffectBar = new Text
+            {
+                Font = _font,
+                Color = Color.White,
+                DisplayedString = "Effect: " + _effect,
+                CharacterSize = 25
+
+            };
+            _athList.Add(EffectBar);
+
+            Text StageBar = new Text
+            {
+                Font = _font,
+                Color = Color.White,
+                DisplayedString = "Stage: " + _stage.ToString() + "-" + _level.ToString(),
+                CharacterSize = 40
+
+            };
+            _athList.Add(StageBar);
+
+            Text PackageBar = new Text
+            {
+                Font = _font,
+                Color = Color.White,
+                DisplayedString = "Package: " + _stage.ToString() + "-" + _level.ToString(),
+                CharacterSize = 20
+
+            };
+            _athList.Add(PackageBar);
         }
 
 
@@ -157,7 +196,7 @@ namespace MiamiOps
             _athGunSprite = new Sprite(_athGun);
 
             //player life
-            _athList[0].DisplayedString = this._ctx.Player.LifePlayer.ToString() + "/" + this._ctx.Player.LifePlayerMax.ToString();
+            _athList[0].DisplayedString = Math.Round(this._ctx.Player.LifePlayer).ToString() + "/" + this._ctx.Player.LifePlayerMax.ToString();
 
             //bullet count
             _athList[1].DisplayedString = this._ctx.Player.CurrentWeapon.Ammo.ToString() + "/" + this._ctx.Player.CurrentWeapon.MaxAmmo.ToString();
@@ -171,6 +210,29 @@ namespace MiamiOps
             //current XP
             _athList[4].DisplayedString = this._ctx.Player.Experience.ToString() + "/" + this._ctx.Player.ExperienceMax.ToString();
 
+            //current Effect
+            string effectOnAth;
+            if(_ctx.Player.Effect == "nothing" && _ctx.Player.Speed == 0.005f)
+            {
+                effectOnAth = "";
+            }
+            else if(_ctx.Player.Effect == "nothing")
+            {
+                effectOnAth = "";
+            }
+            else
+            {
+                effectOnAth = _ctx.Player.Effect;
+            }
+            _athList[5].DisplayedString = "Effect:" + effectOnAth;
+
+            //Current stage
+            _athList[6].DisplayedString = "Stage: " + _ctx.Level.ToString() + " - " + _ctx.Stage.ToString();
+
+            //Current stage
+            _athList[7].DisplayedString = "Package: " + _ctx.StuffFactories[_ctxUI.GameCtx.Input.StuffFactories].Name;
+
+
 
             _athLifeSprite.Position = new Vector2f(_athList[0].Position.X - 100, _athList[0].Position.Y - 100);
             _athGunSprite.Position = new Vector2f(_athLifeSprite.Position.X +170, _athLifeSprite.Position.Y - 10 );
@@ -183,6 +245,10 @@ namespace MiamiOps
             _athList[2].Position = new Vector2f(_athList[0].Position.X +70 , _athList[0].Position.Y +70);
             _athList[3].Position = new Vector2f(_athList[0].Position.X - 70, _athList[0].Position.Y + 70);
             _athList[4].Position = new Vector2f(_athList[0].Position.X + 10, _athList[0].Position.Y + 40);
+            _athList[5].Position = new Vector2f(_athList[0].Position.X -70, _athList[0].Position.Y+100);
+            _athList[6].Position = new Vector2f(_athList[0].Position.X - 1000, _athList[0].Position.Y -80);
+            _athList[7].Position = new Vector2f(_athList[0].Position.X , _athList[0].Position.Y +500);
+
 
 
         }

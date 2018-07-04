@@ -15,17 +15,19 @@ namespace MiamiOps
         Weapon _bossweapon;
         int _count;
         int _countMax;
+        //string _effect;
 
 
         public Boss(GameHandler context, int name, Vector place, float life, float speed, float attack, float width = 0, float height = 0, int pattern = 0) : base(context, name, place, life, speed, attack, width, height)
         {
             _pattern = pattern;
-            _bossweapon = new Weapon(context, "circleShoot", 5, 360, 0, 9999, TimeSpan.MaxValue);
+            _bossweapon = new Weapon(context, "circleShoot", 5, 360, 0, 9999, TimeSpan.MaxValue,"normal");
             _context = context;
             _isDead = false;
             _count = 0;
             _countMax = 30;
-
+            this.Effect = "Boss";
+            
         }
         public void UpdateBoss()
         {
@@ -33,7 +35,7 @@ namespace MiamiOps
             {
 
                 _life = _maxLife;
-                this._speed = this._speed * 5;
+                this._speed = this._speed * 2;
                 _pattern++;
                 _countMax = _countMax / 2;
             }
@@ -53,8 +55,9 @@ namespace MiamiOps
         internal void Dead()
         {
             this.isDead = true;
-            _context.RoundObject.Player.Experience += _context.RoundObject.Player.Level * 100;
-            _context.RoundObject.Player.Points += 100;
+            _context.RoundObject.Player.LifePlayerMax += 50;
+            _context.RoundObject.Player.Experience += _context.RoundObject.Player.Level * 1000;
+            _context.RoundObject.Player.Points += 6000;
 
         }
 

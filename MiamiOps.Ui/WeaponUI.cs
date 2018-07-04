@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -84,9 +85,30 @@ namespace MiamiOps
            float rotation = (float)((Math.Atan2(dy, dx)) * 180 / 3.14);
            
            _weaponSprite.Rotation = rotation;
-           
 
-           return position;
+
+            if (_roundUIContext.RoundHandlerContext.RoundObject.Player.Collide == true)
+            {
+                if(_roundUIContext.PlayerUI.NbDirection == 2)
+                {
+                    position = new Vector2f(position.X - 8, position.Y);
+                }
+                else if (_roundUIContext.PlayerUI.NbDirection == 1)
+                {
+                    position = new Vector2f(position.X + 8, position.Y);
+                }
+                else if (_roundUIContext.PlayerUI.NbDirection == 3)
+                {
+                    position = new Vector2f(position.X, position.Y + 8);
+                }
+                else if (_roundUIContext.PlayerUI.NbDirection == 0)
+                {
+                    position = new Vector2f(position.X, position.Y - 8);
+                }
+
+            }
+
+            return position;
 
         }
 
@@ -109,8 +131,19 @@ namespace MiamiOps
             {
                 _bulletSprite.Dispose();
                 _bulletTexture.Dispose();
-                _bulletTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "Bullet.png");
-                _bulletSprite = new Sprite(_bulletTexture);
+                string bulletExist = "../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "Bullet.png";
+                if (File.Exists(bulletExist))
+                {
+                    _bulletTexture = new Texture("../../../../Images/" + this._roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Name + "Bullet.png");
+                      _bulletSprite = new Sprite(_bulletTexture);
+                }
+                else
+                {
+                    _bulletTexture = new Texture("../../../../Images/Fireball.png");
+                    _bulletSprite = new Sprite(_bulletTexture);
+                }
+            
+                
                 if (reset == false)
                 {
                     this._bulletBoundingBox.Clear();
