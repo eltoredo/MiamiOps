@@ -122,7 +122,11 @@ namespace MiamiOps
         }
 
         public InputHandler Input => _playerInput;
-        public View MyView => _view;
+        public View MyView
+        {
+            get { return _view; }
+            set { _view = value; }
+        }
         public Round Round => _gameHandlerCtx.RoundObject;
         public Convert ConvertMap => _convert;
         public Music MusicMain {

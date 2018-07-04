@@ -150,16 +150,19 @@ namespace MiamiOps
                 _player.Place = new Vector(-0.7, 0.7);
                 _stuffFactories = stuffFactories;
             }
-
-          //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
-            this._enemies = new Enemies[nb_enemies];
+            if (this._stage == 4)
+            {
+                nb_enemies = 4;
+            }
+                //  this._player.GetNewWeapon(new Weapon("shotgun", 0f, 0, 0f, 20));
+                this._enemies = new Enemies[nb_enemies];
             // If the enemies spawn is null (not renseigned) each enemies have a random location
             Func<Vector> createPosition;    // This variable is type "Func" and that return a "Vector"
             if (enemieSpawn == null) createPosition = CreateRandomPosition;
             else createPosition = () => CreatePositionOnSpawn(enemieSpawn.Value);            // Put enemies in the array
             for (int idx = 0; idx < nb_enemies; idx += 1) {this._enemies[idx] = new Enemies(_gameHandlerCtx, idx, createPosition(), this._enemiesLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);}
 
-            if (this._stage == 3) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
+            if (this._stage == 4) this._boss = new Boss(_gameHandlerCtx, 999, createPosition(), this._bossLife, this._enemiesSpeed, this._enemiesAttack, this._enemiesLargeur, this._enemiesHauteur);
 
             if (this._count > this._enemies.Length)
             {
@@ -212,7 +215,7 @@ namespace MiamiOps
                 if (_stage >= 4) _player.SavePoints += this._level * 40000;
                 _player.Points = 0;
                 _levelPass = false;
-                if (_stage >= 4)
+                if (_stage >= 5)
                 {
                     _level++;
                     _stage = 1;

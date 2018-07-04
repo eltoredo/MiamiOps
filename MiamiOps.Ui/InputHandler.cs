@@ -26,7 +26,8 @@ namespace MiamiOps
         int ennemiesSpeed;
         int stuffFactories;
         int cheat;
-        
+        bool _IsZoom;
+        View _ViewNoZoom;
 
         public InputHandler(RoundUI roundUIContext)
         {
@@ -281,6 +282,7 @@ namespace MiamiOps
 
             }
 
+
             if (Keyboard.IsKeyPressed(Keyboard.Key.F6))
             {
                 for (int i = 0; i < _roundUIContext.RoundHandlerContext.RoundObject.CountEnnemi; i++)
@@ -305,6 +307,31 @@ namespace MiamiOps
                 IStuff stuff = randomStuffFactory.CreateToCheat(CalculMouseVector());
                 _roundUIContext.RoundHandlerContext.RoundObject.StuffList.Add(stuff);
             }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F7))
+            {
+                if(_IsZoom == false)
+                {
+                    _roundUIContext.GameCtx.MyView.Zoom(4f);
+                    _IsZoom = true;
+                }
+                
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F8))
+            {
+                if (_IsZoom == true)
+                {
+                    _roundUIContext.GameCtx.MyView.Center = new Vector2f(_roundUIContext.GameCtx.MyView.Center.X/4, _roundUIContext.GameCtx.MyView.Center.Y / 4);
+                    _roundUIContext.GameCtx.MyView.Size = new Vector2f(_roundUIContext.GameCtx.MyView.Size.X/4, _roundUIContext.GameCtx.MyView.Size.Y / 4);
+                    _IsZoom = false;
+                }
+
+               
+            }
+
+            Console.WriteLine(_roundUIContext.GameCtx.MyView);
+
             cheat++;
         }
 
