@@ -96,7 +96,7 @@ namespace MiamiOps
             
             // Save the enemies parametres
             this._enemiesLife = enemiesLife;
-            this._bossLife = enemiesLife * 30;
+            this._bossLife = enemiesLife * 5;
             this._enemiesSpeed = enemiesSpeed;
             this._enemiesAttack = enemiesAttack;
             this._enemiesLargeur = enemiesLargeur;

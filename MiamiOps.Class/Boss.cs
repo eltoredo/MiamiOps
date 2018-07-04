@@ -35,7 +35,7 @@ namespace MiamiOps
             {
 
                 _life = _maxLife;
-                this._speed = this._speed * 5;
+                this._speed = this._speed * 2;
                 _pattern++;
                 _countMax = _countMax / 2;
             }

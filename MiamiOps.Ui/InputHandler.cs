@@ -254,17 +254,17 @@ namespace MiamiOps
             }
 
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F1)&& (Keyboard.IsKeyPressed(Keyboard.Key.F2)))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F1))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Experience += 500;
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F2)&& (Keyboard.IsKeyPressed(Keyboard.Key.F3)))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F2))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Player.Points += 1000000;
             }
 
-            if (Keyboard.IsKeyPressed(Keyboard.Key.F12)&& Keyboard.IsKeyPressed(Keyboard.Key.F11))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F12))
             {
                 _roundUIContext.RoundHandlerContext.RoundObject.Stage = 5;
                 _roundUIContext.RoundHandlerContext.RoundObject.Level = 3;
@@ -290,7 +290,7 @@ namespace MiamiOps
                 }
             }
 
-            if (cheat >= 20 && Keyboard.IsKeyPressed(Keyboard.Key.F3) && Keyboard.IsKeyPressed(Keyboard.Key.F4))
+            if (cheat >= 20 && Keyboard.IsKeyPressed(Keyboard.Key.F3))
             {
 
                 stuffFactories++;
@@ -298,7 +298,7 @@ namespace MiamiOps
                 cheat = 0;
             }
 
-            if (cheat >= 10 && Keyboard.IsKeyPressed(Keyboard.Key.F4) && Keyboard.IsKeyPressed(Keyboard.Key.F5))
+            if (cheat >= 10 && Keyboard.IsKeyPressed(Keyboard.Key.F4))
             {
 
                 IStuffFactory randomStuffFactory = _roundUIContext.RoundHandlerContext.RoundObject.StuffFactories[stuffFactories];

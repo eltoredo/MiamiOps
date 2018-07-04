@@ -87,7 +87,7 @@ namespace MiamiOps
         }
         public void BossShoot(Vector _bossPlace, Vector _shootDirection)
         {
-            Shoot shoot = new Shoot(1f, TimeSpan.FromSeconds(5), 0.005f, _bossPlace, _shootDirection);
+            Shoot shoot = new Shoot(1f, TimeSpan.FromSeconds(3), 0.005f, _bossPlace, _shootDirection);
             _gameHandler.RoundObject.ListBulletBoss.Add(shoot);
 
             _ammo -= 1;
@@ -163,13 +163,13 @@ namespace MiamiOps
             }
 
                 foreach (Shoot s in _gameHandler.RoundObject.ListBullet)
-            {
-                if (!s.IsAlive || s.LifeBullet == false)
                 {
+                     if (!s.IsAlive || s.LifeBullet == false)
+                     {
                     toRemove.Add(s);
-                }
+                     }
 
-            }
+               }
 
             //foreach (int Count in _listCount)
             //{

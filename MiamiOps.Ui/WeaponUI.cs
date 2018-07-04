@@ -85,9 +85,30 @@ namespace MiamiOps
            float rotation = (float)((Math.Atan2(dy, dx)) * 180 / 3.14);
            
            _weaponSprite.Rotation = rotation;
-           
 
-           return position;
+
+            if (_roundUIContext.RoundHandlerContext.RoundObject.Player.Collide == true)
+            {
+                if(_roundUIContext.PlayerUI.NbDirection == 2)
+                {
+                    position = new Vector2f(position.X - 8, position.Y);
+                }
+                else if (_roundUIContext.PlayerUI.NbDirection == 1)
+                {
+                    position = new Vector2f(position.X + 8, position.Y);
+                }
+                else if (_roundUIContext.PlayerUI.NbDirection == 3)
+                {
+                    position = new Vector2f(position.X, position.Y + 8);
+                }
+                else if (_roundUIContext.PlayerUI.NbDirection == 0)
+                {
+                    position = new Vector2f(position.X, position.Y - 8);
+                }
+
+            }
+
+            return position;
 
         }
 
