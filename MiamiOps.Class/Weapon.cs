@@ -83,7 +83,13 @@ namespace MiamiOps
             _gameHandler.RoundObject.ListBullet.Add(shoot);
 
             _ammo -= 1;
-            if (_ammo <= 0) Reload();
+            if (_ammo <= 0)
+            {
+                _gameHandler.RoundObject.Player.Points -= 25;
+                if (_gameHandler.RoundObject.Player.Points < 0) _gameHandler.RoundObject.Player.Points = 0;
+                Reload();
+
+            }
         }
         public void BossShoot(Vector _bossPlace, Vector _shootDirection)
         {

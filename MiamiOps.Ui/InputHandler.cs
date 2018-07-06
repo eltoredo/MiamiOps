@@ -246,6 +246,7 @@ namespace MiamiOps
                     {
                         _roundUIContext.RoundHandlerContext.RoundObject._boss.Hit(_roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Attack);
                     }
+                    _roundUIContext.RoundHandlerContext.RoundObject.Player.CurrentWeapon.Life = false;
                     _roundUIContext.GameCtx.MusicMain.Play();
                 }
 
