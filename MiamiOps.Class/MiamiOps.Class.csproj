@@ -5,9 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="sfmlnet-system-2">
-      <HintPath>..\MiamiOps\bin\Debug\net461\sfmlnet-system-2.dll</HintPath>
-    </Reference>
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MiamiOps.Map\MiamiOps.Map.csproj" />
   </ItemGroup>
 
 </Project>

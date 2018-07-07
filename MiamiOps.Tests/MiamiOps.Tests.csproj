@@ -7,16 +7,11 @@
   <ItemGroup>
     <PackageReference Include="NUnit" Version="2.6.4" />
     <PackageReference Include="NUnit.Runners.Net4" Version="2.6.4" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MiamiOps.Class\MiamiOps.Class.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="sfmlnet-system-2">
-      <HintPath>..\MiamiOps\bin\Debug\net461\sfmlnet-system-2.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
